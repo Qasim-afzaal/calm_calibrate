@@ -1,11 +1,11 @@
 {
-    "name": "calm_calibrate",
-    "short_name": "calm_calibrate",
+    "name": "CalmCalibrate",
+    "short_name": "CalmCalibrate",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Mobility and recovery for desk workers.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

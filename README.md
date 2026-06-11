@@ -1,17 +1,30 @@
-# calm_calibrate
+# CalmCalibrate
 
-A new Flutter project.
+Mobility and recovery for desk workers — a Flutter app for guided movement breaks, posture awareness, and desk-friendly recovery.
 
-## Getting Started
+## Project details
 
-This project is a starting point for a Flutter application.
+| Item | Value |
+|------|-------|
+| Display name | **CalmCalibrate** |
+| Package name | `calm_calibrate` |
+| Bundle ID | `com.calcalibrate.calmCalibrate` |
+| Flutter | 3.44.1 |
+| Dart | 3.12.1 |
 
-A few resources to get you started if this is your first Flutter project:
+## Getting started
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+cd ~/development/calm_calibrate
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Platforms
+
+- iOS
+- Android
+- macOS
+- Web
+- Windows
+- Linux
