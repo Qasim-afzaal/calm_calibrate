@@ -17,6 +17,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] splash_screen loaded'); // auth-check-debug
+
     Future<void>.delayed(Duration(milliseconds: 2200), () {
       if (!mounted) return;
       final onboardingDone = AppCache.instance.profile.onboardingComplete;
