@@ -24,6 +24,8 @@ class SmartBreakPromptScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] smart_break loaded'); // auth-check-debug
     final c = context.appColors;
     return Scaffold(
       backgroundColor: Colors.black54,
