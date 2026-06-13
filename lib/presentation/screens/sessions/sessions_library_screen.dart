@@ -21,6 +21,8 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] sessions_library loaded'); // auth-check-debug
     final c = context.appColors;
     final profile = MockUserRepository.instance.profile;
     final repo = MockSessionRepository.instance;
