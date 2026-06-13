@@ -13,6 +13,8 @@ class ScoreResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] score_result loaded'); // auth-check-debug
     final c = context.appColors;
     return Scaffold(
       body: SafeArea(
