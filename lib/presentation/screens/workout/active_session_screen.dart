@@ -22,6 +22,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] active_session loaded'); // auth-check-debug
+
     context
         .read<WorkoutBloc>()
         .add(WorkoutSessionLoadRequested(widget.sessionId));
