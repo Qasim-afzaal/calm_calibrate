@@ -12,6 +12,8 @@ class StreakMilestoneScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] streak_milestone loaded'); // auth-check-debug
     final c = context.appColors;
     final plan = JourneyPlan.forDay(day);
     final milestone = plan?.milestone ?? 'Milestone reached!';
