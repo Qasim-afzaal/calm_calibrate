@@ -17,6 +17,8 @@ class _CalmCalibrateAppState extends State<CalmCalibrateApp> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] app loaded'); // auth-check-debug
+
     AppCache.instance.addListener(_onCacheChanged);
   }
 
