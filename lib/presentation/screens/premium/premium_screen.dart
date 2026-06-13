@@ -69,6 +69,8 @@ class _PremiumScreenState extends State<PremiumScreen>
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] premium_screen loaded'); // auth-check-debug
+
     _bgDrift = AnimationController(
       vsync: this,
       duration: Duration(seconds: 10),
