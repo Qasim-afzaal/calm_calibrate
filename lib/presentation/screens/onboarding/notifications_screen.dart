@@ -9,6 +9,8 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] notifications loaded'); // auth-check-debug
     final c = context.appColors;
     return Scaffold(
       appBar: AppBar(
