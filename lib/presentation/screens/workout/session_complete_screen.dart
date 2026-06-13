@@ -16,6 +16,8 @@ class SessionCompleteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] session_complete loaded'); // auth-check-debug
     final c = context.appColors;
     final workoutState = context.watch<WorkoutBloc>().state;
     final repo = MockUserRepository.instance;
