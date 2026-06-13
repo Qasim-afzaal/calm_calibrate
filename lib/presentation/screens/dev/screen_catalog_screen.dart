@@ -39,6 +39,8 @@ class ScreenCatalogScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] screen_catalog loaded'); // auth-check-debug
     final c = context.appColors;
     final repo = EngagementRepository.instance;
 
