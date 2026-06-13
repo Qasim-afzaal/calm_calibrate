@@ -22,6 +22,8 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] reminders_settings loaded'); // auth-check-debug
+
     final p = MockUserRepository.instance.profile;
     _minutes = p.reminderMinutes;
     _smartReminders = p.smartReminders;
