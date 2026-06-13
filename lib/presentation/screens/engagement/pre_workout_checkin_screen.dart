@@ -29,6 +29,8 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] pre_workout loaded'); // auth-check-debug
+
     WidgetsBinding.instance.addPostFrameCallback((_) => _verifyAccess());
   }
 
