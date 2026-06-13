@@ -20,6 +20,8 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] daily_checkin loaded'); // auth-check-debug
     final c = context.appColors;
     final repo = EngagementRepository.instance;
     final day = repo.currentDay;
