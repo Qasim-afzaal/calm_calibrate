@@ -14,6 +14,8 @@ class WorkPatternScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] work_pattern loaded'); // auth-check-debug
     final c = context.appColors;
     return Scaffold(
       appBar: AppBar(
