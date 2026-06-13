@@ -29,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] home_screen loaded'); // auth-check-debug
+
     _captureRefreshSignals();
     AppCache.instance.addListener(_onCacheUpdated);
     context.read<HomeBloc>().add(const HomeLoadRequested());
