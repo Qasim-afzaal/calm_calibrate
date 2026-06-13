@@ -14,6 +14,8 @@ class GoalsRemindersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] goals_reminders loaded'); // auth-check-debug
     final c = context.appColors;
     return Scaffold(
       appBar: AppBar(
