@@ -13,6 +13,8 @@ class PainSelectorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] pain_selector loaded'); // auth-check-debug
     final c = context.appColors;
     return BlocBuilder<OnboardingBloc, OnboardingState>(
       builder: (context, state) {
