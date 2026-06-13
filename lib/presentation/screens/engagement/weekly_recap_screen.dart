@@ -24,6 +24,8 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] weekly_recap loaded'); // auth-check-debug
+
     if (SubscriptionRepository.instance.isPremium) {
       _loadAiInsight();
     }
