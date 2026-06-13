@@ -12,6 +12,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] profile_screen loaded'); // auth-check-debug
     return ListenableBuilder(
       listenable: AppCache.instance,
       builder: (context, _) {
