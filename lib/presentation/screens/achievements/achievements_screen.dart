@@ -7,6 +7,8 @@ class AchievementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] achievements loaded'); // auth-check-debug
     final c = context.appColors;
     final achievements = EngagementRepository.instance.achievements;
     final unlocked = achievements.where((a) => a.isUnlocked).length;
