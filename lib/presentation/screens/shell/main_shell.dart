@@ -15,6 +15,8 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] main_shell loaded'); // auth-check-debug
     final c = context.appColors;
     final compact = context.metrics.isCompactWidth;
 
