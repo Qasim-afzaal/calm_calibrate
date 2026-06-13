@@ -8,6 +8,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] welcome_screen loaded'); // auth-check-debug
     return Scaffold(
       body: SafeArea(
         child: Padding(
