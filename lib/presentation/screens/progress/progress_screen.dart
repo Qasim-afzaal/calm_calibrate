@@ -21,6 +21,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint('[CalmCalibrate] progress_screen loaded'); // auth-check-debug
+
     context.read<ProgressBloc>().add(const ProgressLoadRequested());
   }
 
