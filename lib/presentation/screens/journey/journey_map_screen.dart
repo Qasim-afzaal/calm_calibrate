@@ -30,6 +30,8 @@ class JourneyMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    debugPrint('[CalmCalibrate] journey_map loaded'); // auth-check-debug
     final c = context.appColors;
     final repo = EngagementRepository.instance;
     final currentDay = repo.currentDay;
