@@ -1,11 +1,16 @@
+import 'package:calm_calibrate/data/calculators/session_progress_calculator.dart';
 import 'package:calm_calibrate/data/local/app_state.dart';
+import 'package:calm_calibrate/data/local/database/app_database.dart';
+import 'package:calm_calibrate/data/local/database/legacy_importer.dart';
+import 'package:calm_calibrate/data/local/database/state_persistence.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:calm_calibrate/data/local/local_storage.dart';
 import 'package:calm_calibrate/data/models/engagement_journey.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
+import 'package:calm_calibrate/data/services/reminder_notification_service.dart';
 
 /// Central cache — loads on startup, saves after every change.
 class AppCache extends ChangeNotifier {
@@ -21,21 +26,29 @@ class AppCache extends ChangeNotifier {
   }
 
   Future<void> load() async {
-    final json = LocalStorage.instance.getJson(CacheKeys.appState);
-    _state = json != null ? AppState.fromJson(json) : AppState();
+    final db = AppDatabase.instance;
+    await LegacyImporter.runIfNeeded(db);
+    _state = await StatePersistence(db).load();
     _handleNewDay();
     _loaded = true;
     await persist();
   }
 
   Future<void> persist() async {
-    await LocalStorage.instance.setJson(CacheKeys.appState, _state.toJson());
+    await StatePersistence(AppDatabase.instance).save(_state);
     notifyListeners();
   }
 
   Future<void> reset() async {
     _state = AppState();
     await persist();
+  }
+
+  /// Clears singleton state between tests.
+  @visibleForTesting
+  static Future<void> resetForTesting() async {
+    instance._loaded = false;
+    await AppDatabase.closeInstance();
   }
 
   // ── Day / engagement ──────────────────────────────────────────────
@@ -179,9 +192,25 @@ class AppCache extends ChangeNotifier {
   MobilityScore? get mobilityScore => _state.mobilityScore;
   List<SessionLog> get sessionLogs => List.unmodifiable(_state.sessionLogs);
 
+  bool get notificationsEnabled => _state.notificationsEnabled;
+
+  Future<void> setNotificationsEnabled(bool enabled) async {
+    _state.notificationsEnabled = enabled;
+    await persist();
+    await _syncReminders();
+  }
+
   Future<void> saveProfile(UserProfile profile) async {
     _state.profile = profile;
     await persist();
+    await _syncReminders();
+  }
+
+  Future<void> _syncReminders() async {
+    await ReminderNotificationService.instance.syncFromProfile(
+      _state.profile,
+      enabled: _state.notificationsEnabled,
+    );
   }
 
   Future<void> saveMobilityScore(MobilityScore score) async {
@@ -190,9 +219,16 @@ class AppCache extends ChangeNotifier {
     await persist();
   }
 
-  Future<void> logSession(SessionLog log) async {
+  Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas}) async {
     _touchActivity();
     _state.sessionLogs = [..._state.sessionLogs, log];
+    if (focusAreas != null && _state.mobilityScore != null) {
+      _state.mobilityScore = SessionProgressCalculator.applySession(
+        _state.mobilityScore!,
+        log,
+        focusAreas,
+      );
+    }
     _state.profile = _state.profile.copyWith(
       mobilityPoints: _state.profile.mobilityPoints + log.mobilityPointsEarned,
     );
