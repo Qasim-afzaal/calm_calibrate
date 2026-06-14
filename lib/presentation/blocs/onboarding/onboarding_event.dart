@@ -62,6 +62,15 @@ final class OnboardingSmartRemindersSet extends OnboardingEvent {
   List<Object?> get props => [enabled];
 }
 
+final class OnboardingNameSet extends OnboardingEvent {
+  const OnboardingNameSet(this.name);
+
+  final String name;
+
+  @override
+  List<Object?> get props => [name];
+}
+
 final class OnboardingPartialProfileSaveRequested extends OnboardingEvent {
   const OnboardingPartialProfileSaveRequested();
 }
