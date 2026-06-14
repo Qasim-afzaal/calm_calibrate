@@ -25,6 +25,7 @@ class AppState {
     this.aiDailyPlan,
     this.workoutMood,
     this.moodSoundEnabled = true,
+    this.notificationsEnabled = false,
     this.themeMode = 'system',
   });
 
@@ -47,6 +48,7 @@ class AppState {
   AiDailyPlan? aiDailyPlan;
   String? workoutMood;
   bool moodSoundEnabled;
+  bool notificationsEnabled;
   String themeMode;
 
   static String todayKey() {
@@ -77,6 +79,7 @@ class AppState {
         'aiDailyPlan': aiDailyPlan?.toJson(),
         'workoutMood': workoutMood,
         'moodSoundEnabled': moodSoundEnabled,
+        'notificationsEnabled': notificationsEnabled,
         'themeMode': themeMode,
       };
 
@@ -120,6 +123,7 @@ class AppState {
           : null,
       workoutMood: json['workoutMood'] as String?,
       moodSoundEnabled: json['moodSoundEnabled'] as bool? ?? true,
+      notificationsEnabled: json['notificationsEnabled'] as bool? ?? false,
       themeMode: json['themeMode'] as String? ?? 'system',
     );
   }
