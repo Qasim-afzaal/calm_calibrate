@@ -7,6 +7,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc({UserRepository? userRepository})
       : _userRepository = userRepository ?? MockUserRepository.instance,
         super(const OnboardingState()) {
+    on<OnboardingNameSet>(_onNameSet);
     on<OnboardingPainAreaToggled>(_onPainAreaToggled);
     on<OnboardingSittingHoursSet>(_onSittingHoursSet);
     on<OnboardingBreakTimeToggled>(_onBreakTimeToggled);
@@ -17,6 +18,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   }
 
   final UserRepository _userRepository;
+
+  void _onNameSet(OnboardingNameSet event, Emitter<OnboardingState> emit) {
+    emit(state.copyWith(name: event.name));
+  }
 
   void _onPainAreaToggled(
     OnboardingPainAreaToggled event,
@@ -74,8 +79,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     Emitter<OnboardingState> emit,
   ) async {
     final current = _userRepository.profile;
+    final trimmedName = state.name.trim();
     await _userRepository.saveProfile(
       current.copyWith(
+        name: trimmedName.isNotEmpty ? trimmedName : current.name,
         painAreas: state.painAreas,
         sittingHours: state.sittingHours,
         preferredBreakTimes: state.preferredBreakTimes,
