@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/data/calculators/session_progress_calculator.dart';
 import 'package:calm_calibrate/data/models/exercise.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
@@ -10,7 +11,7 @@ class WeeklyProgressCalculator {
     required DateTime? programStartDate,
     required this.sessions,
     required this.profile,
-  }) : _programStart = programStartDate ?? DateTime.now();
+  }) : _programStart = _normalizeStart(programStartDate);
 
   final List<SessionLog> logs;
   final int? mobilityScore;
@@ -18,23 +19,29 @@ class WeeklyProgressCalculator {
   final List<ExerciseSession> sessions;
   final UserProfile profile;
 
+  static DateTime _normalizeStart(DateTime? date) {
+    final start = date ?? DateTime.now();
+    return DateTime(start.year, start.month, start.day);
+  }
+
   WeeklyProgress calculate() {
-    final currentScore = mobilityScore ?? 42;
-    final beforeScore = (currentScore - logs.length * 2).clamp(30, currentScore);
+    final baseline = mobilityScore ?? 42;
+    final afterScore = SessionProgressCalculator.scoreAfterLogs(baseline, logs);
+    final beforeScore = baseline;
 
     final weekLabels = List.generate(6, (i) => 'W${i + 1}');
     final mobilityScores = <double>[];
 
     for (var week = 0; week < 6; week++) {
       final weekEnd = _programStart.add(Duration(days: (week + 1) * 7));
-      final cumulative =
-          logs.where((l) => !l.completedAt.isAfter(weekEnd)).length;
-      final projected = beforeScore + cumulative * 2.0;
-      mobilityScores.add(projected.clamp(30, currentScore).toDouble());
-    }
-
-    if (logs.isNotEmpty) {
-      mobilityScores[5] = currentScore.toDouble();
+      final logsThroughWeek = logs
+          .where((log) => !log.completedAt.isAfter(weekEnd))
+          .toList();
+      mobilityScores.add(
+        SessionProgressCalculator
+            .scoreAfterLogs(baseline, logsThroughWeek)
+            .toDouble(),
+      );
     }
 
     return WeeklyProgress(
@@ -42,41 +49,47 @@ class WeeklyProgressCalculator {
       mobilityScores: mobilityScores,
       areaImprovements: _areaImprovements(),
       beforeScore: beforeScore,
-      afterScore: currentScore,
+      afterScore: afterScore,
       totalSessions: logs.length,
-      totalMinutes: logs.fold(0, (sum, l) => sum + l.durationMinutes),
+      totalMinutes: logs.fold(0, (sum, log) => sum + log.durationMinutes),
       averageRelief: _averageRelief(),
     );
   }
 
   Map<String, int> _areaImprovements() {
-    final counts = <PainArea, int>{};
+    final reliefByArea = <PainArea, List<int>>{};
+
     for (final log in logs) {
-      final session = sessions.cast<ExerciseSession?>().firstWhere(
-            (s) => s?.id == log.sessionId,
-            orElse: () => null,
-          );
+      final session = _sessionFor(log.sessionId);
       if (session == null) continue;
+      final relief = log.reliefScore.clamp(0, 5);
       for (final area in session.focusAreas) {
-        counts[area] = (counts[area] ?? 0) + 1;
+        reliefByArea.putIfAbsent(area, () => []).add(relief);
       }
     }
 
-    if (counts.isEmpty && profile.painAreas.isNotEmpty) {
-      return {
-        for (final area in profile.painAreas) area.label: 0,
-      };
+    if (reliefByArea.isEmpty && profile.painAreas.isNotEmpty) {
+      return {for (final area in profile.painAreas) area.label: 0};
     }
 
     return {
-      for (final entry in counts.entries)
-        entry.key.label: (entry.value * 4).clamp(0, 28),
+      for (final entry in reliefByArea.entries)
+        entry.key.label: SessionProgressCalculator.reliefToImprovementPercent(
+          entry.value,
+        ),
     };
+  }
+
+  ExerciseSession? _sessionFor(String sessionId) {
+    for (final session in sessions) {
+      if (session.id == sessionId) return session;
+    }
+    return null;
   }
 
   double _averageRelief() {
     if (logs.isEmpty) return 0;
-    final total = logs.fold(0, (sum, l) => sum + l.reliefScore);
+    final total = logs.fold(0, (sum, log) => sum + log.reliefScore);
     return total / logs.length;
   }
 }
