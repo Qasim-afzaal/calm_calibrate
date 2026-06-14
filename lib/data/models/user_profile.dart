@@ -71,3 +71,11 @@ class UserProfile extends Equatable {
         isPremium,
       ];
 }
+
+extension UserProfileDisplay on UserProfile {
+  String get displayName {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty || trimmed == 'there') return 'Desk warrior';
+    return trimmed;
+  }
+}
