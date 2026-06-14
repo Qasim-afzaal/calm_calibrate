@@ -19,6 +19,8 @@ class ScoreGauge extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.appColors;
     final progress = (score / maxScore).clamp(0.0, 1.0);
+    final scoreFontSize = size * 0.19;
+    final maxFontSize = size * 0.12;
 
     return SizedBox(
       width: size,
@@ -28,15 +30,17 @@ class ScoreGauge extends StatelessWidget {
         children: [
           CustomPaint(
             size: Size(size, size),
-            painter: _GaugePainter(progress: progress, colors: c),
+            painter: _GaugePainter(progress: progress, colors: c, size: size),
           ),
-          Column(
+          Row(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
                 '$score',
                 style: TextStyle(
-                  fontSize: 48,
+                  fontSize: scoreFontSize,
                   fontWeight: FontWeight.w800,
                   color: c.textPrimary,
                   height: 1,
@@ -45,9 +49,10 @@ class ScoreGauge extends StatelessWidget {
               Text(
                 '/ $maxScore',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: maxFontSize,
                   color: c.textMuted,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
+                  height: 1,
                 ),
               ),
             ],
@@ -59,22 +64,29 @@ class ScoreGauge extends StatelessWidget {
 }
 
 class _GaugePainter extends CustomPainter {
-  _GaugePainter({required this.progress, required this.colors});
+  _GaugePainter({
+    required this.progress,
+    required this.colors,
+    required this.size,
+  });
 
   final double progress;
   final AppColorTokens colors;
+  final double size;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2 - 12;
+  void paint(Canvas canvas, Size canvasSize) {
+    final center = Offset(canvasSize.width / 2, canvasSize.height / 2);
+    final stroke = size * 0.07;
+    final inset = size * 0.06;
+    final radius = canvasSize.width / 2 - inset;
     final startAngle = math.pi * 0.75;
     final sweepAngle = math.pi * 1.5;
 
     final bgPaint = Paint()
       ..color = colors.border
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
+      ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
     final fgPaint = Paint()
@@ -85,7 +97,7 @@ class _GaugePainter extends CustomPainter {
         endAngle: startAngle + sweepAngle,
       ).createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 14
+      ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
     canvas.drawArc(
