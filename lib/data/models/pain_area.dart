@@ -58,10 +58,19 @@ enum SittingHours {
   eightPlus;
 
   String get label => switch (this) {
-        SittingHours.fourToSix => '4–6 hrs',
-        SittingHours.sixToEight => '6–8 hrs',
+        SittingHours.fourToSix => '4 to 6 hrs',
+        SittingHours.sixToEight => '6 to 8 hrs',
         SittingHours.eightPlus => '8+ hrs',
       };
+
+  /// Short title for compact selection chips.
+  String get chipTitle => switch (this) {
+        SittingHours.fourToSix => '4 to 6',
+        SittingHours.sixToEight => '6 to 8',
+        SittingHours.eightPlus => '8+',
+      };
+
+  String get chipSubtitle => 'hours';
 
   int get hours => switch (this) {
         SittingHours.fourToSix => 5,
