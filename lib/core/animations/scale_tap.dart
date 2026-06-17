@@ -26,6 +26,7 @@ class _ScaleTapState extends State<ScaleTap> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTapDown: widget.enabled ? (_) => setState(() => _pressed = true) : null,
       onTapUp: widget.enabled ? (_) => setState(() => _pressed = false) : null,
       onTapCancel: widget.enabled ? () => setState(() => _pressed = false) : null,
