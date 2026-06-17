@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 /// Visual guide for how the user should move during a step.
 enum ExercisePose {
@@ -46,7 +47,7 @@ class ExerciseSession extends Equatable {
     required this.focusAreas,
     required this.steps,
     this.isCompleted = false,
-    this.icon = '🧘',
+    this.icon = Icons.self_improvement_outlined,
   });
 
   final String id;
@@ -56,7 +57,7 @@ class ExerciseSession extends Equatable {
   final List<PainArea> focusAreas;
   final List<ExerciseStep> steps;
   final bool isCompleted;
-  final String icon;
+  final IconData icon;
 
   int get totalSeconds =>
       steps.fold(0, (sum, step) => sum + step.durationSeconds);
