@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/app/router.dart';
 import 'package:calm_calibrate/core/theme/app_theme.dart';
+import 'package:calm_calibrate/core/theme/app_typography.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:flutter/material.dart';
 
@@ -48,9 +49,15 @@ class _CalmCalibrateAppState extends State<CalmCalibrateApp> {
         final mq = MediaQuery.of(context);
         // Keep layouts stable when system text size is very large.
         final scale = mq.textScaler.scale(1).clamp(0.9, 1.12);
+        final defaultStyle = AppTypography.poppins(
+          Theme.of(context).textTheme.bodyMedium,
+        );
         return MediaQuery(
           data: mq.copyWith(textScaler: TextScaler.linear(scale)),
-          child: child ?? const SizedBox.shrink(),
+          child: DefaultTextStyle(
+            style: defaultStyle,
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
     );
