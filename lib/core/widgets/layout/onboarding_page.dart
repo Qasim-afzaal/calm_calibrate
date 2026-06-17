@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/core/animations/fade_slide_in.dart';
-import 'package:calm_calibrate/core/constants/app_spacing.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/onboarding_step_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +28,9 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final m = context.metrics;
+    final titleStyle = m.headlineStyle(Theme.of(context).textTheme);
+
     return Scaffold(
       appBar: showBack
           ? AppBar(
@@ -37,49 +41,48 @@ class OnboardingPage extends StatelessWidget {
             )
           : null,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (step != null) ...[
-                OnboardingStepIndicator(
-                  currentStep: step!,
-                  totalSteps: totalSteps,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-              FadeSlideIn(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ),
-              if (subtitle != null) ...[
-                const SizedBox(height: AppSpacing.sm),
+        child: ResponsiveContent(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: m.horizontalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (step != null) ...[
+                  OnboardingStepIndicator(
+                    currentStep: step!,
+                    totalSteps: totalSteps,
+                  ),
+                  SizedBox(height: m.onboardingSectionGap),
+                ],
                 FadeSlideIn(
-                  delay: const Duration(milliseconds: 60),
-                  child: Text(
-                    subtitle!,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  child: Text(title, style: titleStyle),
+                ),
+                if (subtitle != null) ...[
+                  SizedBox(height: m.onboardingTitleGap),
+                  FadeSlideIn(
+                    delay: const Duration(milliseconds: 60),
+                    child: Text(
+                      subtitle!,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+                SizedBox(height: m.onboardingSectionGap),
+                Expanded(
+                  child: FadeSlideIn(
+                    delay: const Duration(milliseconds: 120),
+                    child: child,
                   ),
                 ),
+                if (bottom != null) ...[
+                  FadeSlideIn(
+                    delay: const Duration(milliseconds: 200),
+                    child: bottom!,
+                  ),
+                  SizedBox(height: m.onboardingBottomGap),
+                ],
               ],
-              const SizedBox(height: AppSpacing.xl),
-              Expanded(
-                child: FadeSlideIn(
-                  delay: const Duration(milliseconds: 120),
-                  child: child,
-                ),
-              ),
-              if (bottom != null) ...[
-                FadeSlideIn(
-                  delay: const Duration(milliseconds: 200),
-                  child: bottom!,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-              ],
-            ],
+            ),
           ),
         ),
       ),
