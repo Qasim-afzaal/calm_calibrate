@@ -110,8 +110,12 @@ class JourneyTimelineTile extends StatelessWidget {
                         ),
                         if (milestone != null)
                           Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Text('🏅', style: TextStyle(fontSize: 16)),
+                            padding: const EdgeInsets.only(left: 4),
+                            child: Icon(
+                              Icons.emoji_events_outlined,
+                              size: 16,
+                              color: c.primary,
+                            ),
                           ),
                       ],
                     ),
