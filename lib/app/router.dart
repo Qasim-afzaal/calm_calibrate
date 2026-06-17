@@ -12,7 +12,6 @@ import 'package:calm_calibrate/presentation/blocs/progress/progress_state.dart';
 import 'package:calm_calibrate/presentation/blocs/workout/workout_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/workout/workout_state.dart';
 import 'package:calm_calibrate/presentation/screens/achievements/achievements_screen.dart';
-import 'package:calm_calibrate/presentation/screens/dev/screen_catalog_screen.dart';
 import 'package:calm_calibrate/presentation/screens/engagement/daily_checkin_screen.dart';
 import 'package:calm_calibrate/presentation/screens/engagement/pre_workout_checkin_screen.dart';
 import 'package:calm_calibrate/presentation/screens/engagement/re_engagement_screen.dart';
@@ -222,11 +221,6 @@ GoRouter createRouter() {
         path: '/premium',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => PremiumScreen(),
-      ),
-      GoRoute(
-        path: '/dev/screens',
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ScreenCatalogScreen(),
       ),
     ],
   );
