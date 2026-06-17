@@ -4,6 +4,7 @@ import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
 import 'package:calm_calibrate/data/calculators/weekly_progress_calculator.dart';
+import 'package:flutter/material.dart';
 
 abstract class SessionRepository {
   List<ExerciseSession> getTodaySessions(UserProfile profile);
@@ -27,14 +28,14 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Wake up your spine',
       durationMinutes: 3,
       focusAreas: [PainArea.neck, PainArea.shoulders],
-      icon: '🌅',
+      icon: Icons.wb_twilight_rounded,
       steps: [
         ExerciseStep(
           name: 'Neck Rolls',
           durationSeconds: 30,
           instruction: 'Slowly roll your neck in a circle. Breathe deeply.',
           pose: ExercisePose.neckRoll,
-          tip: 'Move slowly — no jerking.',
+          tip: 'Move slowly. No jerking.',
         ),
         ExerciseStep(
           name: 'Shoulder Shrugs',
@@ -48,7 +49,7 @@ class CachedSessionRepository implements SessionRepository {
           durationSeconds: 45,
           instruction: 'Twist gently left and right. Keep hips facing forward.',
           pose: ExercisePose.seatedTwist,
-          tip: 'Keep hips still — twist from the waist.',
+          tip: 'Keep hips still. Twist from the waist.',
         ),
         ExerciseStep(
           name: 'Chest Opener',
@@ -65,7 +66,7 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Combat afternoon stiffness',
       durationMinutes: 5,
       focusAreas: [PainArea.lowerBack, PainArea.hips],
-      icon: '☀️',
+      icon: Icons.wb_sunny_rounded,
       steps: [
         ExerciseStep(
           name: 'Neck Side Release',
@@ -75,7 +76,7 @@ class CachedSessionRepository implements SessionRepository {
           tip: 'Keep opposite shoulder relaxed.',
         ),
         ExerciseStep(
-          name: 'Seated Cat-Cow',
+          name: 'Seated Cat Cow',
           durationSeconds: 45,
           instruction: 'Arch and round your back slowly with breath.',
           pose: ExercisePose.seatedCatCow,
@@ -93,7 +94,7 @@ class CachedSessionRepository implements SessionRepository {
           durationSeconds: 45,
           instruction: 'Hands on lower back. Lean back slightly.',
           pose: ExercisePose.standingBackExtension,
-          tip: 'Small range — no forcing.',
+          tip: 'Small range. No forcing.',
         ),
       ],
     ),
@@ -103,7 +104,7 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Release the day\'s tension',
       durationMinutes: 12,
       focusAreas: [PainArea.upperBack, PainArea.lowerBack, PainArea.hips],
-      icon: '🌙',
+      icon: Icons.nightlight_round,
       steps: [
         ExerciseStep(
           name: 'Thoracic Extension',
@@ -113,7 +114,7 @@ class CachedSessionRepository implements SessionRepository {
           tip: 'Lead with your chest, not your neck.',
         ),
         ExerciseStep(
-          name: 'Figure-4 Stretch',
+          name: 'Figure 4 Stretch',
           durationSeconds: 60,
           instruction: 'Ankle on opposite knee. Lean forward gently.',
           pose: ExercisePose.figure4Stretch,
@@ -144,7 +145,7 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Forward head posture fix',
       durationMinutes: 4,
       focusAreas: [PainArea.neck],
-      icon: '🦒',
+      icon: Icons.accessibility_new_rounded,
       steps: [
         ExerciseStep(
           name: 'Chin Tucks',
@@ -172,10 +173,10 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Lower back decompression',
       durationMinutes: 5,
       focusAreas: [PainArea.lowerBack],
-      icon: '🪑',
+      icon: Icons.chair_rounded,
       steps: [
         ExerciseStep(
-          name: 'Seated Cat-Cow',
+          name: 'Seated Cat Cow',
           durationSeconds: 45,
           instruction: 'Arch and round with breath.',
           pose: ExercisePose.seatedCatCow,
@@ -200,7 +201,7 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Tight hip flexors',
       durationMinutes: 6,
       focusAreas: [PainArea.hips],
-      icon: '🦵',
+      icon: Icons.directions_walk_rounded,
       steps: [
         ExerciseStep(
           name: 'Hip Flexor Stretch',
@@ -209,7 +210,7 @@ class CachedSessionRepository implements SessionRepository {
           pose: ExercisePose.hipFlexorStretch,
         ),
         ExerciseStep(
-          name: 'Figure-4 Stretch',
+          name: 'Figure 4 Stretch',
           durationSeconds: 60,
           instruction: 'Ankle on knee, lean forward.',
           pose: ExercisePose.figure4Stretch,
@@ -222,10 +223,10 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Screen strain relief',
       durationMinutes: 2,
       focusAreas: [PainArea.neck],
-      icon: '👀',
+      icon: Icons.visibility_outlined,
       steps: [
         ExerciseStep(
-          name: '20-20-20 Rule',
+          name: '20 20 20 Rule',
           durationSeconds: 30,
           instruction: 'Look 20 feet away for 20 seconds.',
           pose: ExercisePose.deskStretch,
@@ -250,7 +251,7 @@ class CachedSessionRepository implements SessionRepository {
       subtitle: 'Upper trap release',
       durationMinutes: 4,
       focusAreas: [PainArea.shoulders],
-      icon: '💆',
+      icon: Icons.spa_outlined,
       steps: [
         ExerciseStep(
           name: 'Shoulder Shrugs',
@@ -313,7 +314,7 @@ class CachedSessionRepository implements SessionRepository {
       logs: _cache.sessionLogs,
       mobilityScore: _cache.mobilityScore?.overall,
       programStartDate: _cache.state.programStartDate,
-      sessions: _sessions,
+      sessions: allPrograms,
       profile: profile,
     ).calculate();
   }
