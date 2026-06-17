@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 /// Day-by-day engagement plan for desk worker retention (Day 1 → Day 30).
 class JourneyDay extends Equatable {
@@ -35,26 +36,26 @@ abstract final class JourneyPlan {
       action: 'Finish pain assessment and do Morning Reset',
       screen: '/pre-workout/morning_reset',
       pushTitle: 'Your desk plan is ready',
-      pushBody: '90 seconds to relieve neck tension — start now.',
+      pushBody: '90 seconds to relieve neck tension. Start now.',
     ),
     JourneyDay(
       day: 2,
       title: 'Build the habit',
-      goal: '2 sessions + daily check-in',
+      goal: '2 sessions + daily check in',
       action: 'Log how your neck feels, do Midday Desk Break',
       screen: '/check-in',
       pushTitle: 'How\'s your neck today?',
-      pushBody: 'Quick check-in, then a 5-min desk break.',
+      pushBody: 'Quick check in, then a 5 min desk break.',
     ),
     JourneyDay(
       day: 3,
-      title: '3-day streak',
-      goal: 'Hit 3-day streak',
+      title: '3 day streak',
+      goal: 'Hit 3 day streak',
       action: 'Complete any session before end of day',
       screen: '/milestone/3',
-      milestone: '3-Day Streak 🔥',
+      milestone: '3 Day Streak',
       pushTitle: 'Don\'t break your streak!',
-      pushBody: 'One 90-sec break keeps your 3-day streak alive.',
+      pushBody: 'One 90 sec break keeps your 3 day streak alive.',
     ),
     JourneyDay(
       day: 4,
@@ -68,7 +69,7 @@ abstract final class JourneyPlan {
     JourneyDay(
       day: 5,
       title: 'Explore library',
-      goal: 'Try a new pain-area program',
+      goal: 'Try a new pain area program',
       action: 'Open Sessions and pick Neck Relief',
       screen: '/sessions',
     ),
@@ -83,9 +84,9 @@ abstract final class JourneyPlan {
       day: 7,
       title: 'Week 1 recap',
       goal: 'Review weekly progress',
-      action: 'Open weekly recap — see mobility score change',
+      action: 'Open weekly recap and see mobility score change',
       screen: '/weekly-recap',
-      milestone: 'Week 1 Complete 🎉',
+      milestone: 'Week 1 Complete',
       pushTitle: 'Your Week 1 report is ready',
       pushBody: 'See how your mobility improved.',
     ),
@@ -93,46 +94,46 @@ abstract final class JourneyPlan {
       day: 8,
       title: 'Deeper recovery',
       goal: 'Complete Evening Deep Recovery',
-      action: '12-min evening session before bed',
+      action: '12 min evening session before bed',
       screen: '/workout/evening_recovery',
     ),
     JourneyDay(
       day: 10,
-      title: 'Posture check',
-      goal: 'Retake mobility assessment',
-      action: 'Compare score vs Day 1',
-      screen: '/onboarding/assessment',
+      title: 'Progress check',
+      goal: 'Review your weekly stats',
+      action: 'See sessions and pain trends on Progress',
+      screen: '/progress',
     ),
     JourneyDay(
       day: 14,
-      title: '2-week milestone',
-      goal: '14-day streak or 10+ sessions',
+      title: '2 week milestone',
+      goal: '14 day streak or 10+ sessions',
       action: 'Unlock achievement badge',
       screen: '/milestone/14',
-      milestone: '2-Week Warrior 💪',
+      milestone: '2 Week Warrior',
     ),
     JourneyDay(
       day: 15,
       title: 'Halfway point',
       goal: 'Review journey map',
-      action: 'See Day 1–30 progress on journey map',
+      action: 'See Day 1 to 30 progress on journey map',
       screen: '/journey',
     ),
     JourneyDay(
       day: 21,
       title: 'Week 3 recap',
       goal: 'Weekly recap + share progress',
-      action: 'Review 3-week mobility trend',
+      action: 'Review 3 week mobility trend',
       screen: '/weekly-recap',
     ),
     JourneyDay(
       day: 30,
-      title: '30-day graduate',
-      goal: 'Complete 30-day program',
+      title: '30 day graduate',
+      goal: 'Complete 30 day program',
       action: 'Final assessment + unlock premium trial',
       screen: '/milestone/30',
-      milestone: '30-Day Graduate 🏆',
-      pushTitle: 'You did it — 30 days!',
+      milestone: '30 Day Graduate',
+      pushTitle: 'You did it! 30 days!',
       pushBody: 'Your mobility score improved. Keep going with Pro.',
     ),
   ];
@@ -151,7 +152,7 @@ abstract final class JourneyPlan {
           day: day,
           title: 'Daily desk break',
           goal: 'Complete at least one session',
-          action: 'Do a 3–5 min mobility break at your desk',
+          action: 'Do a 3 to 5 min mobility break at your desk',
           screen: '/home',
         );
   }
@@ -177,7 +178,7 @@ class Achievement extends Equatable {
   final String id;
   final String title;
   final String description;
-  final String icon;
+  final IconData icon;
   final int unlockedDay;
   final bool isUnlocked;
 
@@ -200,42 +201,42 @@ abstract final class Achievements {
       id: 'first_break',
       title: 'First Break',
       description: 'Completed your first desk session',
-      icon: '🌱',
+      icon: Icons.eco_outlined,
       unlockedDay: 1,
     ),
     Achievement(
       id: 'streak_3',
-      title: '3-Day Streak',
+      title: '3 Day Streak',
       description: 'Moved 3 days in a row',
-      icon: '🔥',
+      icon: Icons.local_fire_department_outlined,
       unlockedDay: 3,
     ),
     Achievement(
       id: 'week_1',
       title: 'Week 1 Complete',
       description: 'Finished your first week',
-      icon: '⭐',
+      icon: Icons.star_outline_rounded,
       unlockedDay: 7,
     ),
     Achievement(
       id: 'streak_14',
-      title: '2-Week Warrior',
+      title: '2 Week Warrior',
       description: '14 days of desk recovery',
-      icon: '💪',
+      icon: Icons.fitness_center_outlined,
       unlockedDay: 14,
     ),
     Achievement(
       id: 'score_60',
       title: 'Mobility 60+',
       description: 'Mobility score reached 60',
-      icon: '📈',
+      icon: Icons.trending_up_rounded,
       unlockedDay: 10,
     ),
     Achievement(
       id: 'graduate_30',
-      title: '30-Day Graduate',
+      title: '30 Day Graduate',
       description: 'Completed the full program',
-      icon: '🏆',
+      icon: Icons.emoji_events_outlined,
       unlockedDay: 30,
     ),
   ];
