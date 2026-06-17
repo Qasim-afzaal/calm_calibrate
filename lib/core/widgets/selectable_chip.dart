@@ -10,6 +10,8 @@ class SelectableChip extends StatelessWidget {
     required this.onTap,
     this.subtitle,
     this.expanded = false,
+    this.centered = false,
+    this.minHeight,
   });
 
   final String label;
@@ -18,6 +20,11 @@ class SelectableChip extends StatelessWidget {
   final VoidCallback onTap;
   final bool expanded;
 
+  /// Center label/subtitle — use in equal-width rows.
+  final bool centered;
+
+  final double? minHeight;
+
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
@@ -25,7 +32,14 @@ class SelectableChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        constraints: minHeight != null
+            ? BoxConstraints(minHeight: minHeight!)
+            : null,
+        width: expanded ? double.infinity : null,
+        padding: EdgeInsets.symmetric(
+          horizontal: centered ? 12 : 20,
+          vertical: centered ? 14 : 16,
+        ),
         decoration: BoxDecoration(
           color: selected ? c.primaryLight : c.surface,
           borderRadius: BorderRadius.circular(14),
@@ -35,24 +49,34 @@ class SelectableChip extends StatelessWidget {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              centered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               label,
+              textAlign: centered ? TextAlign.center : TextAlign.start,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 15,
+                fontSize: centered ? 16 : 15,
+                height: 1.15,
                 color: selected ? c.primary : c.textPrimary,
               ),
             ),
             if (subtitle != null) ...[
-              SizedBox(height: 4),
+              SizedBox(height: 2),
               Text(
                 subtitle!,
+                textAlign: centered ? TextAlign.center : TextAlign.start,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 12,
-                  color: c.textMuted,
+                  height: 1.2,
+                  color: selected ? c.primary.withValues(alpha: 0.75) : c.textMuted,
                 ),
               ),
             ],
