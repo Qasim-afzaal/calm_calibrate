@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 /// Daily body check-in prompt.
 class CheckInBanner extends StatelessWidget {
-  CheckInBanner({super.key, required this.onTap});
+  const CheckInBanner({super.key, required this.onTap});
 
   final VoidCallback onTap;
 
@@ -17,25 +17,55 @@ class CheckInBanner extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
-          color: c.primaryLight,
-          borderRadius: BorderRadius.circular(AppRadius.sm),
-          border: Border.all(color: c.primary.withValues(alpha: 0.3)),
+          color: c.surface,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: c.primary.withValues(alpha: 0.22)),
+          boxShadow: [
+            BoxShadow(
+              color: c.cardShadow,
+              blurRadius: 10,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Row(
           children: [
             BreatheAnimation(
-              child: Icon(Icons.favorite_border, color: c.primary),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'Daily check-in — how\'s your body today?',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              child: Container(
+                width: 40,
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: c.primaryLight,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(Icons.favorite_rounded, color: c.primary, size: 20),
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 14, color: c.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Daily check-in',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: c.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'How\'s your body today?',
+                    style: TextStyle(fontSize: 13, color: c.textSecondary),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, size: 20, color: c.textMuted),
           ],
         ),
       ),
