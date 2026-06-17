@@ -1,6 +1,6 @@
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/theme/app_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 abstract final class AppTheme {
   static ThemeData get light => _build(AppColorTokens.light, Brightness.light);
@@ -9,13 +9,54 @@ abstract final class AppTheme {
 
   static ThemeData _build(AppColorTokens tokens, Brightness brightness) {
     final isDark = brightness == Brightness.dark;
-    final textTheme = GoogleFonts.interTextTheme(
-      ThemeData(brightness: brightness).textTheme,
+    final baseTextTheme = AppTypography.textTheme(brightness);
+
+    final textTheme = baseTextTheme.copyWith(
+      headlineLarge: baseTextTheme.headlineLarge?.copyWith(
+        fontWeight: FontWeight.w800,
+        color: tokens.textPrimary,
+        fontSize: 32,
+        height: 1.15,
+      ),
+      headlineMedium: baseTextTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.w700,
+        color: tokens.textPrimary,
+        fontSize: 24,
+      ),
+      headlineSmall: baseTextTheme.headlineSmall?.copyWith(
+        fontWeight: FontWeight.w800,
+        color: tokens.textPrimary,
+      ),
+      titleLarge: baseTextTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.w700,
+        color: tokens.textPrimary,
+        fontSize: 20,
+      ),
+      titleMedium: baseTextTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: tokens.textPrimary,
+        fontSize: 16,
+      ),
+      bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+        color: tokens.textSecondary,
+        fontSize: 16,
+        height: 1.5,
+      ),
+      bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+        color: tokens.textSecondary,
+        fontSize: 14,
+      ),
+      labelLarge: baseTextTheme.labelLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        color: tokens.textPrimary,
+      ),
     );
 
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+      fontFamily: AppTypography.fontFamily,
       scaffoldBackgroundColor: tokens.background,
       extensions: [tokens],
       colorScheme: ColorScheme(
@@ -30,47 +71,8 @@ abstract final class AppTheme {
         onError: Colors.white,
         outline: tokens.border,
       ),
-      textTheme: textTheme.copyWith(
-        headlineLarge: textTheme.headlineLarge?.copyWith(
-          fontWeight: FontWeight.w800,
-          color: tokens.textPrimary,
-          fontSize: 32,
-          height: 1.15,
-        ),
-        headlineMedium: textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.w700,
-          color: tokens.textPrimary,
-          fontSize: 24,
-        ),
-        headlineSmall: textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.w800,
-          color: tokens.textPrimary,
-        ),
-        titleLarge: textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.w700,
-          color: tokens.textPrimary,
-          fontSize: 20,
-        ),
-        titleMedium: textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-          color: tokens.textPrimary,
-          fontSize: 16,
-        ),
-        bodyLarge: textTheme.bodyLarge?.copyWith(
-          color: tokens.textSecondary,
-          fontSize: 16,
-          height: 1.5,
-        ),
-        bodyMedium: textTheme.bodyMedium?.copyWith(
-          color: tokens.textSecondary,
-          fontSize: 14,
-        ),
-        labelLarge: textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-          color: tokens.textPrimary,
-        ),
-      ),
+      textTheme: textTheme,
+      primaryTextTheme: textTheme,
       appBarTheme: AppBarTheme(
         backgroundColor: tokens.background,
         foregroundColor: tokens.textPrimary,
@@ -86,7 +88,7 @@ abstract final class AppTheme {
         backgroundColor: tokens.surface,
         indicatorColor: tokens.primaryLight,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
-          return TextStyle(
+          return AppTypography.style(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: states.contains(WidgetState.selected)
@@ -112,7 +114,7 @@ abstract final class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: AppTypography.style(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
@@ -124,6 +126,18 @@ abstract final class AppTheme {
           side: BorderSide(color: tokens.border),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
+          ),
+          textStyle: AppTypography.style(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: AppTypography.style(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -162,9 +176,26 @@ abstract final class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: tokens.surface,
         selectedColor: tokens.primaryLight,
-        labelStyle: TextStyle(color: tokens.textPrimary),
+        labelStyle: AppTypography.style(color: tokens.textPrimary),
         side: BorderSide(color: tokens.border),
         checkmarkColor: tokens.primary,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: AppTypography.style(color: tokens.textSecondary),
+        hintStyle: AppTypography.style(color: tokens.textMuted),
+      ),
+      listTileTheme: ListTileThemeData(
+        titleTextStyle: AppTypography.style(
+          fontWeight: FontWeight.w600,
+          color: tokens.textPrimary,
+        ),
+        subtitleTextStyle: AppTypography.style(
+          fontSize: 13,
+          color: tokens.textMuted,
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        contentTextStyle: AppTypography.style(color: Colors.white),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: tokens.primary,
