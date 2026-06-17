@@ -1,45 +1,47 @@
+import 'package:flutter/material.dart';
+
 /// How the user feels before a session — drives Pro soundscapes.
 enum WorkoutMood {
   stressed(
     label: 'Stressed',
-    emoji: '😤',
+    icon: Icons.thunderstorm_outlined,
     soundscape: 'Deep breath ambient',
     description: 'Slow exhale tones to calm your nervous system',
   ),
   tired(
     label: 'Tired',
-    emoji: '😴',
+    icon: Icons.bedtime_outlined,
     soundscape: 'Soft rain',
     description: 'Gentle rainfall to ease mental fatigue',
   ),
   sore(
     label: 'Sore',
-    emoji: '🤕',
+    icon: Icons.healing_outlined,
     soundscape: 'Warm low tones',
     description: 'Soothing frequencies for tight muscles',
   ),
   focused(
     label: 'Focused',
-    emoji: '🎯',
+    icon: Icons.center_focus_strong_outlined,
     soundscape: 'Minimal focus pad',
     description: 'Light rhythm to stay present during stretches',
   ),
   calm(
     label: 'Calm',
-    emoji: '😌',
+    icon: Icons.self_improvement_outlined,
     soundscape: 'Desk zen',
-    description: 'Quiet office-friendly background',
+    description: 'Quiet background for the office',
   );
 
   const WorkoutMood({
     required this.label,
-    required this.emoji,
+    required this.icon,
     required this.soundscape,
     required this.description,
   });
 
   final String label;
-  final String emoji;
+  final IconData icon;
   final String soundscape;
   final String description;
 
