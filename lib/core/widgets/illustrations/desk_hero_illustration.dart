@@ -71,7 +71,7 @@ class DeskHeroIllustration extends StatelessWidget {
                   Icon(Icons.accessibility_new, size: 16, color: c.primary),
                   SizedBox(width: 6),
                   Text(
-                    'Desk-friendly',
+                    'At your desk',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
