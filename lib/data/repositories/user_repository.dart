@@ -3,7 +3,7 @@ import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
 
-/// Repository contract — swap AppCache for API client later.
+/// Repository contract — backed by local SQLite via AppCache.
 abstract class UserRepository {
   UserProfile get profile;
   MobilityScore? get mobilityScore;
@@ -11,7 +11,7 @@ abstract class UserRepository {
 
   Future<void> saveProfile(UserProfile profile);
   Future<void> saveMobilityScore(MobilityScore score);
-  Future<void> logSession(SessionLog log);
+  Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas});
   Future<void> incrementStreak();
 }
 
@@ -38,7 +38,8 @@ class CachedUserRepository implements UserRepository {
       _cache.saveMobilityScore(score);
 
   @override
-  Future<void> logSession(SessionLog log) => _cache.logSession(log);
+  Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas}) =>
+      _cache.logSession(log, focusAreas: focusAreas);
 
   @override
   Future<void> incrementStreak() async {
