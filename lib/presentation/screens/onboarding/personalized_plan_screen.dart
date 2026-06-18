@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/data/models/exercise.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
@@ -8,56 +10,60 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalizedPlanScreen extends StatelessWidget {
-  PersonalizedPlanScreen({super.key});
+  const PersonalizedPlanScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     debugPrint('[CalmCalibrate] personalized_plan loaded'); // auth-check-debug
     final c = context.appColors;
+    final m = context.metrics;
     final profile = MockUserRepository.instance.profile;
     final sessions =
         MockSessionRepository.instance.getTodaySessions(profile);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Plan'),
+        title: const Text('Your Plan'),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Personalized for you',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: SafeArea(
+        child: ResponsiveContent(
+          child: Padding(
+            padding: m.screenPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Personalized for you',
+                  style: m.headlineStyle(Theme.of(context).textTheme),
+                ),
+                SizedBox(height: m.onboardingTitleGap),
+                Text(
+                  _planSubtitle(profile),
+                  style: TextStyle(color: c.textSecondary),
+                ),
+                SizedBox(height: m.onboardingSectionGap),
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: sessions.length,
+                    separatorBuilder: (_, _) => SizedBox(height: m.sectionGap + 4),
+                    itemBuilder: (context, index) {
+                      return _SessionPlanCard(session: sessions[index]);
+                    },
+                  ),
+                ),
+                PrimaryButton(
+                  label: 'Start My Plan',
+                  onPressed: () async {
+                    await MockUserRepository.instance.saveProfile(
+                      profile.copyWith(onboardingComplete: true),
+                    );
+                    if (context.mounted) context.go('/home');
+                  },
+                ),
+                SizedBox(height: m.onboardingBottomGap),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              _planSubtitle(profile),
-              style: TextStyle(color: c.textSecondary),
-            ),
-            SizedBox(height: 24),
-            Expanded(
-              child: ListView.separated(
-                itemCount: sessions.length,
-                separatorBuilder: (_, _) => SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  return _SessionPlanCard(session: sessions[index]);
-                },
-              ),
-            ),
-            PrimaryButton(
-              label: 'Start My Plan',
-              onPressed: () async {
-                await MockUserRepository.instance.saveProfile(
-                  profile.copyWith(onboardingComplete: true),
-                );
-                if (context.mounted) context.go('/home');
-              },
-            ),
-            SizedBox(height: 24),
-          ],
+          ),
         ),
       ),
     );
@@ -71,15 +77,16 @@ class PersonalizedPlanScreen extends StatelessWidget {
 }
 
 class _SessionPlanCard extends StatelessWidget {
-  _SessionPlanCard({required this.session});
+  const _SessionPlanCard({required this.session});
 
   final ExerciseSession session;
 
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final m = context.metrics;
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(m.stackSpacing),
       decoration: BoxDecoration(
         color: c.surface,
         borderRadius: BorderRadius.circular(16),
@@ -95,7 +102,7 @@ class _SessionPlanCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
-              child: Text(session.icon, style: TextStyle(fontSize: 24)),
+              child: Icon(session.icon, size: 24, color: c.primary),
             ),
           ),
           SizedBox(width: 14),
@@ -111,7 +118,7 @@ class _SessionPlanCard extends StatelessWidget {
                     color: c.textPrimary,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   session.subtitle,
                   style: TextStyle(
@@ -123,7 +130,7 @@ class _SessionPlanCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: c.background,
               borderRadius: BorderRadius.circular(8),
