@@ -1,6 +1,5 @@
-import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
-import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_event.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_state.dart';
@@ -9,21 +8,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class PainSelectorScreen extends StatelessWidget {
-  PainSelectorScreen({super.key});
+  const PainSelectorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     debugPrint('[CalmCalibrate] pain_selector loaded'); // auth-check-debug
-    final c = context.appColors;
+    final m = context.metrics;
     return BlocBuilder<OnboardingBloc, OnboardingState>(
       builder: (context, state) {
         final bloc = context.read<OnboardingBloc>();
 
         return OnboardingPage(
           step: 1,
-          title: 'Where does\nsitting hurt?',
-          subtitle: 'Tap the areas that bother you most. We\'ll personalize your plan.',
+          title: 'Where does sitting hurt?',
           bottom: AppButton(
             label: 'Continue',
             onPressed: state.canContinuePain
@@ -33,35 +30,23 @@ class PainSelectorScreen extends StatelessWidget {
                   }
                 : null,
           ),
-          child: Column(
-            children: [
-              Expanded(
-                child: BodyPainMap(
-                  selectedAreas: state.painAreas,
-                  onAreaToggled: (area) =>
-                      bloc.add(OnboardingPainAreaToggled(area)),
-                ),
-              ),
-              SizedBox(height: 16),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: PainArea.values.map((area) {
-                  final selected = state.painAreas.contains(area);
-                  return FilterChip(
-                    label: Text(area.label),
-                    selected: selected,
-                    onSelected: (_) =>
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 380,
+                    maxHeight: constraints.maxHeight,
+                    minHeight: m.isVeryCompact ? 260 : 300,
+                  ),
+                  child: BodyPainMap(
+                    selectedAreas: state.painAreas,
+                    onAreaToggled: (area) =>
                         bloc.add(OnboardingPainAreaToggled(area)),
-                    selectedColor: c.primaryLight,
-                    checkmarkColor: c.primary,
-                    side: BorderSide(
-                      color: selected ? c.primary : c.border,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+                  ),
+                ),
+              );
+            },
           ),
         );
       },
