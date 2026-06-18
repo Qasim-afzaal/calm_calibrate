@@ -3,6 +3,7 @@ import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
+import 'package:calm_calibrate/data/models/user_profile.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
 import 'package:calm_calibrate/presentation/blocs/home/home_bloc.dart';
@@ -117,9 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 runSpacing: 4,
                                 children: [
                                   Text(
-                                    state.profile.name == 'there'
-                                        ? 'Desk warrior'
-                                        : state.profile.name,
+                                    state.profile.displayName,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium
@@ -157,9 +156,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       JourneyDayCard(
                         day: engagement.currentDay,
-                        title: engagement.todayPlan?.title ?? 'Daily goal',
+                        goal: engagement.todayPlan?.goal ?? 'Stay consistent',
                         action: engagement.todayPlan?.action ??
                             'Complete a desk break today',
+                        streakDays: state.profile.streakDays,
                         onTap: () => context.push('/journey'),
                       ),
                       if (engagement.shouldShowCheckIn) ...[
@@ -183,8 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               feature: 'Smart Break reminders',
                               benefit:
-                                  'Pro times breaks from your posture & sitting pattern — '
-                                  'AI picks the right 90-sec reset when you need it.',
+                                  'Pro times breaks from your posture & sitting pattern. '
+                                  'AI picks the right 90 sec reset when you need it.',
                             );
                           }
                         },
@@ -236,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       final session = entry.value;
                       final locked = !sub.canAccessDailySession(index);
                       return Padding(
-                        padding: EdgeInsets.only(bottom: AppSpacing.md),
+                        padding: EdgeInsets.only(bottom: AppSpacing.sm),
                         child: FadeSlideIn(
                           delay: Duration(milliseconds: 80 * (index + 4)),
                           child: SessionCard(
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   feature: 'Extra daily sessions',
                                   benefit:
                                       'Free plan includes 1 session per day. '
-                                      'Pro unlocks your full AI plan — morning, '
+                                      'Pro unlocks your full AI plan: morning, '
                                       'midday & evening breaks.',
                                 );
                               } else {
@@ -463,7 +463,7 @@ class _ProgramsCta extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Neck, back, hips & more — all unlocked',
+                      'Neck, back, hips & more. All unlocked',
                       style: TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                   ],
@@ -479,30 +479,48 @@ class _ProgramsCta extends StatelessWidget {
 }
 
 class _UpgradeBanner extends StatelessWidget {
-  _UpgradeBanner({required this.onTap});
+  const _UpgradeBanner({required this.onTap});
 
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
-    return GestureDetector(
+    return ScaleTap(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
             colors: [
               c.navy,
-              c.navy.withValues(alpha: 0.85),
+              c.navyLight,
             ],
           ),
           borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: c.navy.withValues(alpha: 0.2),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
           children: [
-            Icon(Icons.workspace_premium, color: c.primary, size: 28),
-            SizedBox(width: 12),
+            Container(
+              width: 44,
+              height: 44,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: c.primary.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.workspace_premium_rounded, color: c.primary, size: 24),
+            ),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,16 +530,21 @@ class _UpgradeBanner extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
+                      fontSize: 16,
                     ),
                   ),
+                  const SizedBox(height: 3),
                   Text(
                     'AI posture · mood sounds · 50+ programs',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.68),
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward, color: Colors.white54),
+            Icon(Icons.arrow_forward_rounded, color: Colors.white54, size: 20),
           ],
         ),
       ),
