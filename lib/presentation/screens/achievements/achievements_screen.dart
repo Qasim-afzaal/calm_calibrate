@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +15,11 @@ class AchievementsScreen extends StatelessWidget {
     final achievements = EngagementRepository.instance.achievements;
     final unlocked = achievements.where((a) => a.isUnlocked).length;
 
+    final m = context.metrics;
     return Scaffold(
       appBar: AppBar(title: Text('Achievements')),
       body: ListView(
-        padding: EdgeInsets.all(24),
+        padding: responsiveScreenPaddingAll(context),
         children: [
           Text(
             '$unlocked / ${achievements.length} unlocked',
@@ -25,7 +28,7 @@ class AchievementsScreen extends StatelessWidget {
               color: c.textSecondary,
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: m.stackSpacing),
           ...achievements.map(
             (a) => Padding(
               padding: EdgeInsets.only(bottom: 12),
@@ -44,14 +47,10 @@ class AchievementsScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Text(
+                    Icon(
                       a.icon,
-                      style: TextStyle(
-                        fontSize: 32,
-                        color: a.isUnlocked
-                            ? null
-                            : Colors.grey.withValues(alpha: 0.4),
-                      ),
+                      size: 32,
+                      color: a.isUnlocked ? c.primary : c.textMuted,
                     ),
                     SizedBox(width: 16),
                     Expanded(
