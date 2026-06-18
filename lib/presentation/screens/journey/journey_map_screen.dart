@@ -1,6 +1,7 @@
 import 'package:calm_calibrate/core/animations/fade_slide_in.dart';
-import 'package:calm_calibrate/core/constants/app_spacing.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/journey/journey_timeline_tile.dart';
 import 'package:calm_calibrate/data/models/engagement_journey.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
@@ -37,10 +38,11 @@ class JourneyMapScreen extends StatelessWidget {
     final currentDay = repo.currentDay;
     final todayPlan = JourneyPlan.resolve(currentDay);
 
+    final m = context.metrics;
     return Scaffold(
-      appBar: AppBar(title: Text('30-Day Journey')),
+      appBar: AppBar(title: Text('30 Day Journey')),
       body: ListView(
-        padding: EdgeInsets.all(AppSpacing.screenPadding),
+        padding: responsiveScreenPaddingAll(context),
         children: [
           FadeSlideIn(
             child: Container(
@@ -91,7 +93,7 @@ class JourneyMapScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 24),
+          SizedBox(height: m.onboardingSectionGap),
           ...List.generate(30, (i) {
             final day = i + 1;
             final plan = JourneyPlan.resolve(day);
@@ -109,7 +111,7 @@ class JourneyMapScreen extends StatelessWidget {
               ),
             );
           }),
-          SizedBox(height: 40),
+          SizedBox(height: m.largeSpacing),
         ],
       ),
     );
