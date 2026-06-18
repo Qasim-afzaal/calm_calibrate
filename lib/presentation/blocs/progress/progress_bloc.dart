@@ -12,13 +12,14 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
         _sessionRepository = sessionRepository ?? MockSessionRepository.instance,
         super(const ProgressState()) {
     on<ProgressLoadRequested>(_onLoad);
+    on<ProgressRefreshRequested>(_onLoad);
   }
 
   final UserRepository _userRepository;
   final SessionRepository _sessionRepository;
 
   Future<void> _onLoad(
-    ProgressLoadRequested event,
+    ProgressEvent event,
     Emitter<ProgressState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
