@@ -10,3 +10,7 @@ sealed class ProgressEvent extends Equatable {
 final class ProgressLoadRequested extends ProgressEvent {
   const ProgressLoadRequested();
 }
+
+final class ProgressRefreshRequested extends ProgressEvent {
+  const ProgressRefreshRequested();
+}
