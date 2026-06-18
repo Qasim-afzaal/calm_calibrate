@@ -1,11 +1,15 @@
+import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
 
-/// AI layer — uses LLM when configured, smart mock for prototype.
+/// AI layer — local placeholders until serverless LLM is wired.
 ///
-/// To enable real LLM: set [AiConfig.apiKey] via --dart-define=OPENAI_API_KEY=sk-...
+/// No OpenAI / LLM is connected. Set [AiFeatures.llmEnabled] to true and
+/// implement HTTP calls in the methods below when ready.
+///
+/// Previously: --dart-define=OPENAI_API_KEY=sk-... (not wired yet)
 abstract class AiConfig {
   static const apiKey = String.fromEnvironment('OPENAI_API_KEY');
   static bool get hasApiKey => apiKey.isNotEmpty;
@@ -21,10 +25,7 @@ class AiService {
     required List<String> selectedIssues,
     required List<SessionLog> recentSessions,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 1400));
-
-    if (AiConfig.hasApiKey) {
-      // Hook for real OpenAI — same prompt structure
+    if (!AiFeatures.llmEnabled) {
       return _mockPostureAnalysis(
         profile: profile,
         mobilityScore: mobilityScore,
@@ -33,6 +34,8 @@ class AiService {
       );
     }
 
+    // TODO(serverless): POST /ai/posture/analyze when LLM proxy is ready.
+    // if (AiConfig.hasApiKey) { ... real HTTP call ... }
     return _mockPostureAnalysis(
       profile: profile,
       mobilityScore: mobilityScore,
@@ -47,8 +50,16 @@ class AiService {
     required List<SessionLog> recentSessions,
     PostureAnalysis? latestPosture,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 1200));
+    if (!AiFeatures.llmEnabled) {
+      return _mockDailyPlan(
+        profile: profile,
+        mobilityScore: mobilityScore,
+        recentSessions: recentSessions,
+        latestPosture: latestPosture,
+      );
+    }
 
+    // TODO(serverless): POST /ai/daily-plan when LLM proxy is ready.
     return _mockDailyPlan(
       profile: profile,
       mobilityScore: mobilityScore,
@@ -64,10 +75,35 @@ class AiService {
     required double avgRelief,
     required int mobilityScore,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 900));
+    if (!AiFeatures.llmEnabled) {
+      return _localWeeklyInsight(
+        profile: profile,
+        sessionCount: sessionCount,
+        totalMinutes: totalMinutes,
+        avgRelief: avgRelief,
+        mobilityScore: mobilityScore,
+      );
+    }
 
+    // TODO(serverless): POST /ai/weekly-insight when LLM proxy is ready.
+    return _localWeeklyInsight(
+      profile: profile,
+      sessionCount: sessionCount,
+      totalMinutes: totalMinutes,
+      avgRelief: avgRelief,
+      mobilityScore: mobilityScore,
+    );
+  }
+
+  String _localWeeklyInsight({
+    required UserProfile profile,
+    required int sessionCount,
+    required int totalMinutes,
+    required double avgRelief,
+    required int mobilityScore,
+  }) {
     if (sessionCount == 0) {
-      return 'Start with one 3-minute Morning Reset this week. '
+      return 'Start with one 3 minute Morning Reset this week. '
           'Consistency beats intensity for desk workers.';
     }
 
@@ -78,7 +114,7 @@ class AiService {
     return 'You logged $sessionCount sessions ($totalMinutes min) targeting '
         '$painFocus. Average pain relief of +${avgRelief.toStringAsFixed(1)} '
         'shows your breaks are working. This week, add a Midday Desk Break '
-        'before your afternoon slump — mobility score is $mobilityScore/100.';
+        'before your afternoon slump. Mobility score is $mobilityScore/100.';
   }
 
   PostureAnalysis _mockPostureAnalysis({
@@ -110,23 +146,23 @@ class AiService {
       summary:
           'Based on your desk pattern ($sitting) and focus areas ($painLabels), '
           'your posture shows ${issueSet.length} key patterns to address. '
-          '${recentSessions.isEmpty ? 'No sessions yet — starting breaks will help fast.' : 'Your recent ${recentSessions.length} sessions are a strong start.'}',
+          '${recentSessions.isEmpty ? 'No sessions yet. Starting breaks will help fast.' : 'Your recent ${recentSessions.length} sessions are a strong start.'}',
       recommendations: [
         if (issueSet.contains('Forward head'))
-          'Monitor at eye level — chin parallel to floor',
+          'Monitor at eye level. Chin parallel to floor',
         if (issueSet.contains('Rounded shoulders'))
           'Every hour: shoulder blade squeezes × 10',
         if (issueSet.contains('Slouched lower back'))
           'Lumbar support + feet flat on floor',
         if (issueSet.contains('Elevated shoulders'))
-          'Relax traps during typing — elbows at 90°',
+          'Relax traps during typing. Elbows at 90°',
         'Do Morning Reset within 30 min of sitting down',
         'Set smart break every ${profile.reminderMinutes} min',
       ],
       deskTips: [
-        '90-90-90 rule: elbows, hips, knees at 90 degrees',
+        '90 90 90 rule: elbows, hips, knees at 90 degrees',
         'Screen top at or slightly below eye level',
-        'Stand for 2 min every hour — phone timer works',
+        'Stand for 2 min every hour. Phone timer works',
       ],
     );
   }
@@ -143,21 +179,21 @@ class AiService {
     final focusLabel = focus.label;
 
     final postureNote = latestPosture != null
-        ? ' Posture score ${latestPosture.score}/100 — prioritize ${latestPosture.issues.first.toLowerCase()} fixes.'
+        ? ' Posture score ${latestPosture.score}/100. Prioritize ${latestPosture.issues.first.toLowerCase()} fixes.'
         : '';
 
     return AiDailyPlan(
       generatedAt: DateTime.now(),
       focus: '$focusLabel recovery',
       morning:
-          'Morning Reset (3 min) — neck rolls + chest opener. Start before your first meeting.',
+          'Morning Reset (3 min). Neck rolls + chest opener. Start before your first meeting.',
       midday:
-          'Midday Desk Break (5 min) — cat-cow + hip flexor after lunch slump.',
+          'Midday Desk Break (5 min). Cat cow + hip flexor after lunch slump.',
       evening:
-          'Evening Deep Recovery (12 min) — thoracic extension + breathing if stiff.',
+          'Evening Deep Recovery (12 min). Thoracic extension + breathing if stiff.',
       coachNote:
           'Your mobility is ${mobilityScore ?? 50}/100.$postureNote '
-          '${recentSessions.length >= 3 ? 'Great consistency — keep the streak.' : 'Aim for 2 sessions today to build the habit.'}',
+          '${recentSessions.length >= 3 ? 'Great consistency. Keep the streak.' : 'Aim for 2 sessions today to build the habit.'}',
     );
   }
 }
