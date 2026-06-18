@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/selectable_chip.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
@@ -10,17 +12,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class GoalsRemindersScreen extends StatelessWidget {
-  GoalsRemindersScreen({super.key});
+  const GoalsRemindersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     debugPrint('[CalmCalibrate] goals_reminders loaded'); // auth-check-debug
     final c = context.appColors;
+    final m = context.metrics;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           onPressed: () => context.pop(),
         ),
       ),
@@ -28,21 +30,20 @@ class GoalsRemindersScreen extends StatelessWidget {
         builder: (context, state) {
           final bloc = context.read<OnboardingBloc>();
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+          return ResponsiveScrollBody(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Goals & reminders',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: m.onboardingTitleGap),
                 Text(
-                  'We\'ll nudge you at the right time — never during meetings.',
+                  'We\'ll nudge you at the right time, never during meetings.',
                   style: TextStyle(color: c.textSecondary),
                 ),
-                SizedBox(height: 28),
+                SizedBox(height: m.onboardingSectionGap + 4),
                 Text(
                   'Primary goal',
                   style: TextStyle(
@@ -50,10 +51,10 @@ class GoalsRemindersScreen extends StatelessWidget {
                     color: c.textPrimary,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: m.sectionGap + 4),
                 ...UserGoal.values.map(
                   (goal) => Padding(
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: EdgeInsets.only(bottom: m.sectionGap + 2),
                     child: SelectableChip(
                       label: goal.label,
                       selected: state.goal == goal,
@@ -62,7 +63,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: m.onboardingSectionGap),
                 Text(
                   'Reminder frequency',
                   style: TextStyle(
@@ -70,12 +71,12 @@ class GoalsRemindersScreen extends StatelessWidget {
                     color: c.textPrimary,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: m.sectionGap + 4),
                 Row(
                   children: [30, 45, 60].map((mins) {
                     return Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: 8),
+                        padding: EdgeInsets.only(right: m.sectionGap),
                         child: SelectableChip(
                           label: '$mins min',
                           selected: state.reminderMinutes == mins,
@@ -86,9 +87,9 @@ class GoalsRemindersScreen extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: m.onboardingSectionGap),
                 Container(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(m.stackSpacing),
                   decoration: BoxDecoration(
                     color: c.surface,
                     borderRadius: BorderRadius.circular(16),
@@ -126,7 +127,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                SizedBox(height: m.blockSpacing),
                 PrimaryButton(
                   label: 'Continue',
                   onPressed: state.canContinueGoals
@@ -136,7 +137,6 @@ class GoalsRemindersScreen extends StatelessWidget {
                         }
                       : null,
                 ),
-                SizedBox(height: 24),
               ],
             ),
           );
