@@ -1,4 +1,7 @@
+import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/score_gauge.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
@@ -26,7 +29,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
     super.initState();
     debugPrint('[CalmCalibrate] weekly_recap loaded'); // auth-check-debug
 
-    if (SubscriptionRepository.instance.isPremium) {
+    if (SubscriptionRepository.instance.isPremium && AiFeatures.llmEnabled) {
       _loadAiInsight();
     }
   }
@@ -63,6 +66,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
           MockUserRepository.instance.profile,
         );
 
+    final m = context.metrics;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -72,13 +76,15 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
         title: Text('Week $weekNum Recap'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(24),
+        padding: responsiveScreenPaddingAll(context),
         children: [
           Text(
             'Your week in review',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+            style: m.headlineStyle(Theme.of(context).textTheme)?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: m.onboardingTitleGap),
           Text(
             'Small breaks add up. Here\'s your progress.',
             style: TextStyle(color: c.textSecondary),
