@@ -141,6 +141,7 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
         postPainScore: state.postPainScore,
         mobilityPointsEarned: points,
       ),
+      focusAreas: session.focusAreas,
     );
 
     if (emit.isDone) return;
