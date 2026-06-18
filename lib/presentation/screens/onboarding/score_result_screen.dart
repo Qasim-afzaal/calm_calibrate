@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/score_gauge.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
@@ -9,68 +11,64 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ScoreResultScreen extends StatelessWidget {
-  ScoreResultScreen({super.key});
+  const ScoreResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     debugPrint('[CalmCalibrate] score_result loaded'); // auth-check-debug
     final c = context.appColors;
+    final m = context.metrics;
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<AssessmentBloc, AssessmentState>(
-          builder: (context, state) {
-            final score = state.mobilityScore ??
-                MockUserRepository.instance.mobilityScore;
-            if (score == null) {
-              return Center(child: CircularProgressIndicator());
-            }
+      body: BlocBuilder<AssessmentBloc, AssessmentState>(
+        builder: (context, state) {
+          final score = state.mobilityScore ??
+              MockUserRepository.instance.mobilityScore;
+          if (score == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  SizedBox(height: 24),
-                  Text(
-                    'Your Mobility Score',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Based on your posture scan and pain areas',
-                    style: TextStyle(color: c.textSecondary),
-                  ),
-                  SizedBox(height: 32),
-                  ScoreGauge(score: score.overall),
-                  SizedBox(height: 32),
-                  ...score.areaScores.map(
-                    (areaScore) => Padding(
-                      padding: EdgeInsets.only(bottom: 12),
-                      child: _AreaScoreRow(
-                        label: areaScore.area.label,
-                        score: areaScore.score,
-                        gain: areaScore.potentialGain,
-                      ),
+          return ResponsiveScrollBody(
+            child: Column(
+              children: [
+                SizedBox(height: m.onboardingSectionGap),
+                Text(
+                  'Your Mobility Score',
+                  style: m.headlineStyle(Theme.of(context).textTheme),
+                ),
+                SizedBox(height: m.onboardingTitleGap),
+                Text(
+                  'Based on your posture scan and pain areas',
+                  style: TextStyle(color: c.textSecondary),
+                ),
+                SizedBox(height: m.blockSpacing),
+                ScoreGauge(score: score.overall),
+                SizedBox(height: m.blockSpacing),
+                ...score.areaScores.map(
+                  (areaScore) => Padding(
+                    padding: EdgeInsets.only(bottom: m.sectionGap + 4),
+                    child: _AreaScoreRow(
+                      label: areaScore.area.label,
+                      score: areaScore.score,
+                      gain: areaScore.potentialGain,
                     ),
                   ),
-                  Spacer(),
-                  PrimaryButton(
-                    label: 'See My Plan',
-                    onPressed: () => context.push('/onboarding/plan'),
-                  ),
-                  SizedBox(height: 24),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+                SizedBox(height: m.onboardingSectionGap),
+                PrimaryButton(
+                  label: 'See My Plan',
+                  onPressed: () => context.push('/onboarding/plan'),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
 class _AreaScoreRow extends StatelessWidget {
-  _AreaScoreRow({
+  const _AreaScoreRow({
     required this.label,
     required this.score,
     required this.gain,
