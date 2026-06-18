@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class OnboardingState extends Equatable {
   const OnboardingState({
+    this.name = '',
     this.painAreas = const {},
     this.sittingHours,
     this.preferredBreakTimes = const {},
@@ -12,6 +13,7 @@ class OnboardingState extends Equatable {
     this.isSaving = false,
   });
 
+  final String name;
   final Set<PainArea> painAreas;
   final SittingHours? sittingHours;
   final Set<BreakTime> preferredBreakTimes;
@@ -21,6 +23,7 @@ class OnboardingState extends Equatable {
   final bool isSaving;
 
   OnboardingState copyWith({
+    String? name,
     Set<PainArea>? painAreas,
     SittingHours? sittingHours,
     Set<BreakTime>? preferredBreakTimes,
@@ -30,6 +33,7 @@ class OnboardingState extends Equatable {
     bool? isSaving,
   }) {
     return OnboardingState(
+      name: name ?? this.name,
       painAreas: painAreas ?? this.painAreas,
       sittingHours: sittingHours ?? this.sittingHours,
       preferredBreakTimes: preferredBreakTimes ?? this.preferredBreakTimes,
@@ -42,11 +46,14 @@ class OnboardingState extends Equatable {
 
   bool get canContinuePain => painAreas.isNotEmpty;
   bool get canContinueWork =>
-      sittingHours != null && preferredBreakTimes.isNotEmpty;
+      name.trim().isNotEmpty &&
+      sittingHours != null &&
+      preferredBreakTimes.isNotEmpty;
   bool get canContinueGoals => goal != null;
 
   @override
   List<Object?> get props => [
+        name,
         painAreas,
         sittingHours,
         preferredBreakTimes,
