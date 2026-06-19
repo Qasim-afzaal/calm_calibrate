@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
 import 'package:calm_calibrate/core/widgets/cards/session_card.dart';
@@ -36,27 +37,28 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
             .where((s) => s.focusAreas.contains(_filter))
             .toList();
 
+    final m = context.metrics;
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: responsiveScreenPadding(context),
           children: [
-            const SizedBox(height: 16),
+            SizedBox(height: m.stackSpacing),
             Text(
               'Sessions',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: m.headlineStyle(Theme.of(context).textTheme),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: m.onboardingTitleGap),
             Text(
               isPremium
-                  ? 'Pro library unlocked · desk-friendly programs by area'
-                  : 'Desk-friendly programs by pain area',
+                  ? 'Pro library unlocked · programs by area'
+                  : 'Programs by pain area at your desk',
               style: TextStyle(color: c.textSecondary),
             ),
-            const SizedBox(height: 20),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+            SizedBox(
+              height: 44,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: [
                   _AreaFilterChip(
                     label: 'All',
@@ -70,6 +72,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
                       onTap: () => setState(() => _filter = a),
                     ),
                   ),
+                  const SizedBox(width: 4),
                 ],
               ),
             ),
@@ -81,7 +84,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
             const SizedBox(height: 12),
             ...daily.map(
               (s) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 8),
                 child: SessionCard(
                   icon: s.icon,
                   title: s.title,
@@ -102,7 +105,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
               (s) {
                 final locked = !isPremium;
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: SessionCard(
                     icon: s.icon,
                     title: s.title,
@@ -144,12 +147,32 @@ class _AreaFilterChip extends StatelessWidget {
     final c = context.appColors;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: FilterChip(
-        label: Text(label),
-        selected: selected,
-        onSelected: (_) => onTap(),
-        selectedColor: c.primaryLight,
-        checkmarkColor: c.primary,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            child: FilterChip(
+              label: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              selected: selected,
+              onSelected: (_) => onTap(),
+              selectedColor: c.primaryLight,
+              checkmarkColor: c.primary,
+              side: BorderSide(
+                color: selected ? c.primary : c.border,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              visualDensity: VisualDensity.compact,
+            ),
+          ),
+        ),
       ),
     );
   }
