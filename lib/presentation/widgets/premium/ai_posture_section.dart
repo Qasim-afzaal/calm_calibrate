@@ -1,5 +1,7 @@
+import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
+import 'package:calm_calibrate/core/widgets/feedback/ai_coming_soon_notice.dart';
 import 'package:calm_calibrate/core/widgets/score_gauge.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/presentation/blocs/ai_posture/ai_posture_bloc.dart';
@@ -17,7 +19,9 @@ class AiPostureSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = context.appColors;
+    if (!AiFeatures.llmEnabled) {
+      return AiComingSoonNotice(feature: 'AI posture check');
+    }
     return BlocProvider(
       create: (_) => AiPostureBloc()..add(const AiPostureStarted()),
       child: _AiPostureSectionBody(compact: compact),
@@ -112,7 +116,7 @@ class _AiPostureSectionBody extends StatelessWidget {
                 )
               else
                 AppButton(
-                  label: state.result == null ? 'Analyze posture' : 'Re-scan',
+                  label: state.result == null ? 'Analyze posture' : 'Scan again',
                   variant: AppButtonVariant.outlined,
                   onPressed: state.selectedIssues.isEmpty
                       ? null
