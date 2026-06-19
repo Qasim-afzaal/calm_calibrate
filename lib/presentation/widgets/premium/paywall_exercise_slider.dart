@@ -11,14 +11,14 @@ class PaywallExerciseSlide {
     required this.subtitle,
     required this.duration,
     required this.pose,
-    required this.emoji,
+    required this.icon,
   });
 
   final String title;
   final String subtitle;
   final String duration;
   final ExercisePose pose;
-  final String emoji;
+  final IconData icon;
 }
 
 /// Auto-advancing exercise carousel for paywall.
@@ -37,45 +37,45 @@ class PaywallExerciseSlider extends StatefulWidget {
   static final slides = [
     PaywallExerciseSlide(
       title: 'Neck Rolls',
-      subtitle: 'Morning Reset · desk-friendly',
+      subtitle: 'Morning Reset · at your desk',
       duration: '3 min',
       pose: ExercisePose.neckRoll,
-      emoji: '🌅',
+      icon: Icons.wb_twilight_rounded,
     ),
     PaywallExerciseSlide(
-      title: 'Seated Cat-Cow',
+      title: 'Seated Cat Cow',
       subtitle: 'Midday Desk Break',
       duration: '5 min',
       pose: ExercisePose.seatedCatCow,
-      emoji: '☀️',
+      icon: Icons.wb_sunny_rounded,
     ),
     PaywallExerciseSlide(
       title: 'Hip Flexor Stretch',
       subtitle: 'Hip Opener program',
       duration: '6 min',
       pose: ExercisePose.hipFlexorStretch,
-      emoji: '🦵',
+      icon: Icons.accessibility_new_outlined,
     ),
     PaywallExerciseSlide(
       title: 'Shoulder Shrugs',
       subtitle: 'Shoulder Melt release',
       duration: '4 min',
       pose: ExercisePose.shoulderShrug,
-      emoji: '💆',
+      icon: Icons.self_improvement_outlined,
     ),
     PaywallExerciseSlide(
       title: 'Chest Opener',
       subtitle: 'Back Saver · posture fix',
       duration: '5 min',
       pose: ExercisePose.chestOpener,
-      emoji: '🪑',
+      icon: Icons.chair_outlined,
     ),
     PaywallExerciseSlide(
       title: 'Deep Breathing',
       subtitle: 'Evening recovery',
       duration: '12 min',
       pose: ExercisePose.deepBreathing,
-      emoji: '🌙',
+      icon: Icons.nightlight_round,
     ),
   ];
 
@@ -236,7 +236,7 @@ class _SlideCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(slide.emoji, style: TextStyle(fontSize: 20)),
+                  Icon(slide.icon, size: 20, color: c.primary),
                   SizedBox(height: 4),
                   Text(
                     slide.title,
