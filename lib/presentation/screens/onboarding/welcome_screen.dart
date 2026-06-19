@@ -1,4 +1,4 @@
-import 'package:calm_calibrate/core/constants/app_spacing.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,55 +8,48 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     debugPrint('[CalmCalibrate] welcome_screen loaded'); // auth-check-debug
+    final m = context.metrics;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
-          child: Column(
-            children: [
-              const Spacer(flex: 2),
-              FadeSlideIn(child: DeskHeroIllustration()),
-              const SizedBox(height: 40),
-              FadeSlideIn(
-                delay: const Duration(milliseconds: 100),
-                child: Text(
-                  'Move better\nat work',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineLarge,
+        child: ResponsiveContent(
+          child: Padding(
+            padding: m.screenPadding,
+            child: Column(
+              children: [
+                Spacer(flex: m.isVeryCompact ? 1 : 2),
+                FadeSlideIn(child: DeskHeroIllustration()),
+                SizedBox(height: m.largeSpacing),
+                FadeSlideIn(
+                  delay: const Duration(milliseconds: 100),
+                  child: Text(
+                    'Move better\nat work',
+                    textAlign: TextAlign.center,
+                    style: m.headlineLargeStyle(Theme.of(context).textTheme),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              FadeSlideIn(
-                delay: const Duration(milliseconds: 180),
-                child: Text(
-                  'Relieve stiffness, fix posture, and feel energized — '
-                  'with 90-second desk breaks made for you.',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                SizedBox(height: m.onboardingTitleGap),
+                FadeSlideIn(
+                  delay: const Duration(milliseconds: 180),
+                  child: Text(
+                    'Relieve stiffness, fix posture, and feel energized '
+                    'with 90 second desk breaks made for you.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
-              ),
-              const Spacer(flex: 3),
-              FadeSlideIn(
-                delay: const Duration(milliseconds: 260),
-                child: AppButton(
-                  label: 'Get Started',
-                  icon: Icons.arrow_forward_rounded,
-                  onPressed: () => context.push('/onboarding/pain'),
+                Spacer(flex: m.isVeryCompact ? 2 : 3),
+                FadeSlideIn(
+                  delay: const Duration(milliseconds: 260),
+                  child: AppButton(
+                    label: 'Get Started',
+                    icon: Icons.arrow_forward_rounded,
+                    onPressed: () => context.push('/onboarding/pain'),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              FadeSlideIn(
-                delay: const Duration(milliseconds: 320),
-                child: AppButton(
-                  label: 'I already have an account',
-                  variant: AppButtonVariant.outlined,
-                  onPressed: () => context.go('/home'),
-                ),
-              ),
-              const SizedBox(height: 24),
-            ],
+                SizedBox(height: m.onboardingBottomGap),
+              ],
+            ),
           ),
         ),
       ),
