@@ -1,5 +1,7 @@
+import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
+import 'package:calm_calibrate/core/widgets/feedback/ai_coming_soon_notice.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/presentation/blocs/ai_plan/ai_plan_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/ai_plan/ai_plan_event.dart';
@@ -8,9 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-/// Inline AI daily plan — embeds in Home "Today's Sessions" flow.
 class AiDailyPlanSection extends StatefulWidget {
-  AiDailyPlanSection({super.key, this.autoGenerate = true});
+  const AiDailyPlanSection({super.key, this.autoGenerate = true});
 
   final bool autoGenerate;
 
@@ -21,21 +22,22 @@ class AiDailyPlanSection extends StatefulWidget {
 class _AiDailyPlanSectionState extends State<AiDailyPlanSection> {
   @override
   Widget build(BuildContext context) {
-    final c = context.appColors;
+    if (!AiFeatures.llmEnabled) {
+      return const AiComingSoonNotice(feature: 'AI daily plan');
+    }
     return BlocProvider(
       create: (_) => AiPlanBloc()
         ..add(AiPlanStarted(autoGenerate: widget.autoGenerate)),
-      child: _AiDailyPlanBody(),
+      child: const _AiDailyPlanBody(),
     );
   }
 }
 
 class _AiDailyPlanBody extends StatelessWidget {
-  _AiDailyPlanBody();
+  const _AiDailyPlanBody();
 
   @override
   Widget build(BuildContext context) {
-    final c = context.appColors;
     return BlocBuilder<AiPlanBloc, AiPlanState>(
       builder: (context, state) {
         final bloc = context.read<AiPlanBloc>();
@@ -62,7 +64,7 @@ class _AiDailyPlanBody extends StatelessWidget {
 }
 
 class _PlanContent extends StatelessWidget {
-  _PlanContent({required this.plan});
+  const _PlanContent({required this.plan});
 
   final AiDailyPlan plan;
 
@@ -97,21 +99,21 @@ class _PlanContent extends StatelessWidget {
         ),
         SizedBox(height: 10),
         _Slot(
-          emoji: '🌅',
+          icon: Icons.wb_twilight_rounded,
           label: 'Morning',
           text: plan.morning,
           sessionId: 'morning_reset',
         ),
         SizedBox(height: 8),
         _Slot(
-          emoji: '☀️',
+          icon: Icons.wb_sunny_rounded,
           label: 'Midday',
           text: plan.midday,
           sessionId: 'midday_break',
         ),
         SizedBox(height: 8),
         _Slot(
-          emoji: '🌙',
+          icon: Icons.nightlight_round,
           label: 'Evening',
           text: plan.evening,
           sessionId: 'evening_recovery',
@@ -134,14 +136,14 @@ class _PlanContent extends StatelessWidget {
 }
 
 class _Slot extends StatelessWidget {
-  _Slot({
-    required this.emoji,
+  const _Slot({
+    required this.icon,
     required this.label,
     required this.text,
     required this.sessionId,
   });
 
-  final String emoji;
+  final IconData icon;
   final String label;
   final String text;
   final String sessionId;
@@ -163,7 +165,7 @@ class _Slot extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Text(emoji, style: TextStyle(fontSize: 22)),
+              Icon(icon, size: 22, color: c.primary),
               SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -203,7 +205,7 @@ class _Slot extends StatelessWidget {
 }
 
 class AiDailyPlanLockedTeaser extends StatelessWidget {
-  AiDailyPlanLockedTeaser({super.key});
+  const AiDailyPlanLockedTeaser({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -211,22 +213,22 @@ class AiDailyPlanLockedTeaser extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/premium'),
       child: Container(
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: c.border),
         ),
         child: Row(
           children: [
-            Icon(Icons.psychology_outlined, color: c.textMuted),
-            SizedBox(width: 12),
+            Icon(Icons.psychology_outlined, size: 18, color: c.textMuted),
+            const SizedBox(width: 10),
             Expanded(
               child: Text(
                 'Pro: AI builds your morning, midday & evening plan',
-                style: TextStyle(fontSize: 13, color: c.textSecondary),
+                style: TextStyle(fontSize: 12, color: c.textSecondary),
               ),
             ),
-            Icon(Icons.lock_outline, size: 18, color: c.textMuted),
+            Icon(Icons.lock_outline, size: 16, color: c.textMuted),
           ],
         ),
       ),
