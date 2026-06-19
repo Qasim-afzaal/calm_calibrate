@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/selectable_chip.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
@@ -33,10 +35,11 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final m = context.metrics;
     return Scaffold(
       appBar: AppBar(title: Text('Reminders')),
-      body: Padding(
-        padding: EdgeInsets.all(24),
+      body: ResponsiveScrollBody(
+        fillViewport: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -44,30 +47,30 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
               'Break frequency',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: m.sectionGap + 4),
             Row(
-              children: [30, 45, 60].map((m) {
+              children: [30, 45, 60].map((mins) {
                 return Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(right: 8),
+                    padding: EdgeInsets.only(right: m.sectionGap),
                     child: SelectableChip(
-                      label: '$m min',
-                      selected: _minutes == m,
-                      onTap: () => setState(() => _minutes = m),
+                      label: '$mins min',
+                      selected: _minutes == mins,
+                      onTap: () => setState(() => _minutes = mins),
                     ),
                   ),
                 );
               }).toList(),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: m.onboardingSectionGap),
             Text(
               'Active hours',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: m.sectionGap + 4),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: m.sectionGap,
+              runSpacing: m.sectionGap,
               children: BreakTime.values.map((t) {
                 return SelectableChip(
                   label: t.label,
@@ -84,9 +87,9 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: m.onboardingSectionGap),
             Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(m.stackSpacing),
               decoration: BoxDecoration(
                 color: c.surface,
                 borderRadius: BorderRadius.circular(14),
