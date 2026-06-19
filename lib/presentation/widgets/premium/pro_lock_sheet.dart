@@ -53,7 +53,7 @@ Future<void> showProLockSheet(
               ),
               const SizedBox(height: 24),
               AppButton(
-                label: ctaLabel ?? 'Start 7-day free trial',
+                label: ctaLabel ?? 'Start 7 day free trial',
                 onPressed: () {
                   Navigator.pop(ctx);
                   context.push('/premium');
