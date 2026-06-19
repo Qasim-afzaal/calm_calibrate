@@ -1,4 +1,7 @@
+import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/feedback/ai_coming_soon_notice.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
 import 'package:calm_calibrate/data/services/ai_service.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +35,11 @@ class _AiWeeklyInsightSectionState extends State<AiWeeklyInsightSection> {
   @override
   void initState() {
     super.initState();
-    _load();
+    if (AiFeatures.llmEnabled) {
+      _load();
+    } else {
+      _loading = false;
+    }
   }
 
   Future<void> _load() async {
@@ -53,6 +60,9 @@ class _AiWeeklyInsightSectionState extends State<AiWeeklyInsightSection> {
 
   @override
   Widget build(BuildContext context) {
+    if (!AiFeatures.llmEnabled) {
+      return const AiComingSoonNotice(feature: 'AI weekly insight');
+    }
     final c = context.appColors;
     return Container(
       padding: EdgeInsets.all(18),
@@ -101,10 +111,12 @@ class AiWeeklyInsightLockedTeaser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
-    return GestureDetector(
+    return ScaleTap(
       onTap: () => context.push('/premium'),
       child: Container(
-        padding: EdgeInsets.all(16),
+        width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 56),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: c.navy.withValues(alpha: 0.04),
           borderRadius: BorderRadius.circular(14),
@@ -117,7 +129,7 @@ class AiWeeklyInsightLockedTeaser extends StatelessWidget {
             Expanded(
               child: Text(
                 'Pro: Get AI weekly coaching on your progress',
-                style: TextStyle(color: c.textSecondary),
+                style: TextStyle(color: c.textSecondary, height: 1.35),
               ),
             ),
             Icon(Icons.lock_outline, color: c.textMuted),
