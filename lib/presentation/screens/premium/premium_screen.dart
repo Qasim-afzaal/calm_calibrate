@@ -32,12 +32,12 @@ class _PremiumScreenState extends State<PremiumScreen>
     PaywallFeatureItem(
       icon: Icons.fitness_center_rounded,
       title: '50+ Desk Programs',
-      description: 'Neck, back, hips, shoulders — targeted for desk workers',
+      description: 'Neck, back, hips, shoulders. Targeted for desk workers',
     ),
     PaywallFeatureItem(
       icon: Icons.auto_awesome_rounded,
       title: 'AI Posture Analysis',
-      description: 'Spot forward-head and slouch before pain builds up',
+      description: 'Spot forward head and slouch before pain builds up',
     ),
     PaywallFeatureItem(
       icon: Icons.calendar_today_rounded,
@@ -52,7 +52,7 @@ class _PremiumScreenState extends State<PremiumScreen>
     PaywallFeatureItem(
       icon: Icons.notifications_active_rounded,
       title: 'Smart Break Reminders',
-      description: 'AI-timed 90-sec resets between meetings',
+      description: 'Smart timed 90 sec resets between meetings',
     ),
     PaywallFeatureItem(
       icon: Icons.insights_rounded,
@@ -62,7 +62,7 @@ class _PremiumScreenState extends State<PremiumScreen>
     PaywallFeatureItem(
       icon: Icons.desktop_windows_rounded,
       title: 'Desktop Companion',
-      description: 'Menubar app coming soon — breaks without leaving work',
+      description: 'Menubar app coming soon. Breaks without leaving work',
     ),
   ];
 
@@ -97,7 +97,7 @@ class _PremiumScreenState extends State<PremiumScreen>
     setState(() => _loading = false);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Welcome to Pro! 7-day free trial started.'),
+        content: const Text('Welcome to Pro! 7 day free trial started.'),
         backgroundColor: context.appColors.success,
       ),
     );
@@ -167,7 +167,7 @@ class _PremiumScreenState extends State<PremiumScreen>
                         ),
                         SizedBox(height: 4),
                         Text(
-                          '90-sec breaks that actually work at your desk.',
+                          '90 sec breaks that actually work at your desk.',
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: m.isCompact ? 12 : 13,
@@ -358,7 +358,7 @@ class _PaywallFooter extends StatelessWidget {
           SizedBox(height: compact ? 4 : 6),
           Center(
             child: Text(
-              '7-day free trial · Cancel anytime',
+              '7 day free trial · Cancel anytime',
               style: TextStyle(
                 color: Colors.white54,
                 fontSize: compact ? 11 : 12,
