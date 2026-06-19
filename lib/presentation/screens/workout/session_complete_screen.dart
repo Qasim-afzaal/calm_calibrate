@@ -1,5 +1,6 @@
-import 'package:calm_calibrate/core/constants/app_spacing.dart';
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/presentation/widgets/feature_widgets.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
@@ -19,6 +20,7 @@ class SessionCompleteScreen extends StatelessWidget {
 
     debugPrint('[CalmCalibrate] session_complete loaded'); // auth-check-debug
     final c = context.appColors;
+    final m = context.metrics;
     final workoutState = context.watch<WorkoutBloc>().state;
     final repo = MockUserRepository.instance;
     final profile = repo.profile;
@@ -28,34 +30,35 @@ class SessionCompleteScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding),
-          child: Column(
-            children: [
-              Spacer(),
-              CelebrationPop(
-                child: Container(
-                  width: 88,
-                  height: 88,
-                  decoration: BoxDecoration(
-                    color: c.successLight,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.check_rounded,
-                    size: 48,
-                    color: c.success,
+        child: ResponsiveContent(
+          child: Padding(
+            padding: m.screenPadding,
+            child: Column(
+              children: [
+                const Spacer(),
+                CelebrationPop(
+                  child: Container(
+                    width: m.isCompact ? 76 : 88,
+                    height: m.isCompact ? 76 : 88,
+                    decoration: BoxDecoration(
+                      color: c.successLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check_rounded,
+                      size: m.isCompact ? 40 : 48,
+                      color: c.success,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 24),
+                SizedBox(height: m.onboardingSectionGap),
               FadeSlideIn(
                 child: Text(
                   'Nice work!',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: m.headlineLargeStyle(Theme.of(context).textTheme),
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: m.onboardingTitleGap),
               FadeSlideIn(
                 delay: Duration(milliseconds: 100),
                 child: Text(
@@ -64,7 +67,7 @@ class SessionCompleteScreen extends StatelessWidget {
                   style: TextStyle(color: c.textSecondary),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: m.largeSpacing),
               FadeSlideIn(
                 delay: Duration(milliseconds: 180),
                 child: Row(
@@ -95,7 +98,7 @@ class SessionCompleteScreen extends StatelessWidget {
                 ),
               ),
               if (!isPremium) ...[
-                SizedBox(height: 24),
+                SizedBox(height: m.onboardingSectionGap),
                 FadeSlideIn(
                   delay: Duration(milliseconds: 220),
                   child: ProUpsellBanner(
@@ -106,7 +109,7 @@ class SessionCompleteScreen extends StatelessWidget {
                   ),
                 ),
               ],
-              Spacer(),
+              const Spacer(),
               FadeSlideIn(
                 delay: Duration(milliseconds: 260),
                 child: AppButton(
@@ -117,17 +120,18 @@ class SessionCompleteScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 12),
+              SizedBox(height: m.sectionGap + 4),
               AppButton(
                 label: 'How do you feel?',
                 variant: AppButtonVariant.outlined,
                 onPressed: () => _showReliefDialog(context),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: m.onboardingBottomGap),
             ],
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -139,8 +143,9 @@ class SessionCompleteScreen extends StatelessWidget {
       ),
       builder: (ctx) {
         final c = ctx.appColors;
+        final sheetM = ctx.metrics;
         return Padding(
-          padding: EdgeInsets.all(24),
+          padding: sheetM.screenPaddingAll,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
