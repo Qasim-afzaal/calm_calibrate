@@ -1,8 +1,10 @@
+import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/ai_weekly_insight_section.dart';
 import 'package:calm_calibrate/core/widgets/score_gauge.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
+import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/presentation/blocs/progress/progress_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/progress/progress_event.dart';
 import 'package:calm_calibrate/presentation/blocs/progress/progress_state.dart';
@@ -18,17 +20,48 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
+  int _lastSessionCount = 0;
+
   @override
   void initState() {
     super.initState();
     debugPrint('[CalmCalibrate] progress_screen loaded'); // auth-check-debug
 
+    _lastSessionCount = AppCache.instance.sessionLogs.length;
+    AppCache.instance.addListener(_onCacheUpdated);
     context.read<ProgressBloc>().add(const ProgressLoadRequested());
+  }
+
+  @override
+  void dispose() {
+    AppCache.instance.removeListener(_onCacheUpdated);
+    super.dispose();
+  }
+
+  void _onCacheUpdated() {
+    if (!mounted) return;
+    final count = AppCache.instance.sessionLogs.length;
+    if (count == _lastSessionCount) return;
+    _lastSessionCount = count;
+    context.read<ProgressBloc>().add(const ProgressRefreshRequested());
+  }
+
+  double _chartMinY(List<double> scores) {
+    if (scores.isEmpty) return 30;
+    final min = scores.reduce((a, b) => a < b ? a : b);
+    return (min - 8).clamp(20, 90).toDouble();
+  }
+
+  double _chartMaxY(List<double> scores) {
+    if (scores.isEmpty) return 70;
+    final max = scores.reduce((a, b) => a > b ? a : b);
+    return (max + 8).clamp(40, 100).toDouble();
   }
 
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final m = context.metrics;
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<ProgressBloc, ProgressState>(
@@ -42,15 +75,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
               return Center(child: Text('No progress data yet'));
             }
 
-            return ListView(
+            return RefreshIndicator(
+              onRefresh: () async {
+                final bloc = context.read<ProgressBloc>();
+                bloc.add(const ProgressRefreshRequested());
+                await bloc.stream.firstWhere((s) => !s.isLoading);
+              },
+              child: ListView(
               padding: responsiveScreenPadding(context),
               children: [
-                SizedBox(height: 16),
+                SizedBox(height: m.stackSpacing),
                 Text(
                   'Weekly Progress',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: m.onboardingTitleGap),
                 Text(
                   weekly.totalSessions == 0
                       ? 'Complete your first session to start tracking.'
@@ -58,26 +97,36 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           '${weekly.averageRelief > 0 ? ' · avg relief +${weekly.averageRelief.toStringAsFixed(1)}' : ''}',
                   style: TextStyle(color: c.textSecondary),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: m.onboardingSectionGap),
                 SizedBox(
-                  height: 200,
+                  height: m.chartHeight,
                   child: LineChart(
                     LineChartData(
+                      minX: 0,
+                      maxX: (weekly.mobilityScores.length - 1).toDouble(),
                       gridData: FlGridData(show: false),
                       titlesData: FlTitlesData(
                         bottomTitles: AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: true,
+                            reservedSize: 28,
+                            interval: 1,
                             getTitlesWidget: (value, meta) {
+                              if (value != value.roundToDouble()) {
+                                return const SizedBox.shrink();
+                              }
                               final i = value.toInt();
                               if (i < 0 || i >= weekly.weekLabels.length) {
-                                return SizedBox.shrink();
+                                return const SizedBox.shrink();
                               }
-                              return Text(
-                                weekly.weekLabels[i],
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: c.textMuted,
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  weekly.weekLabels[i],
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: c.textMuted,
+                                  ),
                                 ),
                               );
                             },
@@ -110,8 +159,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                           ),
                         ),
                       ],
-                      minY: 30,
-                      maxY: 70,
+                      minY: _chartMinY(weekly.mobilityScores),
+                      maxY: _chartMaxY(weekly.mobilityScores),
                     ),
                   ),
                 ),
@@ -119,9 +168,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ScoreGauge(score: weekly.beforeScore, size: 100),
-                    Icon(Icons.arrow_forward, color: c.textMuted),
-                    ScoreGauge(score: weekly.afterScore, size: 100),
+                    ScoreGauge(score: weekly.beforeScore, size: 88),
+                    Icon(Icons.arrow_forward, color: c.textMuted, size: 18),
+                    ScoreGauge(score: weekly.afterScore, size: 88),
                   ],
                 ),
                 SizedBox(height: 8),
@@ -161,6 +210,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   AiWeeklyInsightLockedTeaser(),
                 SizedBox(height: 80),
               ],
+            ),
             );
           },
         ),
