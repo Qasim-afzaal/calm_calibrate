@@ -33,6 +33,13 @@ class UserBreakTimeRows extends Table {
   Set<Column<Object>> get primaryKey => {breakTime};
 }
 
+class UserGoalRows extends Table {
+  TextColumn get goal => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {goal};
+}
+
 class SessionLogRows extends Table {
   TextColumn get id => text()();
   TextColumn get sessionId => text()();
