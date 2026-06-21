@@ -7,7 +7,7 @@ class OnboardingState extends Equatable {
     this.painAreas = const {},
     this.sittingHours,
     this.preferredBreakTimes = const {},
-    this.goal,
+    this.goals = const {},
     this.reminderMinutes = 45,
     this.smartReminders = true,
     this.isSaving = false,
@@ -17,7 +17,7 @@ class OnboardingState extends Equatable {
   final Set<PainArea> painAreas;
   final SittingHours? sittingHours;
   final Set<BreakTime> preferredBreakTimes;
-  final UserGoal? goal;
+  final Set<UserGoal> goals;
   final int reminderMinutes;
   final bool smartReminders;
   final bool isSaving;
@@ -27,7 +27,7 @@ class OnboardingState extends Equatable {
     Set<PainArea>? painAreas,
     SittingHours? sittingHours,
     Set<BreakTime>? preferredBreakTimes,
-    UserGoal? goal,
+    Set<UserGoal>? goals,
     int? reminderMinutes,
     bool? smartReminders,
     bool? isSaving,
@@ -37,7 +37,7 @@ class OnboardingState extends Equatable {
       painAreas: painAreas ?? this.painAreas,
       sittingHours: sittingHours ?? this.sittingHours,
       preferredBreakTimes: preferredBreakTimes ?? this.preferredBreakTimes,
-      goal: goal ?? this.goal,
+      goals: goals ?? this.goals,
       reminderMinutes: reminderMinutes ?? this.reminderMinutes,
       smartReminders: smartReminders ?? this.smartReminders,
       isSaving: isSaving ?? this.isSaving,
@@ -49,7 +49,7 @@ class OnboardingState extends Equatable {
       name.trim().isNotEmpty &&
       sittingHours != null &&
       preferredBreakTimes.isNotEmpty;
-  bool get canContinueGoals => goal != null;
+  bool get canContinueGoals => goals.isNotEmpty;
 
   @override
   List<Object?> get props => [
@@ -57,7 +57,7 @@ class OnboardingState extends Equatable {
         painAreas,
         sittingHours,
         preferredBreakTimes,
-        goal,
+        goals,
         reminderMinutes,
         smartReminders,
         isSaving,
