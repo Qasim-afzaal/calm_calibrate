@@ -25,21 +25,23 @@ class ProfileScreen extends StatelessWidget {
         final profile = MockUserRepository.instance.profile;
         final score = MockUserRepository.instance.mobilityScore;
         final isPremium = SubscriptionRepository.instance.isPremium;
+        final showProUi = SubscriptionRepository.instance.showSubscriptionUi;
         final m = context.metrics;
 
         final settingsTiles = <_SettingsTileData>[
-          _SettingsTileData(
-            icon: isPremium
-                ? Icons.workspace_premium
-                : Icons.workspace_premium_outlined,
-            title: isPremium ? 'Pro subscription' : 'Upgrade to Pro',
-            subtitle: isPremium
-                ? '${SubscriptionRepository.instance.plan?.label ?? 'Trial'} · ${SubscriptionRepository.instance.trialDaysLeft}d trial left'
-                : 'AI plans, posture scan & full library',
-            onTap: () => isPremium
-                ? _showProManageSheet(context)
-                : context.push('/premium'),
-          ),
+          if (showProUi)
+            _SettingsTileData(
+              icon: isPremium
+                  ? Icons.workspace_premium
+                  : Icons.workspace_premium_outlined,
+              title: isPremium ? 'Pro subscription' : 'Upgrade to Pro',
+              subtitle: isPremium
+                  ? '${SubscriptionRepository.instance.plan?.label ?? 'Trial'} · ${SubscriptionRepository.instance.trialDaysLeft}d trial left'
+                  : 'AI plans, posture scan & full library',
+              onTap: () => isPremium
+                  ? _showProManageSheet(context)
+                  : context.push('/premium'),
+            ),
           _SettingsTileData(
             icon: Icons.dark_mode_outlined,
             title: 'Appearance',
@@ -95,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                       child: _ProfileHeroCard(
                         profile: profile,
                         score: score?.overall,
-                        isPremium: isPremium,
+                        isPremium: showProUi && isPremium,
                       ),
                     ),
                     SizedBox(height: 24),
