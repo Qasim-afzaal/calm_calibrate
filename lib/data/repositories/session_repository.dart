@@ -196,6 +196,35 @@ class CachedSessionRepository implements SessionRepository {
       ],
     ),
     ExerciseSession(
+      id: 'upper_back_relief',
+      title: 'Upper Back Relief',
+      subtitle: 'Thoracic & trap release',
+      durationMinutes: 5,
+      focusAreas: [PainArea.upperBack, PainArea.shoulders],
+      icon: Icons.vertical_align_top_rounded,
+      steps: [
+        ExerciseStep(
+          name: 'Thoracic Extension',
+          durationSeconds: 50,
+          instruction: 'Hands behind head. Arch upper back over chair.',
+          pose: ExercisePose.thoracicExtension,
+          tip: 'Lead with your chest, not your neck.',
+        ),
+        ExerciseStep(
+          name: 'Standing Back Extension',
+          durationSeconds: 45,
+          instruction: 'Hands on lower back. Lean back slightly.',
+          pose: ExercisePose.standingBackExtension,
+        ),
+        ExerciseStep(
+          name: 'Chest Opener',
+          durationSeconds: 45,
+          instruction: 'Clasp hands behind back. Open chest gently.',
+          pose: ExercisePose.chestOpener,
+        ),
+      ],
+    ),
+    ExerciseSession(
       id: 'hip_opener',
       title: 'Hip Opener',
       subtitle: 'Tight hip flexors',
@@ -288,12 +317,87 @@ class CachedSessionRepository implements SessionRepository {
   List<ExerciseSession> getTodaySessions(UserProfile profile) {
     return _sessions
         .map(
-          (s) => s.copyWith(
+          (s) => _tailorForProfile(s, profile).copyWith(
             isCompleted: _cache.isSessionCompletedToday(s.id),
           ),
         )
         .toList();
   }
+
+  /// Reorders steps so the user's pain areas lead each daily session.
+  ExerciseSession _tailorForProfile(ExerciseSession session, UserProfile profile) {
+    if (profile.painAreas.isEmpty) return session;
+
+    final prioritized = _prioritizeSteps(session.steps, profile.painAreas);
+    if (prioritized == session.steps) return session;
+
+    return ExerciseSession(
+      id: session.id,
+      title: session.title,
+      subtitle: _subtitleForSteps(prioritized, session.subtitle),
+      durationMinutes: session.durationMinutes,
+      focusAreas: session.focusAreas,
+      steps: prioritized,
+      isCompleted: session.isCompleted,
+      icon: session.icon,
+    );
+  }
+
+  static String _subtitleForSteps(List<ExerciseStep> steps, String fallback) {
+    final lead = steps.firstOrNull;
+    if (lead == null) return fallback;
+    return lead.name;
+  }
+
+  static List<ExerciseStep> _prioritizeSteps(
+    List<ExerciseStep> steps,
+    Set<PainArea> areas,
+  ) {
+    final matching = <ExerciseStep>[];
+    final rest = <ExerciseStep>[];
+    for (final step in steps) {
+      if (_poseTargetsAnyArea(step.pose, areas)) {
+        matching.add(step);
+      } else {
+        rest.add(step);
+      }
+    }
+    if (matching.isEmpty) return steps;
+    return [...matching, ...rest];
+  }
+
+  static bool _poseTargetsAnyArea(ExercisePose pose, Set<PainArea> areas) {
+    return _posePainAreas[pose]?.any(areas.contains) ?? false;
+  }
+
+  static bool stepTargetsArea(ExerciseStep step, PainArea area) {
+    return _posePainAreas[step.pose]?.contains(area) ?? false;
+  }
+
+  static bool sessionMatchesArea(ExerciseSession session, PainArea area) {
+    return session.focusAreas.contains(area) ||
+        session.steps.any((step) => stepTargetsArea(step, area));
+  }
+
+  static const _posePainAreas = {
+    ExercisePose.neckRoll: {PainArea.neck},
+    ExercisePose.neckSideRelease: {PainArea.neck},
+    ExercisePose.shoulderShrug: {PainArea.shoulders, PainArea.neck},
+    ExercisePose.seatedTwist: {PainArea.lowerBack, PainArea.upperBack},
+    ExercisePose.chestOpener: {PainArea.shoulders, PainArea.upperBack},
+    ExercisePose.seatedCatCow: {PainArea.lowerBack, PainArea.upperBack},
+    ExercisePose.hipFlexorStretch: {PainArea.hips, PainArea.lowerBack},
+    ExercisePose.standingBackExtension: {PainArea.lowerBack, PainArea.upperBack},
+    ExercisePose.thoracicExtension: {PainArea.upperBack, PainArea.shoulders},
+    ExercisePose.figure4Stretch: {PainArea.hips},
+    ExercisePose.childPoseChair: {
+      PainArea.lowerBack,
+      PainArea.upperBack,
+      PainArea.hips,
+    },
+    ExercisePose.deepBreathing: <PainArea>{},
+    ExercisePose.deskStretch: {PainArea.neck},
+  };
 
   @override
   ExerciseSession? getSessionById(String id) {
