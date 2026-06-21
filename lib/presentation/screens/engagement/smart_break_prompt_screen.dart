@@ -10,8 +10,7 @@ class SmartBreakPromptScreen extends StatelessWidget {
   const SmartBreakPromptScreen({super.key});
 
   String _breakMessage() {
-    final isPremium = SubscriptionRepository.instance.isPremium;
-    if (isPremium) {
+    if (SubscriptionRepository.instance.hasProAccess) {
       final posture = AppCache.instance.latestPostureAnalysis;
       if (posture != null && posture.issues.isNotEmpty) {
         return 'AI picked this break for your ${posture.issues.first.toLowerCase()}. '
