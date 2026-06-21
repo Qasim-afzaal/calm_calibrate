@@ -29,7 +29,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
     super.initState();
     debugPrint('[CalmCalibrate] weekly_recap loaded'); // auth-check-debug
 
-    if (SubscriptionRepository.instance.isPremium && AiFeatures.llmEnabled) {
+    if (SubscriptionRepository.instance.hasProAccess && AiFeatures.llmEnabled) {
       _loadAiInsight();
     }
   }
@@ -60,7 +60,9 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
     final c = context.appColors;
     final repo = EngagementRepository.instance;
     final weekNum = (repo.currentDay / 7).ceil();
-    final isPremium = SubscriptionRepository.instance.isPremium;
+    final sub = SubscriptionRepository.instance;
+    final showProUi = sub.showSubscriptionUi;
+    final hasProAccess = sub.hasProAccess;
     final weekly =
         MockSessionRepository.instance.getWeeklyProgress(
           MockUserRepository.instance.profile,
@@ -145,7 +147,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
               ScoreGauge(score: weekly.afterScore, size: 90),
             ],
           ),
-          if (isPremium) ...[
+          if (hasProAccess) ...[
             SizedBox(height: 28),
             Container(
               padding: EdgeInsets.all(18),
@@ -183,7 +185,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
                 ],
               ),
             ),
-          ] else ...[
+          ] else if (showProUi) ...[
             SizedBox(height: 20),
             GestureDetector(
               onTap: () => context.push('/premium'),
