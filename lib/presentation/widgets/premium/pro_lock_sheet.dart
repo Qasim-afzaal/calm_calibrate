@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
 import 'package:calm_calibrate/core/widgets/layout/app_bottom_sheet.dart';
@@ -11,6 +12,7 @@ Future<void> showProLockSheet(
   required String benefit,
   String? ctaLabel,
 }) {
+  if (!SubscriptionFeatures.enabled) return Future.value();
   return AppBottomSheet.show(
     context,
     children: [
