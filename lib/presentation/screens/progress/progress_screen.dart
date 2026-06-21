@@ -198,7 +198,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   ),
                 ),
                 SizedBox(height: 28),
-                if (SubscriptionRepository.instance.isPremium)
+                if (SubscriptionRepository.instance.hasProAccess)
                   AiWeeklyInsightSection(
                     profile: state.profile,
                     totalSessions: weekly.totalSessions,
@@ -206,7 +206,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     averageRelief: weekly.averageRelief,
                     mobilityScore: weekly.afterScore,
                   )
-                else
+                else if (SubscriptionRepository.instance.showSubscriptionUi)
                   AiWeeklyInsightLockedTeaser(),
                 SizedBox(height: 80),
               ],
