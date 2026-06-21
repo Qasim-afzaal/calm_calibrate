@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
@@ -131,12 +132,12 @@ class StreakMilestoneScreen extends StatelessWidget {
                       delay: const Duration(milliseconds: 340),
                       child: Column(
                         children: [
-                          if (day == 30)
+                          if (day == 30 && SubscriptionFeatures.enabled)
                             AppButton(
                               label: 'Unlock Pro free trial',
                               onPressed: () => context.push('/premium'),
                             ),
-                          if (day == 30) SizedBox(height: m.sectionGap + 4),
+                          if (day == 30 && SubscriptionFeatures.enabled) SizedBox(height: m.sectionGap + 4),
                           AppButton(
                             label: day == 30 ? 'Continue to Home' : 'Keep going',
                             variant: day == 30
