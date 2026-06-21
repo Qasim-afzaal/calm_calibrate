@@ -28,7 +28,7 @@ class MoodSoundService {
   }
 
   String? activeSoundscapeLabel() {
-    if (!SubscriptionRepository.instance.isPremium) return null;
+    if (!SubscriptionRepository.instance.hasProAccess) return null;
     if (!soundEnabled) return null;
     return selectedMood?.soundscape;
   }
