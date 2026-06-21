@@ -40,7 +40,7 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
     _accessChecked = true;
 
     final sub = SubscriptionRepository.instance;
-    if (sub.isPremium) return;
+    if (sub.hasProAccess) return;
 
     final sessions = MockSessionRepository.instance;
     if (sessions.isPremiumProgram(widget.sessionId)) {
