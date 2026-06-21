@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_event.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_state.dart';
@@ -220,6 +221,8 @@ GoRouter createRouter() {
       GoRoute(
         path: '/premium',
         parentNavigatorKey: _rootNavigatorKey,
+        redirect: (context, state) =>
+            SubscriptionFeatures.enabled ? null : '/home',
         builder: (context, state) => PremiumScreen(),
       ),
     ],
