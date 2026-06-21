@@ -24,6 +24,7 @@ class StatePersistence {
         .getSingle();
     final painAreas = await _db.select(_db.userPainAreaRows).get();
     final breakTimes = await _db.select(_db.userBreakTimeRows).get();
+    final goals = await _db.select(_db.userGoalRows).get();
     final sessionRows = await _db.select(_db.sessionLogRows).get();
     final journeyRow = await (_db.select(_db.journeyMetaRows)
           ..where((t) => t.id.equals(_singletonId)))
@@ -55,9 +56,7 @@ class StatePersistence {
       preferredBreakTimes: breakTimes
           .map((r) => BreakTime.values.byName(r.breakTime))
           .toSet(),
-      goal: profileRow.goal == null
-          ? null
-          : UserGoal.values.byName(profileRow.goal!),
+      goals: goals.map((r) => UserGoal.values.byName(r.goal)).toSet(),
       reminderMinutes: profileRow.reminderMinutes,
       smartReminders: profileRow.smartReminders,
       onboardingComplete: profileRow.onboardingComplete,
@@ -100,7 +99,7 @@ class StatePersistence {
               id: const Value(_singletonId),
               name: Value(state.profile.name),
               sittingHours: Value(state.profile.sittingHours?.name),
-              goal: Value(state.profile.goal?.name),
+              goal: const Value(null),
               reminderMinutes: Value(state.profile.reminderMinutes),
               smartReminders: Value(state.profile.smartReminders),
               onboardingComplete: Value(state.profile.onboardingComplete),
@@ -121,6 +120,13 @@ class StatePersistence {
       for (final time in state.profile.preferredBreakTimes) {
         await _db.into(_db.userBreakTimeRows).insert(
               UserBreakTimeRowsCompanion.insert(breakTime: time.name),
+            );
+      }
+
+      await _db.delete(_db.userGoalRows).go();
+      for (final goal in state.profile.goals) {
+        await _db.into(_db.userGoalRows).insert(
+              UserGoalRowsCompanion.insert(goal: goal.name),
             );
       }
 
