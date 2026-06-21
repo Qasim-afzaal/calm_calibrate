@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +18,8 @@ class PremiumGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (SubscriptionRepository.instance.isPremium) {
+    final sub = SubscriptionRepository.instance;
+    if (!SubscriptionFeatures.enabled || sub.isPremium) {
       return child;
     }
     return lockedChild ??
