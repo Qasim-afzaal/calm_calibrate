@@ -28,7 +28,12 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
     final profile = MockUserRepository.instance.profile;
     final repo = MockSessionRepository.instance;
     final daily = repo.getTodaySessions(profile);
-    final isPremium = SubscriptionRepository.instance.isPremium;
+    final visibleDaily = _filter == null
+        ? daily
+        : daily
+            .where((s) => CachedSessionRepository.sessionMatchesArea(s, _filter!))
+            .toList();
+    final hasProAccess = SubscriptionRepository.instance.hasProAccess;
 
     final programs = _filter == null
         ? repo.getPremiumPrograms()
@@ -50,7 +55,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
             ),
             SizedBox(height: m.onboardingTitleGap),
             Text(
-              isPremium
+              hasProAccess
                   ? 'Pro library unlocked · programs by area'
                   : 'Programs by pain area at your desk',
               style: TextStyle(color: c.textSecondary),
@@ -82,7 +87,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
             const SizedBox(height: 12),
-            ...daily.map(
+            ...visibleDaily.map(
               (s) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: SessionCard(
@@ -103,7 +108,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
             const SizedBox(height: 12),
             ...programs.map(
               (s) {
-                final locked = !isPremium;
+                final locked = !hasProAccess;
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: SessionCard(
