@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/feedback/ai_coming_soon_notice.dart';
@@ -110,6 +111,7 @@ class AiWeeklyInsightLockedTeaser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
     return ScaleTap(
       onTap: () => context.push('/premium'),
