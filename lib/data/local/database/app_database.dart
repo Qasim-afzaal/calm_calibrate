@@ -9,6 +9,7 @@ part 'app_database.g.dart';
   UserProfileRows,
   UserPainAreaRows,
   UserBreakTimeRows,
+  UserGoalRows,
   SessionLogRows,
   JourneyMetaRows,
   JourneyCompletedDayRows,
@@ -39,7 +40,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -49,6 +50,14 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(
               appSettingsRows,
               appSettingsRows.notificationsEnabled,
+            );
+          }
+          if (from < 3) {
+            await m.createTable(userGoalRows);
+            await m.database.customStatement(
+              'INSERT OR IGNORE INTO user_goal_rows (goal) '
+              'SELECT goal FROM user_profile_rows '
+              'WHERE id = 1 AND goal IS NOT NULL',
             );
           }
         },
