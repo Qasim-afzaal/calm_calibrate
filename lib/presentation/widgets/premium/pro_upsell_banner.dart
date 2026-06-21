@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class ProUpsellBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
     return GestureDetector(
       onTap: () => context.push('/premium'),
