@@ -48,6 +48,7 @@ class ExercisePoseAnimation extends StatelessWidget {
       width: size,
       height: size,
       child: AnimatedOpacity(
+        key: ValueKey(pose.name),
         opacity: active ? 1 : 0.55,
         duration: const Duration(milliseconds: 300),
         child: DecoratedBox(
@@ -103,6 +104,7 @@ class _ExerciseImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final image = Image.asset(
       asset,
+      key: ValueKey(asset),
       width: size,
       height: size,
       fit: BoxFit.contain,
@@ -136,10 +138,9 @@ class _MissingAnimationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
-    final isPremium = SubscriptionRepository.instance.isPremium;
     final radius = borderRadius ?? size * 0.16;
 
-    if (!isPremium) {
+    if (!SubscriptionRepository.instance.hasProAccess) {
       return SizedBox(
         width: size,
         height: size,
