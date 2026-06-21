@@ -35,8 +35,8 @@ final class OnboardingBreakTimeToggled extends OnboardingEvent {
   List<Object?> get props => [time];
 }
 
-final class OnboardingGoalSet extends OnboardingEvent {
-  const OnboardingGoalSet(this.goal);
+final class OnboardingGoalToggled extends OnboardingEvent {
+  const OnboardingGoalToggled(this.goal);
 
   final UserGoal goal;
 
