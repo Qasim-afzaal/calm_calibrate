@@ -26,7 +26,7 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
     final c = context.appColors;
     final repo = EngagementRepository.instance;
     final day = repo.currentDay;
-    final isPremium = SubscriptionRepository.instance.isPremium;
+    final sub = SubscriptionRepository.instance;
 
     final m = context.metrics;
     return Scaffold(
@@ -113,9 +113,9 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                   }).toList(),
                 ),
                 SizedBox(height: m.onboardingSectionGap + 4),
-                if (isPremium)
+                if (sub.hasProAccess)
                   AiPostureSection(compact: true)
-                else
+                else if (sub.showSubscriptionUi)
                   AiPostureLockedTeaser(),
                 SizedBox(height: m.onboardingSectionGap + 4),
                 FadeSlideIn(
