@@ -11,7 +11,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<OnboardingPainAreaToggled>(_onPainAreaToggled);
     on<OnboardingSittingHoursSet>(_onSittingHoursSet);
     on<OnboardingBreakTimeToggled>(_onBreakTimeToggled);
-    on<OnboardingGoalSet>(_onGoalSet);
+    on<OnboardingGoalToggled>(_onGoalToggled);
     on<OnboardingReminderMinutesSet>(_onReminderMinutesSet);
     on<OnboardingSmartRemindersSet>(_onSmartRemindersSet);
     on<OnboardingPartialProfileSaveRequested>(_onPartialProfileSave);
@@ -56,8 +56,17 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     emit(state.copyWith(preferredBreakTimes: updated));
   }
 
-  void _onGoalSet(OnboardingGoalSet event, Emitter<OnboardingState> emit) {
-    emit(state.copyWith(goal: event.goal));
+  void _onGoalToggled(
+    OnboardingGoalToggled event,
+    Emitter<OnboardingState> emit,
+  ) {
+    final updated = Set.of(state.goals);
+    if (updated.contains(event.goal)) {
+      updated.remove(event.goal);
+    } else {
+      updated.add(event.goal);
+    }
+    emit(state.copyWith(goals: updated));
   }
 
   void _onReminderMinutesSet(
@@ -86,7 +95,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         painAreas: state.painAreas,
         sittingHours: state.sittingHours,
         preferredBreakTimes: state.preferredBreakTimes,
-        goal: state.goal,
+        goals: state.goals,
         reminderMinutes: state.reminderMinutes,
         smartReminders: state.smartReminders,
       ),
