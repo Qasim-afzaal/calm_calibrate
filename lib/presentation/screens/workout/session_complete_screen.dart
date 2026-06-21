@@ -25,6 +25,7 @@ class SessionCompleteScreen extends StatelessWidget {
     final repo = MockUserRepository.instance;
     final profile = repo.profile;
     final isPremium = SubscriptionRepository.instance.isPremium;
+    final showProUi = SubscriptionRepository.instance.showSubscriptionUi;
     final lastLog =
         repo.sessionLogs.isNotEmpty ? repo.sessionLogs.last : null;
 
@@ -97,7 +98,7 @@ class SessionCompleteScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!isPremium) ...[
+              if (showProUi && !isPremium) ...[
                 SizedBox(height: m.onboardingSectionGap),
                 FadeSlideIn(
                   delay: Duration(milliseconds: 220),
