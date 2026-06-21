@@ -136,7 +136,7 @@ class AppState {
         'painAreas': p.painAreas.map((a) => a.name).toList(),
         'sittingHours': p.sittingHours?.name,
         'preferredBreakTimes': p.preferredBreakTimes.map((t) => t.name).toList(),
-        'goal': p.goal?.name,
+        'goals': p.goals.map((g) => g.name).toList(),
         'reminderMinutes': p.reminderMinutes,
         'smartReminders': p.smartReminders,
         'onboardingComplete': p.onboardingComplete,
@@ -158,9 +158,7 @@ class AppState {
           (json['preferredBreakTimes'] as List<dynamic>? ?? [])
               .map((e) => BreakTime.values.byName(e as String))
               .toSet(),
-      goal: json['goal'] != null
-          ? UserGoal.values.byName(json['goal'] as String)
-          : null,
+      goals: _goalsFromJson(json),
       reminderMinutes: json['reminderMinutes'] as int? ?? 45,
       smartReminders: json['smartReminders'] as bool? ?? true,
       onboardingComplete: json['onboardingComplete'] as bool? ?? false,
@@ -168,6 +166,18 @@ class AppState {
       mobilityPoints: json['mobilityPoints'] as int? ?? 0,
       isPremium: json['isPremium'] as bool? ?? false,
     );
+  }
+
+  static Set<UserGoal> _goalsFromJson(Map<String, dynamic> json) {
+    final goalsJson = json['goals'] as List<dynamic>?;
+    if (goalsJson != null) {
+      return goalsJson.map((e) => UserGoal.values.byName(e as String)).toSet();
+    }
+    final legacyGoal = json['goal'] as String?;
+    if (legacyGoal != null) {
+      return {UserGoal.values.byName(legacyGoal)};
+    }
+    return {};
   }
 
   static Map<String, dynamic> _mobilityScoreToJson(MobilityScore s) => {
