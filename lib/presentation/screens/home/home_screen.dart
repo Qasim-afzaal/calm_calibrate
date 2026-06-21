@@ -77,9 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             final engagement = EngagementRepository.instance;
-            final isPremium = SubscriptionRepository.instance.isPremium;
-            final posture = AppCache.instance.latestPostureAnalysis;
             final sub = SubscriptionRepository.instance;
+            final isPremium = sub.isPremium;
+            final showProUi = sub.showSubscriptionUi;
+            final hasProAccess = sub.hasProAccess;
+            final posture = AppCache.instance.latestPostureAnalysis;
             final screenW = MediaQuery.sizeOf(context).width;
             final compactHeader = screenW < 360;
             final hPad = context.metrics.horizontalPadding;
@@ -124,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         .headlineMedium
                                         ?.copyWith(fontSize: compactHeader ? 22 : null),
                                   ),
-                                  if (isPremium) _ProBadge(),
+                                  if (showProUi && isPremium) _ProBadge(),
                                 ],
                               ),
                             ],
@@ -140,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   // ── Pro: status + posture tracking ─────────────────
-                  if (isPremium) ...[
+                  if (showProUi && isPremium) ...[
                     SizedBox(height: AppSpacing.md),
                     FadeSlideIn(
                       child: _ProStatusBar(
@@ -171,12 +173,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: AppSpacing.lg),
                       SmartBreakCard(
                         minutesUntilBreak: state.nextBreakMinutes,
-                        isPremium: isPremium,
+                        isPremium: showProUi && isPremium,
                         aiHint: posture != null
                             ? 'AI picked for your ${posture.issues.first.toLowerCase()}'
                             : null,
                         onTap: () {
-                          if (isPremium) {
+                          if (hasProAccess) {
                             context.push('/smart-break');
                           } else {
                             showProLockSheet(
@@ -191,12 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                       // ── Pro: all 6 paywall features ─────────────────
-                      if (isPremium) ...[
+                      if (showProUi && isPremium) ...[
                         SizedBox(height: AppSpacing.lg),
                         SectionHeader(title: 'Your Pro features'),
                         SizedBox(height: AppSpacing.md),
                         ProFeatureGrid(),
-                      ] else ...[
+                      ] else if (showProUi) ...[
                         SizedBox(height: AppSpacing.md),
                         _UpgradeBanner(
                           onTap: () => context.push('/premium'),
@@ -212,12 +214,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: SectionHeader(
-                          title: isPremium
+                          title: showProUi && isPremium
                               ? 'Today\'s AI Plan'
                               : 'Today\'s Sessions',
                         ),
                       ),
-                      if (isPremium)
+                      if (showProUi && isPremium)
                         Padding(
                           padding: EdgeInsets.only(left: 8),
                           child: _AiPlanBadge(),
@@ -226,11 +228,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: AppSpacing.md),
 
-                  if (isPremium)
+                  if (showProUi && isPremium)
                     AiDailyPlanSection()
                   else ...[
-                    AiDailyPlanLockedTeaser(),
-                    SizedBox(height: AppSpacing.md),
+                    if (showProUi) ...[
+                      AiDailyPlanLockedTeaser(),
+                      SizedBox(height: AppSpacing.md),
+                    ],
                     ...state.sessions.asMap().entries.map((entry) {
                       final index = entry.key;
                       final session = entry.value;
@@ -264,14 +268,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       );
                     }),
-                    if (!isPremium) ...[
+                    if (showProUi && !isPremium) ...[
                       SizedBox(height: AppSpacing.sm),
                       MoodSoundLockedTeaser(),
                     ],
                   ],
 
                   // ── Pro: quick access to full library ──────────────
-                  if (isPremium) ...[
+                  if (showProUi && isPremium) ...[
                     SizedBox(height: AppSpacing.lg),
                     _ProgramsCta(onTap: () => context.go('/sessions')),
                   ],
