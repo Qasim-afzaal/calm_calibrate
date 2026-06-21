@@ -45,7 +45,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                 ),
                 SizedBox(height: m.onboardingSectionGap + 4),
                 Text(
-                  'Primary goal',
+                  'Your goals',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -57,8 +57,8 @@ class GoalsRemindersScreen extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: m.sectionGap + 2),
                     child: SelectableChip(
                       label: goal.label,
-                      selected: state.goal == goal,
-                      onTap: () => bloc.add(OnboardingGoalSet(goal)),
+                      selected: state.goals.contains(goal),
+                      onTap: () => bloc.add(OnboardingGoalToggled(goal)),
                       expanded: true,
                     ),
                   ),
