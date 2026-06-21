@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/pro_lock_sheet.dart';
 import 'package:calm_calibrate/data/models/workout_mood.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
@@ -39,12 +40,12 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
 
   void _maybeSuggestMood() {
     if (_service.selectedMood != null || widget.painScore == null) return;
-    if (!SubscriptionRepository.instance.isPremium) return;
+    if (!SubscriptionRepository.instance.hasProAccess) return;
     _service.selectMood(_service.moodForPainScore(widget.painScore!));
   }
 
   Future<void> _onMoodTap(WorkoutMood mood) async {
-    if (!SubscriptionRepository.instance.isPremium) {
+    if (!SubscriptionRepository.instance.hasProAccess) {
       await showProLockSheet(
         context,
         feature: 'Mood soundscapes',
@@ -61,7 +62,10 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
-    final isPremium = SubscriptionRepository.instance.isPremium;
+    final sub = SubscriptionRepository.instance;
+    final isPremium = sub.isPremium;
+    final showProUi = sub.showSubscriptionUi;
+    final hasProAccess = sub.hasProAccess;
     final selected = _service.selectedMood;
 
     return Column(
@@ -80,7 +84,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                 ),
               ),
             ),
-            if (!isPremium)
+            if (showProUi && !isPremium)
               GestureDetector(
                 onTap: () => context.push('/premium'),
                 child: Container(
@@ -111,7 +115,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
         if (!widget.compact) ...[
           SizedBox(height: 4),
           Text(
-            isPremium
+            hasProAccess
                 ? 'We\'ll play a matching soundscape during your session'
                 : 'Pro unlocks mood matched ambient audio',
             style: TextStyle(fontSize: 13, color: c.textSecondary),
@@ -121,7 +125,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
         if (widget.iconRow)
           _MoodIconRow(
             selected: selected,
-            isPremium: isPremium,
+            isPremium: hasProAccess,
             compact: widget.compact,
             onTap: _onMoodTap,
           )
@@ -140,12 +144,12 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                   vertical: widget.compact ? 6 : 8,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected && isPremium
+                  color: isSelected && hasProAccess
                       ? c.primaryLight
                       : c.surface,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isSelected && isPremium
+                    color: isSelected && hasProAccess
                         ? c.primary.withValues(alpha: 0.45)
                         : c.border,
                   ),
@@ -156,7 +160,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                     Icon(
                       mood.icon,
                       size: widget.compact ? 14 : 16,
-                      color: isSelected && isPremium ? c.primary : c.textMuted,
+                      color: isSelected && hasProAccess ? c.primary : c.textMuted,
                     ),
                     SizedBox(width: widget.compact ? 4 : 6),
                     Text(
@@ -164,7 +168,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                       style: TextStyle(
                         fontSize: widget.compact ? 12 : 13,
                         fontWeight: FontWeight.w600,
-                        color: isSelected && isPremium
+                        color: isSelected && hasProAccess
                             ? c.primary
                             : c.textSecondary,
                       ),
@@ -175,10 +179,10 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
             );
           }).toList(),
         ),
-        if (isPremium && selected != null && !widget.iconRow) ...[
+        if (hasProAccess && selected != null && !widget.iconRow) ...[
           SizedBox(height: widget.compact ? 8 : 12),
           _SoundscapePreview(mood: selected),
-        ] else if (!isPremium && !widget.hideTeaser) ...[
+        ] else if (showProUi && !isPremium && !widget.hideTeaser) ...[
           SizedBox(height: widget.compact ? 8 : 12),
           MoodSoundLockedTeaser(),
         ],
@@ -321,6 +325,7 @@ class MoodSoundLockedTeaser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
     return GestureDetector(
       onTap: () => showProLockSheet(
