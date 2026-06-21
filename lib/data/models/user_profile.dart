@@ -7,7 +7,7 @@ class UserProfile extends Equatable {
     this.painAreas = const {},
     this.sittingHours,
     this.preferredBreakTimes = const {},
-    this.goal,
+    this.goals = const {},
     this.reminderMinutes = 45,
     this.smartReminders = true,
     this.onboardingComplete = false,
@@ -20,7 +20,7 @@ class UserProfile extends Equatable {
   final Set<PainArea> painAreas;
   final SittingHours? sittingHours;
   final Set<BreakTime> preferredBreakTimes;
-  final UserGoal? goal;
+  final Set<UserGoal> goals;
   final int reminderMinutes;
   final bool smartReminders;
   final bool onboardingComplete;
@@ -33,7 +33,7 @@ class UserProfile extends Equatable {
     Set<PainArea>? painAreas,
     SittingHours? sittingHours,
     Set<BreakTime>? preferredBreakTimes,
-    UserGoal? goal,
+    Set<UserGoal>? goals,
     int? reminderMinutes,
     bool? smartReminders,
     bool? onboardingComplete,
@@ -46,7 +46,7 @@ class UserProfile extends Equatable {
       painAreas: painAreas ?? this.painAreas,
       sittingHours: sittingHours ?? this.sittingHours,
       preferredBreakTimes: preferredBreakTimes ?? this.preferredBreakTimes,
-      goal: goal ?? this.goal,
+      goals: goals ?? this.goals,
       reminderMinutes: reminderMinutes ?? this.reminderMinutes,
       smartReminders: smartReminders ?? this.smartReminders,
       onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -62,7 +62,7 @@ class UserProfile extends Equatable {
         painAreas,
         sittingHours,
         preferredBreakTimes,
-        goal,
+        goals,
         reminderMinutes,
         smartReminders,
         onboardingComplete,
