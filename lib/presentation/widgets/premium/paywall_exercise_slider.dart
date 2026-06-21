@@ -282,6 +282,7 @@ class _SlideCard extends StatelessWidget {
           Expanded(
             flex: 2,
             child: ExercisePoseAnimation(
+              key: ValueKey(slide.pose.name),
               pose: slide.pose,
               size: poseSize,
             ),
