@@ -943,6 +943,163 @@ class UserBreakTimeRowsCompanion extends UpdateCompanion<UserBreakTimeRow> {
   }
 }
 
+class $UserGoalRowsTable extends UserGoalRows
+    with TableInfo<$UserGoalRowsTable, UserGoalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserGoalRowsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _goalMeta = const VerificationMeta('goal');
+  @override
+  late final GeneratedColumn<String> goal = GeneratedColumn<String>(
+    'goal',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [goal];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_goal_rows';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserGoalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('goal')) {
+      context.handle(
+        _goalMeta,
+        goal.isAcceptableOrUnknown(data['goal']!, _goalMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_goalMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {goal};
+  @override
+  UserGoalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserGoalRow(
+      goal: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}goal'],
+      )!,
+    );
+  }
+
+  @override
+  $UserGoalRowsTable createAlias(String alias) {
+    return $UserGoalRowsTable(attachedDatabase, alias);
+  }
+}
+
+class UserGoalRow extends DataClass implements Insertable<UserGoalRow> {
+  final String goal;
+  const UserGoalRow({required this.goal});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['goal'] = Variable<String>(goal);
+    return map;
+  }
+
+  UserGoalRowsCompanion toCompanion(bool nullToAbsent) {
+    return UserGoalRowsCompanion(goal: Value(goal));
+  }
+
+  factory UserGoalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserGoalRow(goal: serializer.fromJson<String>(json['goal']));
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{'goal': serializer.toJson<String>(goal)};
+  }
+
+  UserGoalRow copyWith({String? goal}) => UserGoalRow(goal: goal ?? this.goal);
+  UserGoalRow copyWithCompanion(UserGoalRowsCompanion data) {
+    return UserGoalRow(goal: data.goal.present ? data.goal.value : this.goal);
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserGoalRow(')
+          ..write('goal: $goal')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => goal.hashCode;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserGoalRow && other.goal == this.goal);
+}
+
+class UserGoalRowsCompanion extends UpdateCompanion<UserGoalRow> {
+  final Value<String> goal;
+  final Value<int> rowid;
+  const UserGoalRowsCompanion({
+    this.goal = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserGoalRowsCompanion.insert({
+    required String goal,
+    this.rowid = const Value.absent(),
+  }) : goal = Value(goal);
+  static Insertable<UserGoalRow> custom({
+    Expression<String>? goal,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (goal != null) 'goal': goal,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserGoalRowsCompanion copyWith({Value<String>? goal, Value<int>? rowid}) {
+    return UserGoalRowsCompanion(
+      goal: goal ?? this.goal,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (goal.present) {
+      map['goal'] = Variable<String>(goal.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserGoalRowsCompanion(')
+          ..write('goal: $goal, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SessionLogRowsTable extends SessionLogRows
     with TableInfo<$SessionLogRowsTable, SessionLogRow> {
   @override
@@ -4226,6 +4383,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $UserBreakTimeRowsTable userBreakTimeRows =
       $UserBreakTimeRowsTable(this);
+  late final $UserGoalRowsTable userGoalRows = $UserGoalRowsTable(this);
   late final $SessionLogRowsTable sessionLogRows = $SessionLogRowsTable(this);
   late final $JourneyMetaRowsTable journeyMetaRows = $JourneyMetaRowsTable(
     this,
@@ -4256,6 +4414,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     userProfileRows,
     userPainAreaRows,
     userBreakTimeRows,
+    userGoalRows,
     sessionLogRows,
     journeyMetaRows,
     journeyCompletedDayRows,
@@ -4832,6 +4991,118 @@ typedef $$UserBreakTimeRowsTableProcessedTableManager =
         >,
       ),
       UserBreakTimeRow,
+      PrefetchHooks Function()
+    >;
+typedef $$UserGoalRowsTableCreateCompanionBuilder =
+    UserGoalRowsCompanion Function({required String goal, Value<int> rowid});
+typedef $$UserGoalRowsTableUpdateCompanionBuilder =
+    UserGoalRowsCompanion Function({Value<String> goal, Value<int> rowid});
+
+class $$UserGoalRowsTableFilterComposer
+    extends Composer<_$AppDatabase, $UserGoalRowsTable> {
+  $$UserGoalRowsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get goal => $composableBuilder(
+    column: $table.goal,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$UserGoalRowsTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserGoalRowsTable> {
+  $$UserGoalRowsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get goal => $composableBuilder(
+    column: $table.goal,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UserGoalRowsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserGoalRowsTable> {
+  $$UserGoalRowsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get goal =>
+      $composableBuilder(column: $table.goal, builder: (column) => column);
+}
+
+class $$UserGoalRowsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserGoalRowsTable,
+          UserGoalRow,
+          $$UserGoalRowsTableFilterComposer,
+          $$UserGoalRowsTableOrderingComposer,
+          $$UserGoalRowsTableAnnotationComposer,
+          $$UserGoalRowsTableCreateCompanionBuilder,
+          $$UserGoalRowsTableUpdateCompanionBuilder,
+          (
+            UserGoalRow,
+            BaseReferences<_$AppDatabase, $UserGoalRowsTable, UserGoalRow>,
+          ),
+          UserGoalRow,
+          PrefetchHooks Function()
+        > {
+  $$UserGoalRowsTableTableManager(_$AppDatabase db, $UserGoalRowsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserGoalRowsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserGoalRowsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserGoalRowsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> goal = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UserGoalRowsCompanion(goal: goal, rowid: rowid),
+          createCompanionCallback:
+              ({
+                required String goal,
+                Value<int> rowid = const Value.absent(),
+              }) => UserGoalRowsCompanion.insert(goal: goal, rowid: rowid),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$UserGoalRowsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserGoalRowsTable,
+      UserGoalRow,
+      $$UserGoalRowsTableFilterComposer,
+      $$UserGoalRowsTableOrderingComposer,
+      $$UserGoalRowsTableAnnotationComposer,
+      $$UserGoalRowsTableCreateCompanionBuilder,
+      $$UserGoalRowsTableUpdateCompanionBuilder,
+      (
+        UserGoalRow,
+        BaseReferences<_$AppDatabase, $UserGoalRowsTable, UserGoalRow>,
+      ),
+      UserGoalRow,
       PrefetchHooks Function()
     >;
 typedef $$SessionLogRowsTableCreateCompanionBuilder =
@@ -6795,6 +7066,8 @@ class $AppDatabaseManager {
       $$UserPainAreaRowsTableTableManager(_db, _db.userPainAreaRows);
   $$UserBreakTimeRowsTableTableManager get userBreakTimeRows =>
       $$UserBreakTimeRowsTableTableManager(_db, _db.userBreakTimeRows);
+  $$UserGoalRowsTableTableManager get userGoalRows =>
+      $$UserGoalRowsTableTableManager(_db, _db.userGoalRows);
   $$SessionLogRowsTableTableManager get sessionLogRows =>
       $$SessionLogRowsTableTableManager(_db, _db.sessionLogRows);
   $$JourneyMetaRowsTableTableManager get journeyMetaRows =>
