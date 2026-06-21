@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/data/calculators/session_progress_calculator.dart';
 import 'package:calm_calibrate/data/local/app_state.dart';
 import 'package:calm_calibrate/data/local/database/app_database.dart';
@@ -285,6 +286,7 @@ class AppCache extends ChangeNotifier {
   }
 
   Future<void> activatePremium({required PremiumPlan plan}) async {
+    if (!SubscriptionFeatures.enabled) return;
     _state.premiumPlan = plan.storageKey;
     _state.premiumSince = DateTime.now();
     _state.profile = _state.profile.copyWith(isPremium: true);
@@ -292,6 +294,7 @@ class AppCache extends ChangeNotifier {
   }
 
   Future<void> deactivatePremium() async {
+    if (!SubscriptionFeatures.enabled) return;
     _state.premiumPlan = null;
     _state.premiumSince = null;
     _state.profile = _state.profile.copyWith(isPremium: false);
