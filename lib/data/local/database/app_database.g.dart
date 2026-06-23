@@ -3918,6 +3918,18 @@ class $AppSettingsRowsTable extends AppSettingsRows
     requiredDuringInsert: false,
     defaultValue: const Constant('system'),
   );
+  static const VerificationMeta _localeCodeMeta = const VerificationMeta(
+    'localeCode',
+  );
+  @override
+  late final GeneratedColumn<String> localeCode = GeneratedColumn<String>(
+    'locale_code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('system'),
+  );
   static const VerificationMeta _workoutMoodMeta = const VerificationMeta(
     'workoutMood',
   );
@@ -3984,6 +3996,7 @@ class $AppSettingsRowsTable extends AppSettingsRows
   List<GeneratedColumn> get $columns => [
     id,
     themeMode,
+    localeCode,
     workoutMood,
     moodSoundEnabled,
     notificationsEnabled,
@@ -4009,6 +4022,12 @@ class $AppSettingsRowsTable extends AppSettingsRows
       context.handle(
         _themeModeMeta,
         themeMode.isAcceptableOrUnknown(data['theme_mode']!, _themeModeMeta),
+      );
+    }
+    if (data.containsKey('locale_code')) {
+      context.handle(
+        _localeCodeMeta,
+        localeCode.isAcceptableOrUnknown(data['locale_code']!, _localeCodeMeta),
       );
     }
     if (data.containsKey('workout_mood')) {
@@ -4073,6 +4092,10 @@ class $AppSettingsRowsTable extends AppSettingsRows
         DriftSqlType.string,
         data['${effectivePrefix}theme_mode'],
       )!,
+      localeCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}locale_code'],
+      )!,
       workoutMood: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}workout_mood'],
@@ -4105,6 +4128,7 @@ class $AppSettingsRowsTable extends AppSettingsRows
 class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
   final int id;
   final String themeMode;
+  final String localeCode;
   final String? workoutMood;
   final bool moodSoundEnabled;
   final bool notificationsEnabled;
@@ -4113,6 +4137,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
   const AppSettingsRow({
     required this.id,
     required this.themeMode,
+    required this.localeCode,
     this.workoutMood,
     required this.moodSoundEnabled,
     required this.notificationsEnabled,
@@ -4124,6 +4149,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['theme_mode'] = Variable<String>(themeMode);
+    map['locale_code'] = Variable<String>(localeCode);
     if (!nullToAbsent || workoutMood != null) {
       map['workout_mood'] = Variable<String>(workoutMood);
     }
@@ -4142,6 +4168,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     return AppSettingsRowsCompanion(
       id: Value(id),
       themeMode: Value(themeMode),
+      localeCode: Value(localeCode),
       workoutMood: workoutMood == null && nullToAbsent
           ? const Value.absent()
           : Value(workoutMood),
@@ -4164,6 +4191,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     return AppSettingsRow(
       id: serializer.fromJson<int>(json['id']),
       themeMode: serializer.fromJson<String>(json['themeMode']),
+      localeCode: serializer.fromJson<String>(json['localeCode']),
       workoutMood: serializer.fromJson<String?>(json['workoutMood']),
       moodSoundEnabled: serializer.fromJson<bool>(json['moodSoundEnabled']),
       notificationsEnabled: serializer.fromJson<bool>(
@@ -4179,6 +4207,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'themeMode': serializer.toJson<String>(themeMode),
+      'localeCode': serializer.toJson<String>(localeCode),
       'workoutMood': serializer.toJson<String?>(workoutMood),
       'moodSoundEnabled': serializer.toJson<bool>(moodSoundEnabled),
       'notificationsEnabled': serializer.toJson<bool>(notificationsEnabled),
@@ -4190,6 +4219,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
   AppSettingsRow copyWith({
     int? id,
     String? themeMode,
+    String? localeCode,
     Value<String?> workoutMood = const Value.absent(),
     bool? moodSoundEnabled,
     bool? notificationsEnabled,
@@ -4198,6 +4228,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
   }) => AppSettingsRow(
     id: id ?? this.id,
     themeMode: themeMode ?? this.themeMode,
+    localeCode: localeCode ?? this.localeCode,
     workoutMood: workoutMood.present ? workoutMood.value : this.workoutMood,
     moodSoundEnabled: moodSoundEnabled ?? this.moodSoundEnabled,
     notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
@@ -4208,6 +4239,9 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     return AppSettingsRow(
       id: data.id.present ? data.id.value : this.id,
       themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
+      localeCode: data.localeCode.present
+          ? data.localeCode.value
+          : this.localeCode,
       workoutMood: data.workoutMood.present
           ? data.workoutMood.value
           : this.workoutMood,
@@ -4231,6 +4265,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
     return (StringBuffer('AppSettingsRow(')
           ..write('id: $id, ')
           ..write('themeMode: $themeMode, ')
+          ..write('localeCode: $localeCode, ')
           ..write('workoutMood: $workoutMood, ')
           ..write('moodSoundEnabled: $moodSoundEnabled, ')
           ..write('notificationsEnabled: $notificationsEnabled, ')
@@ -4244,6 +4279,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
   int get hashCode => Object.hash(
     id,
     themeMode,
+    localeCode,
     workoutMood,
     moodSoundEnabled,
     notificationsEnabled,
@@ -4256,6 +4292,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
       (other is AppSettingsRow &&
           other.id == this.id &&
           other.themeMode == this.themeMode &&
+          other.localeCode == this.localeCode &&
           other.workoutMood == this.workoutMood &&
           other.moodSoundEnabled == this.moodSoundEnabled &&
           other.notificationsEnabled == this.notificationsEnabled &&
@@ -4266,6 +4303,7 @@ class AppSettingsRow extends DataClass implements Insertable<AppSettingsRow> {
 class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
   final Value<int> id;
   final Value<String> themeMode;
+  final Value<String> localeCode;
   final Value<String?> workoutMood;
   final Value<bool> moodSoundEnabled;
   final Value<bool> notificationsEnabled;
@@ -4274,6 +4312,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
   const AppSettingsRowsCompanion({
     this.id = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.localeCode = const Value.absent(),
     this.workoutMood = const Value.absent(),
     this.moodSoundEnabled = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
@@ -4283,6 +4322,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
   AppSettingsRowsCompanion.insert({
     this.id = const Value.absent(),
     this.themeMode = const Value.absent(),
+    this.localeCode = const Value.absent(),
     this.workoutMood = const Value.absent(),
     this.moodSoundEnabled = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
@@ -4292,6 +4332,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
   static Insertable<AppSettingsRow> custom({
     Expression<int>? id,
     Expression<String>? themeMode,
+    Expression<String>? localeCode,
     Expression<String>? workoutMood,
     Expression<bool>? moodSoundEnabled,
     Expression<bool>? notificationsEnabled,
@@ -4301,6 +4342,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (themeMode != null) 'theme_mode': themeMode,
+      if (localeCode != null) 'locale_code': localeCode,
       if (workoutMood != null) 'workout_mood': workoutMood,
       if (moodSoundEnabled != null) 'mood_sound_enabled': moodSoundEnabled,
       if (notificationsEnabled != null)
@@ -4313,6 +4355,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
   AppSettingsRowsCompanion copyWith({
     Value<int>? id,
     Value<String>? themeMode,
+    Value<String>? localeCode,
     Value<String?>? workoutMood,
     Value<bool>? moodSoundEnabled,
     Value<bool>? notificationsEnabled,
@@ -4322,6 +4365,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
     return AppSettingsRowsCompanion(
       id: id ?? this.id,
       themeMode: themeMode ?? this.themeMode,
+      localeCode: localeCode ?? this.localeCode,
       workoutMood: workoutMood ?? this.workoutMood,
       moodSoundEnabled: moodSoundEnabled ?? this.moodSoundEnabled,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
@@ -4338,6 +4382,9 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
     }
     if (themeMode.present) {
       map['theme_mode'] = Variable<String>(themeMode.value);
+    }
+    if (localeCode.present) {
+      map['locale_code'] = Variable<String>(localeCode.value);
     }
     if (workoutMood.present) {
       map['workout_mood'] = Variable<String>(workoutMood.value);
@@ -4362,6 +4409,7 @@ class AppSettingsRowsCompanion extends UpdateCompanion<AppSettingsRow> {
     return (StringBuffer('AppSettingsRowsCompanion(')
           ..write('id: $id, ')
           ..write('themeMode: $themeMode, ')
+          ..write('localeCode: $localeCode, ')
           ..write('workoutMood: $workoutMood, ')
           ..write('moodSoundEnabled: $moodSoundEnabled, ')
           ..write('notificationsEnabled: $notificationsEnabled, ')
@@ -6812,6 +6860,7 @@ typedef $$AppSettingsRowsTableCreateCompanionBuilder =
     AppSettingsRowsCompanion Function({
       Value<int> id,
       Value<String> themeMode,
+      Value<String> localeCode,
       Value<String?> workoutMood,
       Value<bool> moodSoundEnabled,
       Value<bool> notificationsEnabled,
@@ -6822,6 +6871,7 @@ typedef $$AppSettingsRowsTableUpdateCompanionBuilder =
     AppSettingsRowsCompanion Function({
       Value<int> id,
       Value<String> themeMode,
+      Value<String> localeCode,
       Value<String?> workoutMood,
       Value<bool> moodSoundEnabled,
       Value<bool> notificationsEnabled,
@@ -6845,6 +6895,11 @@ class $$AppSettingsRowsTableFilterComposer
 
   ColumnFilters<String> get themeMode => $composableBuilder(
     column: $table.themeMode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -6893,6 +6948,11 @@ class $$AppSettingsRowsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get workoutMood => $composableBuilder(
     column: $table.workoutMood,
     builder: (column) => ColumnOrderings(column),
@@ -6933,6 +6993,11 @@ class $$AppSettingsRowsTableAnnotationComposer
 
   GeneratedColumn<String> get themeMode =>
       $composableBuilder(column: $table.themeMode, builder: (column) => column);
+
+  GeneratedColumn<String> get localeCode => $composableBuilder(
+    column: $table.localeCode,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get workoutMood => $composableBuilder(
     column: $table.workoutMood,
@@ -6999,6 +7064,7 @@ class $$AppSettingsRowsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
+                Value<String> localeCode = const Value.absent(),
                 Value<String?> workoutMood = const Value.absent(),
                 Value<bool> moodSoundEnabled = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
@@ -7007,6 +7073,7 @@ class $$AppSettingsRowsTableTableManager
               }) => AppSettingsRowsCompanion(
                 id: id,
                 themeMode: themeMode,
+                localeCode: localeCode,
                 workoutMood: workoutMood,
                 moodSoundEnabled: moodSoundEnabled,
                 notificationsEnabled: notificationsEnabled,
@@ -7017,6 +7084,7 @@ class $$AppSettingsRowsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> themeMode = const Value.absent(),
+                Value<String> localeCode = const Value.absent(),
                 Value<String?> workoutMood = const Value.absent(),
                 Value<bool> moodSoundEnabled = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
@@ -7025,6 +7093,7 @@ class $$AppSettingsRowsTableTableManager
               }) => AppSettingsRowsCompanion.insert(
                 id: id,
                 themeMode: themeMode,
+                localeCode: localeCode,
                 workoutMood: workoutMood,
                 moodSoundEnabled: moodSoundEnabled,
                 notificationsEnabled: notificationsEnabled,
