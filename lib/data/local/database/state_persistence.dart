@@ -89,6 +89,7 @@ class StatePersistence {
       moodSoundEnabled: settingsRow.moodSoundEnabled,
       notificationsEnabled: settingsRow.notificationsEnabled,
       themeMode: settingsRow.themeMode,
+      localeCode: settingsRow.localeCode,
     );
   }
 
@@ -247,6 +248,7 @@ class StatePersistence {
             AppSettingsRowsCompanion.insert(
               id: const Value(_singletonId),
               themeMode: Value(state.themeMode),
+              localeCode: Value(state.localeCode),
               workoutMood: Value(state.workoutMood),
               moodSoundEnabled: Value(state.moodSoundEnabled),
               notificationsEnabled: Value(state.notificationsEnabled),
