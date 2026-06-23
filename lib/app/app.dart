@@ -3,6 +3,8 @@ import 'package:calm_calibrate/core/theme/app_theme.dart';
 import 'package:calm_calibrate/core/theme/app_typography.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:calm_calibrate/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CalmCalibrateApp extends StatefulWidget {
   const CalmCalibrateApp({super.key});
@@ -14,6 +16,8 @@ class CalmCalibrateApp extends StatefulWidget {
 class _CalmCalibrateAppState extends State<CalmCalibrateApp> {
   late final _router = createRouter();
   late ThemeMode _themeMode = AppCache.instance.themeMode;
+  late Locale? _locale = AppCache.instance.locale;
+  late String _localeCode = AppCache.instance.localeCode;
 
   @override
   void initState() {
@@ -30,9 +34,17 @@ class _CalmCalibrateAppState extends State<CalmCalibrateApp> {
   }
 
   void _onCacheChanged() {
-    final next = AppCache.instance.themeMode;
-    if (next != _themeMode) {
-      setState(() => _themeMode = next);
+    final nextTheme = AppCache.instance.themeMode;
+    final nextLocale = AppCache.instance.locale;
+    final nextLocaleCode = AppCache.instance.localeCode;
+    if (nextTheme != _themeMode ||
+        nextLocale != _locale ||
+        nextLocaleCode != _localeCode) {
+      setState(() {
+        _themeMode = nextTheme;
+        _locale = nextLocale;
+        _localeCode = nextLocaleCode;
+      });
     }
   }
 
@@ -44,6 +56,14 @@ class _CalmCalibrateAppState extends State<CalmCalibrateApp> {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: _themeMode,
+      locale: _locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _router,
       builder: (context, child) {
         final mq = MediaQuery.of(context);
