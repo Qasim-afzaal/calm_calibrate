@@ -1,5 +1,7 @@
 import 'package:calm_calibrate/core/constants/app_spacing.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
@@ -68,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
@@ -77,6 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             final engagement = EngagementRepository.instance;
+            final journeyDay = engagement.todayPlan == null
+                ? null
+                : localizeJourneyDay(l10n, engagement.todayPlan!);
             final sub = SubscriptionRepository.instance;
             final isPremium = sub.isPremium;
             final showProUi = sub.showSubscriptionUi;
@@ -107,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${state.greeting},',
+                                '${homeGreeting(l10n)},',
                                 style: TextStyle(
                                   color: c.textSecondary,
                                   fontSize: 16,
@@ -158,9 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       JourneyDayCard(
                         day: engagement.currentDay,
-                        goal: engagement.todayPlan?.goal ?? 'Stay consistent',
-                        action: engagement.todayPlan?.action ??
-                            'Complete a desk break today',
+                        goal: journeyDay?.goal ?? l10n.journeyDefaultGoal,
+                        action: journeyDay?.action ?? l10n.journeyDefaultAction,
                         streakDays: state.profile.streakDays,
                         onTap: () => context.push('/journey'),
                       ),
@@ -174,8 +179,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       SmartBreakCard(
                         minutesUntilBreak: state.nextBreakMinutes,
                         isPremium: showProUi && isPremium,
-                        aiHint: posture != null
-                            ? 'AI picked for your ${posture.issues.first.toLowerCase()}'
+                        aiHint: posture != null && posture.issues.isNotEmpty
+                            ? l10n.aiPickedForIssue(
+                                posture.issues.first.toLowerCase(),
+                              )
                             : null,
                         onTap: () {
                           if (hasProAccess) {
@@ -183,10 +190,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           } else {
                             showProLockSheet(
                               context,
-                              feature: 'Smart Break reminders',
-                              benefit:
-                                  'Pro times breaks from your posture & sitting pattern. '
-                                  'AI picks the right 90 sec reset when you need it.',
+                              feature: l10n.proLockSmartBreakFeature,
+                              benefit: l10n.proLockSmartBreakBenefit,
                             );
                           }
                         },
@@ -195,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // ── Pro: all 6 paywall features ─────────────────
                       if (showProUi && isPremium) ...[
                         SizedBox(height: AppSpacing.lg),
-                        SectionHeader(title: 'Your Pro features'),
+                        SectionHeader(title: l10n.yourProFeatures),
                         SizedBox(height: AppSpacing.md),
                         ProFeatureGrid(),
                       ] else if (showProUi) ...[
@@ -215,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: SectionHeader(
                           title: showProUi && isPremium
-                              ? 'Today\'s AI Plan'
-                              : 'Today\'s Sessions',
+                              ? l10n.todaysAiPlan
+                              : l10n.todaysSessions,
                         ),
                       ),
                       if (showProUi && isPremium)
@@ -237,7 +242,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                     ...state.sessions.asMap().entries.map((entry) {
                       final index = entry.key;
-                      final session = entry.value;
+                      final session =
+                          localizeSession(l10n, entry.value);
                       final locked = !sub.canAccessDailySession(index);
                       return Padding(
                         padding: EdgeInsets.only(bottom: AppSpacing.sm),
@@ -254,11 +260,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               if (locked) {
                                 showProLockSheet(
                                   context,
-                                  feature: 'Extra daily sessions',
-                                  benefit:
-                                      'Free plan includes 1 session per day. '
-                                      'Pro unlocks your full AI plan: morning, '
-                                      'midday & evening breaks.',
+                                  feature: l10n.proLockExtraSessionsFeature,
+                                  benefit: l10n.proLockExtraSessionsBenefit,
                                 );
                               } else {
                                 context.push('/pre-workout/${session.id}');
@@ -299,6 +302,7 @@ class _ProBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
@@ -306,7 +310,7 @@ class _ProBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
-        'PRO',
+        l10n.proBadge,
         style: TextStyle(
           color: Colors.white,
           fontSize: 10,
@@ -323,6 +327,7 @@ class _AiPlanBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -335,7 +340,7 @@ class _AiPlanBadge extends StatelessWidget {
           Icon(Icons.auto_awesome, size: 14, color: c.primary),
           SizedBox(width: 4),
           Text(
-            'AI',
+            l10n.aiBadge,
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -362,6 +367,7 @@ class _ProStatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Row(
       children: [
         if (postureScore != null)
@@ -384,7 +390,7 @@ class _ProStatusBar extends StatelessWidget {
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Posture $postureScore/100',
+                        l10n.postureScoreLabel(postureScore!),
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
@@ -412,7 +418,7 @@ class _ProStatusBar extends StatelessWidget {
             border: Border.all(color: c.border),
           ),
           child: Text(
-            '$trialDaysLeft d trial',
+            l10n.trialDaysShort(trialDaysLeft),
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -433,6 +439,7 @@ class _ProgramsCta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Material(
       color: c.navy,
       borderRadius: BorderRadius.circular(14),
@@ -460,14 +467,14 @@ class _ProgramsCta extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Browse 50+ programs',
+                      l10n.browseProgramsTitle,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     Text(
-                      'Neck, back, hips & more. All unlocked',
+                      l10n.browseProgramsSubtitle,
                       style: TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                   ],
@@ -490,6 +497,7 @@ class _UpgradeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return ScaleTap(
       onTap: onTap,
       child: Container(
@@ -530,7 +538,7 @@ class _UpgradeBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Unlock Pro',
+                    l10n.unlockProTitle,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
@@ -539,7 +547,7 @@ class _UpgradeBanner extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    'AI posture · mood sounds · 50+ programs',
+                    l10n.unlockProSubtitle,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.68),
                       fontSize: 13,
