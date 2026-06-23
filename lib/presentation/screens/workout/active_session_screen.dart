@@ -1,4 +1,7 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
@@ -39,11 +42,22 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return BlocListener<WorkoutBloc, WorkoutState>(
-      listenWhen: (prev, curr) => prev.status != curr.status,
+      listenWhen: (prev, curr) =>
+          prev.currentStepIndex != curr.currentStepIndex ||
+          prev.status != curr.status,
       listener: (context, state) {
         if (state.status == WorkoutStatus.completed) {
           context.go('/workout/${widget.sessionId}/complete');
+          return;
+        }
+        final step = state.currentStep;
+        if (step != null) {
+          AppLogger.debug(
+            'active_session',
+            'step ${state.currentStepIndex + 1} pose=${step.pose.name}',
+          );
         }
       },
       child: Scaffold(
@@ -65,7 +79,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                 context.pop();
               },
               child: Text(
-                'Skip',
+                l10n.skip,
                 style: TextStyle(
                   color: c.primary,
                   fontWeight: FontWeight.w700,
@@ -81,8 +95,12 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
+            final localizedStep = localizeStep(l10n, step);
             final bloc = context.read<WorkoutBloc>();
-            final soundscape = MoodSoundService.instance.activeSoundscapeLabel();
+            final mood = MoodSoundService.instance.selectedMood;
+            final soundscape = mood != null
+                ? localizedMoodSoundscape(l10n, mood)
+                : MoodSoundService.instance.activeSoundscapeLabel();
             final sm = context.metrics;
             final totalSteps = state.session!.steps.length;
             final stepProgress = state.currentStepIndex / totalSteps;
@@ -140,7 +158,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      step.name,
+                                      localizedStep.name,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: sm.isCompact ? 20 : 22,
@@ -162,7 +180,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                                     ),
                                     SizedBox(height: sm.sectionGap + 6),
                                     Text(
-                                      step.instruction,
+                                      localizedStep.instruction,
                                       textAlign: TextAlign.center,
                                       maxLines: 4,
                                       overflow: TextOverflow.ellipsis,
@@ -192,7 +210,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                       children: [
                         Expanded(
                           child: AppButton(
-                            label: 'Previous',
+                            label: l10n.previous,
                             variant: AppButtonVariant.outlined,
                             onPressed: state.currentStepIndex > 0
                                 ? () => bloc.add(const WorkoutPreviousStepRequested())
@@ -204,8 +222,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                           flex: 2,
                           child: AppButton(
                             label: state.status == WorkoutStatus.paused
-                                ? 'Resume'
-                                : 'Pause',
+                                ? l10n.resume
+                                : l10n.pause,
                             onPressed: () {
                               if (state.status == WorkoutStatus.paused) {
                                 bloc.add(const WorkoutResumed());
@@ -218,7 +236,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: AppButton(
-                            label: 'Next',
+                            label: l10n.next,
                             variant: AppButtonVariant.outlined,
                             onPressed: () => bloc.add(const WorkoutNextStepRequested()),
                           ),
@@ -227,8 +245,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                     ),
                     const SizedBox(height: 12),
                     _TipCard(
-                      tip: step.tip ??
-                          'Tip: Breathe out as you stretch. Never force pain.',
+                      tip: localizedStep.tip ?? l10n.defaultStretchTip,
                     ),
                     SizedBox(height: sm.onboardingBottomGap),
                   ],
@@ -250,6 +267,7 @@ class _SoundscapeBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -264,7 +282,7 @@ class _SoundscapeBanner extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Playing: $label',
+              l10n.playingSoundscape(label),
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -296,6 +314,7 @@ class _StepProgressHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Column(
       children: [
         Row(
@@ -321,7 +340,7 @@ class _StepProgressHeader extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          'Step $current of $total',
+          l10n.stepProgress(current, total),
           style: TextStyle(
             fontSize: 13,
             color: c.textMuted,
