@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
+import 'package:calm_calibrate/core/l10n/app_locales.dart';
 import 'package:calm_calibrate/data/calculators/session_progress_calculator.dart';
 import 'package:calm_calibrate/data/local/app_state.dart';
 import 'package:calm_calibrate/data/local/database/app_database.dart';
@@ -204,6 +206,7 @@ class AppCache extends ChangeNotifier {
   Future<void> saveProfile(UserProfile profile) async {
     _state.profile = profile;
     await persist();
+    AppLogger.debug('cache', 'saveProfile name=${profile.displayName}');
     await _syncReminders();
   }
 
@@ -222,6 +225,7 @@ class AppCache extends ChangeNotifier {
 
   Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas}) async {
     _touchActivity();
+    AppLogger.debug('cache', 'logSession id=${log.sessionId}');
     _state.sessionLogs = [..._state.sessionLogs, log];
     if (focusAreas != null && _state.mobilityScore != null) {
       _state.mobilityScore = SessionProgressCalculator.applySession(
@@ -282,6 +286,20 @@ class AppCache extends ChangeNotifier {
       ThemeMode.dark => 'dark',
       ThemeMode.system => 'system',
     };
+    await persist();
+  }
+
+  String get localeCode => _state.localeCode;
+
+  /// `null` means follow the device locale.
+  Locale? get locale {
+    final code = _state.localeCode;
+    if (code == localeSystemCode) return null;
+    return appLocaleOptionForCode(code)?.locale;
+  }
+
+  Future<void> setLocaleCode(String code) async {
+    _state.localeCode = code;
     await persist();
   }
 
