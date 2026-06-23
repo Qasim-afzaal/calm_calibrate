@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _MainShellState extends State<MainShell> {
     debugPrint('[CalmCalibrate] main_shell loaded'); // auth-check-debug
     final c = context.appColors;
     final compact = context.metrics.isCompactWidth;
+    final l10n = context.l10n;
 
     return Scaffold(
       body: widget.navigationShell,
@@ -39,22 +41,22 @@ class _MainShellState extends State<MainShell> {
             NavigationDestination(
               icon: Icon(Icons.home_outlined),
               selectedIcon: Icon(Icons.home),
-              label: 'Home',
+              label: l10n.navHome,
             ),
             NavigationDestination(
               icon: Icon(Icons.show_chart_outlined),
               selectedIcon: Icon(Icons.show_chart),
-              label: 'Progress',
+              label: l10n.navProgress,
             ),
             NavigationDestination(
               icon: Icon(Icons.fitness_center_outlined),
               selectedIcon: Icon(Icons.fitness_center),
-              label: 'Sessions',
+              label: l10n.navSessions,
             ),
             NavigationDestination(
               icon: Icon(Icons.person_outline),
               selectedIcon: Icon(Icons.person),
-              label: 'Profile',
+              label: l10n.navProfile,
             ),
           ],
         ),
