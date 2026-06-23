@@ -2,6 +2,8 @@ import 'package:calm_calibrate/core/branding/app_logo.dart';
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/constants/app_durations.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/app_locales.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
@@ -18,6 +20,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('[CalmCalibrate] profile_screen loaded'); // auth-check-debug
+    final l10n = context.l10n;
     return ListenableBuilder(
       listenable: AppCache.instance,
       builder: (context, _) {
@@ -34,43 +37,52 @@ class ProfileScreen extends StatelessWidget {
               icon: isPremium
                   ? Icons.workspace_premium
                   : Icons.workspace_premium_outlined,
-              title: isPremium ? 'Pro subscription' : 'Upgrade to Pro',
+              title: isPremium ? l10n.proSubscription : l10n.upgradeToPro,
               subtitle: isPremium
                   ? '${SubscriptionRepository.instance.plan?.label ?? 'Trial'} · ${SubscriptionRepository.instance.trialDaysLeft}d trial left'
-                  : 'AI plans, posture scan & full library',
+                  : l10n.proBenefitsSubtitle,
               onTap: () => isPremium
                   ? _showProManageSheet(context)
                   : context.push('/premium'),
             ),
           _SettingsTileData(
+            icon: Icons.language_outlined,
+            title: l10n.language,
+            subtitle: appLocaleDisplayName(
+              AppCache.instance.localeCode,
+              l10n,
+            ),
+            onTap: () => _showLanguageSheet(context),
+          ),
+          _SettingsTileData(
             icon: Icons.dark_mode_outlined,
-            title: 'Appearance',
-            subtitle: _themeLabel(AppCache.instance.themeMode),
+            title: l10n.appearance,
+            subtitle: _themeLabel(context, AppCache.instance.themeMode),
             onTap: () => _showAppearanceSheet(context),
           ),
           _SettingsTileData(
             icon: Icons.notifications_outlined,
-            title: 'Reminders',
-            subtitle: 'Every ${profile.reminderMinutes} min',
+            title: l10n.reminders,
+            subtitle: l10n.remindersEveryMinutes(profile.reminderMinutes),
             onTap: () => context.push('/settings/reminders'),
           ),
           _SettingsTileData(
             icon: Icons.map_outlined,
-            title: '30 Day Journey',
-            subtitle: 'See your full program',
+            title: l10n.journeyTitle,
+            subtitle: l10n.journeySubtitle,
             onTap: () => context.push('/journey'),
           ),
           _SettingsTileData(
             icon: Icons.emoji_events_outlined,
-            title: 'Achievements',
-            subtitle: 'Badges and milestones',
+            title: l10n.achievements,
+            subtitle: l10n.achievementsSubtitle,
             onTap: () => context.push('/achievements'),
           ),
           if (AiFeatures.cameraScanEnabled)
             _SettingsTileData(
               icon: Icons.replay,
-              title: 'Retake Assessment',
-              subtitle: 'Update your mobility score',
+              title: l10n.retakeAssessment,
+              subtitle: l10n.retakeAssessmentSubtitle,
               onTap: () => context.push('/onboarding/assessment'),
             ),
         ];
@@ -87,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: m.stackSpacing),
                     FadeSlideIn(
                       child: Text(
-                        'Profile',
+                        l10n.profileTitle,
                         style: m.headlineStyle(Theme.of(context).textTheme),
                       ),
                     ),
@@ -119,6 +131,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _showProManageSheet(BuildContext context) {
+    final l10n = context.l10n;
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -151,21 +164,23 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Pro subscription',
+                  l10n.proSubscription,
                   style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
                 SizedBox(height: 4),
                 Text(
-                  '${SubscriptionRepository.instance.trialDaysLeft} trial days remaining',
+                  l10n.trialDaysLeft(
+                    SubscriptionRepository.instance.trialDaysLeft,
+                  ),
                   style: TextStyle(color: c.textSecondary),
                 ),
                 SizedBox(height: 20),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.star_outline, color: c.primary),
-                  title: Text('View Pro benefits'),
+                  title: Text(l10n.viewProBenefits),
                   trailing: Icon(Icons.chevron_right),
                   onTap: () {
                     Navigator.pop(ctx);
@@ -175,8 +190,8 @@ class ProfileScreen extends StatelessWidget {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(Icons.cancel_outlined, color: c.primary),
-                  title: Text('Cancel free trial'),
-                  subtitle: Text('Return to free plan'),
+                  title: Text(l10n.cancelFreeTrial),
+                  subtitle: Text(l10n.returnToFreePlan),
                   onTap: () async {
                     Navigator.pop(ctx);
                     await cancelPremiumSubscription(context);
@@ -190,13 +205,93 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  String _themeLabel(ThemeMode mode) => switch (mode) {
-        ThemeMode.light => 'Light',
-        ThemeMode.dark => 'Dark',
-        ThemeMode.system => 'System',
-      };
+  String _themeLabel(BuildContext context, ThemeMode mode) {
+    final l10n = context.l10n;
+    return switch (mode) {
+      ThemeMode.light => l10n.themeLight,
+      ThemeMode.dark => l10n.themeDark,
+      ThemeMode.system => l10n.themeSystem,
+    };
+  }
+
+  void _showLanguageSheet(BuildContext context) {
+    final l10n = context.l10n;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        final c = ctx.appColors;
+        final current = AppCache.instance.localeCode;
+        final sheetM = ctx.metrics;
+        final listMaxHeight = MediaQuery.sizeOf(ctx).height * 0.52;
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              sheetM.horizontalPadding,
+              12,
+              sheetM.horizontalPadding,
+              sheetM.onboardingBottomGap,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: c.border,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  l10n.language,
+                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                SizedBox(height: 8),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: listMaxHeight),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      for (final option in appLocaleOptions)
+                        _ThemeOption(
+                          label: option.code == localeSystemCode
+                              ? appLocaleDisplayName(option.code, l10n)
+                              : '${appLocaleDisplayName(option.code, l10n)} · ${option.nativeName}',
+                          icon: Icons.translate,
+                          selected: current == option.code,
+                          onTap: () async {
+                            await AppCache.instance.setLocaleCode(option.code);
+                            if (ctx.mounted) Navigator.pop(ctx);
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  l10n.languageHint,
+                  style: TextStyle(color: c.textSecondary, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void _showAppearanceSheet(BuildContext context) {
+    final l10n = context.l10n;
     showModalBottomSheet<void>(
       context: context,
       shape: RoundedRectangleBorder(
@@ -219,14 +314,14 @@ class ProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Appearance',
+                  l10n.appearance,
                   style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
                 SizedBox(height: 8),
                 _ThemeOption(
-                  label: 'System default',
+                  label: l10n.systemDefault,
                   icon: Icons.brightness_auto,
                   selected: current == ThemeMode.system,
                   onTap: () async {
@@ -235,7 +330,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                 ),
                 _ThemeOption(
-                  label: 'Light',
+                  label: l10n.themeLight,
                   icon: Icons.light_mode_outlined,
                   selected: current == ThemeMode.light,
                   onTap: () async {
@@ -244,7 +339,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                 ),
                 _ThemeOption(
-                  label: 'Dark',
+                  label: l10n.themeDark,
                   icon: Icons.dark_mode_outlined,
                   selected: current == ThemeMode.dark,
                   onTap: () async {
@@ -254,7 +349,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Choose how CalmCalibrate looks on this device.',
+                  l10n.appearanceHint,
                   style: TextStyle(color: c.textSecondary, fontSize: 13),
                 ),
               ],
