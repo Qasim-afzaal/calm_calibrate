@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/ai_weekly_insight_section.dart';
@@ -62,6 +64,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<ProgressBloc, ProgressState>(
@@ -72,7 +75,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
             final weekly = state.weeklyProgress;
             if (weekly == null) {
-              return Center(child: Text('No progress data yet'));
+              return Center(child: Text(l10n.noProgressDataYet));
             }
 
             return RefreshIndicator(
@@ -86,15 +89,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
               children: [
                 SizedBox(height: m.stackSpacing),
                 Text(
-                  'Weekly Progress',
+                  l10n.weeklyProgressTitle,
                   style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
                 SizedBox(height: m.onboardingTitleGap),
                 Text(
                   weekly.totalSessions == 0
-                      ? 'Complete your first session to start tracking.'
-                      : '${weekly.totalSessions} sessions · ${weekly.totalMinutes} min total'
-                          '${weekly.averageRelief > 0 ? ' · avg relief +${weekly.averageRelief.toStringAsFixed(1)}' : ''}',
+                      ? l10n.weeklyProgressEmptyHint
+                      : '${l10n.weeklyProgressSummary(weekly.totalSessions, weekly.totalMinutes)}'
+                          '${weekly.averageRelief > 0 ? ' · ${l10n.weeklyProgressAvgRelief(weekly.averageRelief.round())}' : ''}',
                   style: TextStyle(color: c.textSecondary),
                 ),
                 SizedBox(height: m.onboardingSectionGap),
@@ -177,14 +180,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Before', style: TextStyle(color: c.textMuted)),
+                    Text(l10n.beforeLabel, style: TextStyle(color: c.textMuted)),
                     SizedBox(width: 40),
-                    Text('Now', style: TextStyle(color: c.textMuted)),
+                    Text(l10n.nowLabel, style: TextStyle(color: c.textMuted)),
                   ],
                 ),
                 SizedBox(height: 28),
                 Text(
-                  'Area improvements',
+                  l10n.areaImprovementsTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -194,7 +197,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 ...weekly.areaImprovements.entries.map(
                   (e) => Padding(
                     padding: EdgeInsets.only(bottom: 10),
-                    child: _ImprovementRow(area: e.key, percent: e.value),
+                    child: _ImprovementRow(
+                      area: localizedPainAreaFromLabel(l10n, e.key),
+                      percent: e.value,
+                    ),
                   ),
                 ),
                 SizedBox(height: 28),
@@ -228,6 +234,7 @@ class _ImprovementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -244,7 +251,7 @@ class _ImprovementRow extends StatelessWidget {
             ),
           ),
           Text(
-            '+$percent%',
+            l10n.improvementPercent(percent),
             style: TextStyle(
               fontWeight: FontWeight.w700,
               color: c.success,
