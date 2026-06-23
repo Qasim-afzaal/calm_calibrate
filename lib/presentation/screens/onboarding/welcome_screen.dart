@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('[CalmCalibrate] welcome_screen loaded'); // auth-check-debug
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       body: SafeArea(
         child: ResponsiveContent(
@@ -23,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
                 FadeSlideIn(
                   delay: const Duration(milliseconds: 100),
                   child: Text(
-                    'Move better\nat work',
+                    l10n.welcomeTitle,
                     textAlign: TextAlign.center,
                     style: m.headlineLargeStyle(Theme.of(context).textTheme),
                   ),
@@ -32,8 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                 FadeSlideIn(
                   delay: const Duration(milliseconds: 180),
                   child: Text(
-                    'Relieve stiffness, fix posture, and feel energized '
-                    'with 90 second desk breaks made for you.',
+                    l10n.welcomeSubtitle,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -42,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                 FadeSlideIn(
                   delay: const Duration(milliseconds: 260),
                   child: AppButton(
-                    label: 'Get Started',
+                    label: l10n.getStarted,
                     icon: Icons.arrow_forward_rounded,
                     onPressed: () => context.push('/onboarding/pain'),
                   ),
