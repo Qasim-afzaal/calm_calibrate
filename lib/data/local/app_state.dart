@@ -27,6 +27,7 @@ class AppState {
     this.moodSoundEnabled = true,
     this.notificationsEnabled = false,
     this.themeMode = 'system',
+    this.localeCode = 'system',
   });
 
   UserProfile profile;
@@ -50,6 +51,7 @@ class AppState {
   bool moodSoundEnabled;
   bool notificationsEnabled;
   String themeMode;
+  String localeCode;
 
   static String todayKey() {
     final n = DateTime.now();
@@ -81,6 +83,7 @@ class AppState {
         'moodSoundEnabled': moodSoundEnabled,
         'notificationsEnabled': notificationsEnabled,
         'themeMode': themeMode,
+        'localeCode': localeCode,
       };
 
   factory AppState.fromJson(Map<String, dynamic> json) {
@@ -125,6 +128,7 @@ class AppState {
       moodSoundEnabled: json['moodSoundEnabled'] as bool? ?? true,
       notificationsEnabled: json['notificationsEnabled'] as bool? ?? false,
       themeMode: json['themeMode'] as String? ?? 'system',
+      localeCode: json['localeCode'] as String? ?? 'system',
     );
   }
 
