@@ -1,4 +1,8 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
 import 'package:calm_calibrate/core/widgets/cards/session_card.dart';
@@ -25,6 +29,7 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
 
     debugPrint('[CalmCalibrate] sessions_library loaded'); // auth-check-debug
     final c = context.appColors;
+    final l10n = context.l10n;
     final profile = MockUserRepository.instance.profile;
     final repo = MockSessionRepository.instance;
     final daily = repo.getTodaySessions(profile);
@@ -50,14 +55,14 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
           children: [
             SizedBox(height: m.stackSpacing),
             Text(
-              'Sessions',
+              l10n.sessionsTitle,
               style: m.headlineStyle(Theme.of(context).textTheme),
             ),
             SizedBox(height: m.onboardingTitleGap),
             Text(
               hasProAccess
-                  ? 'Pro library unlocked · programs by area'
-                  : 'Programs by pain area at your desk',
+                  ? l10n.sessionsSubtitlePro
+                  : l10n.sessionsSubtitleFree,
               style: TextStyle(color: c.textSecondary),
             ),
             SizedBox(
@@ -66,15 +71,18 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   _AreaFilterChip(
-                    label: 'All',
+                    label: l10n.filterAll,
                     selected: _filter == null,
                     onTap: () => setState(() => _filter = null),
                   ),
                   ...PainArea.values.map(
                     (a) => _AreaFilterChip(
-                      label: a.label,
+                      label: a.localized(l10n),
                       selected: _filter == a,
-                      onTap: () => setState(() => _filter = a),
+                      onTap: () {
+                      AppLogger.debug('sessions_library', 'filter=${a.label}');
+                      setState(() => _filter = a);
+                    },
                     ),
                   ),
                   const SizedBox(width: 4),
@@ -83,39 +91,43 @@ class _SessionsLibraryScreenState extends State<SessionsLibraryScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Today\'s plan',
+              l10n.todaysPlan,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
             const SizedBox(height: 12),
             ...visibleDaily.map(
-              (s) => Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: SessionCard(
-                  icon: s.icon,
-                  title: s.title,
-                  subtitle: s.subtitle,
-                  durationMinutes: s.durationMinutes,
-                  isCompleted: s.isCompleted,
-                  onTap: () => context.push('/pre-workout/${s.id}'),
-                ),
-              ),
+              (s) {
+                final session = localizeSession(l10n, s);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: SessionCard(
+                    icon: session.icon,
+                    title: session.title,
+                    subtitle: session.subtitle,
+                    durationMinutes: session.durationMinutes,
+                    isCompleted: session.isCompleted,
+                    onTap: () => context.push('/pre-workout/${s.id}'),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 20),
             Text(
-              'All programs',
+              l10n.allPrograms,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
             const SizedBox(height: 12),
             ...programs.map(
               (s) {
+                final session = localizeSession(l10n, s);
                 final locked = !hasProAccess;
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: SessionCard(
-                    icon: s.icon,
-                    title: s.title,
-                    subtitle: s.subtitle,
-                    durationMinutes: s.durationMinutes,
+                    icon: session.icon,
+                    title: session.title,
+                    subtitle: session.subtitle,
+                    durationMinutes: session.durationMinutes,
                     isLocked: locked,
                     onTap: () {
                       if (locked) {
