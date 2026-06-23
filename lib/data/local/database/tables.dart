@@ -136,6 +136,7 @@ class AiDailyPlanRows extends Table {
 class AppSettingsRows extends Table {
   IntColumn get id => integer()();
   TextColumn get themeMode => text().withDefault(const Constant('system'))();
+  TextColumn get localeCode => text().withDefault(const Constant('system'))();
   TextColumn get workoutMood => text().nullable()();
   BoolColumn get moodSoundEnabled =>
       boolean().withDefault(const Constant(true))();
