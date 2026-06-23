@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_event.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_state.dart';
@@ -38,6 +39,7 @@ import 'package:calm_calibrate/presentation/screens/settings/reminders_settings_
 import 'package:calm_calibrate/presentation/screens/shell/main_shell.dart';
 import 'package:calm_calibrate/presentation/screens/workout/active_session_screen.dart';
 import 'package:calm_calibrate/presentation/screens/workout/session_complete_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -48,6 +50,7 @@ GoRouter createRouter() {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/splash',
+    debugLogDiagnostics: kDebugMode,
     routes: [
       GoRoute(
         path: '/splash',
