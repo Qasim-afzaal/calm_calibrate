@@ -1,0 +1,624 @@
+{
+  "@@locale": "en",
+  "appTitle": "CalmCalibrate",
+  "navHome": "Home",
+  "navProgress": "Progress",
+  "navSessions": "Sessions",
+  "navProfile": "Profile",
+  "continueButton": "Continue",
+  "getStarted": "Get Started",
+  "back": "Back",
+  "done": "Done",
+  "skip": "Skip",
+  "close": "Close",
+  "save": "Save",
+  "cancel": "Cancel",
+  "welcomeTitle": "Move better\nat work",
+  "welcomeSubtitle": "Relieve stiffness, fix posture, and feel energized with 90 second desk breaks made for you.",
+  "painSelectorTitle": "Where does sitting hurt?",
+  "goalsRemindersTitle": "Goals & reminders",
+  "goalsRemindersSubtitle": "We'll nudge you at the right time, never during meetings.",
+  "yourGoals": "Your goals",
+  "reminderFrequency": "Reminder frequency",
+  "reminderMinutesLabel": "{minutes} min",
+  "@reminderMinutesLabel": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "smartReminders": "Smart reminders",
+  "smartRemindersHint": "Skip nudges when you're in a meeting or on a call.",
+  "profileTitle": "Profile",
+  "appearance": "Appearance",
+  "appearanceHint": "Choose how CalmCalibrate looks on this device.",
+  "language": "Language",
+  "languageHint": "App display language",
+  "systemDefault": "System default",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System",
+  "reminders": "Reminders",
+  "remindersEveryMinutes": "Every {minutes} min",
+  "@remindersEveryMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyTitle": "30 Day Journey",
+  "journeySubtitle": "See your full program",
+  "achievements": "Achievements",
+  "achievementsSubtitle": "Badges and milestones",
+  "retakeAssessment": "Retake Assessment",
+  "retakeAssessmentSubtitle": "Update your mobility score",
+  "proSubscription": "Pro subscription",
+  "upgradeToPro": "Upgrade to Pro",
+  "proBenefitsSubtitle": "AI plans, posture scan & full library",
+  "trialDaysLeft": "{count} trial days remaining",
+  "@trialDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "viewProBenefits": "View Pro benefits",
+  "cancelFreeTrial": "Cancel free trial",
+  "returnToFreePlan": "Return to free plan",
+  "painNeck": "Neck",
+  "painShoulders": "Shoulders",
+  "painUpperBack": "Upper Back",
+  "painLowerBack": "Lower Back",
+  "painHips": "Hips",
+  "breakMorning": "Morning",
+  "breakLunch": "Lunch",
+  "breakAfternoon": "Afternoon",
+  "breakEvening": "Evening",
+  "goalReduceNeckPain": "Reduce neck pain",
+  "goalFixPosture": "Fix posture",
+  "goalMoreEnergy": "More energy",
+  "goalPreventInjury": "Prevent injury",
+  "sittingFourToSix": "4 to 6 hrs",
+  "sittingSixToEight": "6 to 8 hrs",
+  "sittingEightPlus": "8+ hrs",
+  "hours": "hours",
+  "localeEnglish": "English",
+  "localeUrdu": "Urdu",
+  "localeHindi": "Hindi",
+  "localeBengali": "Bengali",
+  "localeSpanish": "Spanish",
+  "localeFrench": "French",
+  "localeArabic": "Arabic",
+  "localePortuguese": "Portuguese",
+  "localeGerman": "German",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "proBadge": "PRO",
+  "aiBadge": "AI",
+  "postureScoreLabel": "Posture {score}/100",
+  "@postureScoreLabel": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "trialDaysShort": "{days} d trial",
+  "@trialDaysShort": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyDefaultGoal": "Stay consistent",
+  "journeyDefaultAction": "Complete a desk break today",
+  "aiPickedForIssue": "AI picked for your {issue}",
+  "@aiPickedForIssue": {
+    "placeholders": {
+      "issue": {
+        "type": "String"
+      }
+    }
+  },
+  "proLockSmartBreakFeature": "Smart Break reminders",
+  "proLockSmartBreakBenefit": "Pro times breaks from your posture & sitting pattern. AI picks the right 90 sec reset when you need it.",
+  "yourProFeatures": "Your Pro features",
+  "proLockExtraSessionsFeature": "Extra daily sessions",
+  "proLockExtraSessionsBenefit": "Free plan includes 1 session per day. Pro unlocks your full AI plan: morning, midday & evening breaks.",
+  "todaysAiPlan": "Today's AI Plan",
+  "todaysSessions": "Today's Sessions",
+  "browseProgramsTitle": "Browse 50+ programs",
+  "browseProgramsSubtitle": "Neck, back, hips & more. All unlocked",
+  "unlockProTitle": "Unlock Pro",
+  "unlockProSubtitle": "AI posture · mood sounds · 50+ programs",
+  "checkInBannerTitle": "Daily check-in",
+  "checkInBannerSubtitle": "How's your body today?",
+  "smartBreakTitle": "Smart Break",
+  "smartBreakNextIn": "Next break in ~{minutes} min",
+  "@smartBreakNextIn": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "smartBreakPremiumHint": "Timed from your posture & sitting pattern",
+  "smartBreakFreeHint": "Based on your sitting pattern",
+  "journeyCardTodaysGoal": "Today's goal",
+  "journeyCardDayLabel": "DAY",
+  "journeyCardStreak": "{days} day streak",
+  "@journeyCardStreak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "streakBadgeFull": "{days} day streak",
+  "@streakBadgeFull": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "noProgressDataYet": "No progress data yet",
+  "weeklyProgressTitle": "Weekly Progress",
+  "weeklyProgressEmptyHint": "Complete your first session to start tracking.",
+  "weeklyProgressSummary": "{sessions} sessions · {minutes} min total",
+  "@weeklyProgressSummary": {
+    "placeholders": {
+      "sessions": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyProgressAvgRelief": "avg relief +{relief}",
+  "@weeklyProgressAvgRelief": {
+    "placeholders": {
+      "relief": {
+        "type": "int"
+      }
+    }
+  },
+  "beforeLabel": "Before",
+  "nowLabel": "Now",
+  "areaImprovementsTitle": "Area improvements",
+  "improvementPercent": "+{percent}%",
+  "@improvementPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "sessionsTitle": "Sessions",
+  "sessionsSubtitlePro": "Pro library unlocked · programs by area",
+  "sessionsSubtitleFree": "Programs by pain area at your desk",
+  "filterAll": "All",
+  "todaysPlan": "Today's plan",
+  "allPrograms": "All programs",
+  "playingSoundscape": "Playing: {label}",
+  "@playingSoundscape": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "stepProgress": "Step {current} of {total}",
+  "@stepProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "previous": "Previous",
+  "pause": "Pause",
+  "resume": "Resume",
+  "next": "Next",
+  "defaultStretchTip": "Tip: Breathe out as you stretch. Never force pain.",
+  "niceWork": "Nice work!",
+  "sessionCompleteMessage": "Your body thanks you. Keep the streak going tomorrow.",
+  "statMinutes": "Minutes",
+  "statMobilityPts": "Mobility pts",
+  "statStreak": "Streak",
+  "statStreakValue": "{days}d",
+  "@statStreakValue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "upsellMoodSoundsTitle": "Unlock mood sounds & AI plans",
+  "upsellMoodSoundsSubtitle": "Pro matches ambient audio to how you feel and builds your full daily recovery plan.",
+  "backToHome": "Back to Home",
+  "howDoYouFeel": "How do you feel?",
+  "painNowTitle": "How's your pain now?",
+  "painNowSubtitle": "This helps us personalize your next session.",
+  "thanksAdjustPlan": "Thanks! We'll adjust your plan.",
+  "workPatternTitle": "Your work pattern",
+  "workPatternSubtitle": "This helps us schedule breaks when you need them most.",
+  "whatShouldWeCallYou": "What should we call you?",
+  "firstNameHint": "First name",
+  "hoursSittingPerDay": "Hours sitting per day",
+  "bestBreakTimes": "Best break times?",
+  "workPatternValidationAll": "Add your name, sitting hours, and a break time",
+  "workPatternValidationHours": "Select sitting hours and at least one break time",
+  "stayOnTrackTitle": "Stay on track",
+  "stayOnTrackSubtitle": "Smart reminders nudge you at the right time, never during meetings.",
+  "notificationBenefitBreaks": "Break reminders during work hours",
+  "notificationBenefitSlump": "3pm slump alerts",
+  "notificationBenefitStreak": "Streak protection nudges",
+  "enableNotifications": "Enable Notifications",
+  "maybeLater": "Maybe later",
+  "mobilityAssessmentTitle": "Mobility Assessment",
+  "analyzingPosture": "Analyzing posture...",
+  "mobilityScoreTitle": "Mobility Score",
+  "scanningInstructions": "Stand in profile view. Keep your whole body in frame.",
+  "scanPrivacyNote": "We'll use your camera to measure posture alignment. Processing happens on your device for privacy.",
+  "scanProgress": "{percent}% complete",
+  "@scanProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "scanningEllipsis": "Scanning...",
+  "startScan": "Start Scan",
+  "skipForNow": "Skip for now",
+  "alignShouldersGuide": "Align shoulders with guide",
+  "yourMobilityScore": "Your Mobility Score",
+  "scoreBasedOnScan": "Based on your posture scan and pain areas",
+  "seeMyPlan": "See My Plan",
+  "potentialGain": "+{gain}",
+  "@potentialGain": {
+    "placeholders": {
+      "gain": {
+        "type": "int"
+      }
+    }
+  },
+  "yourPlanAppBar": "Your Plan",
+  "personalizedForYou": "Personalized for you",
+  "planSubtitleDefault": "3 daily sessions tailored to desk workers.",
+  "planSubtitleFocused": "Focused on {areas} with smart break timing.",
+  "@planSubtitleFocused": {
+    "placeholders": {
+      "areas": {
+        "type": "String"
+      }
+    }
+  },
+  "startMyPlan": "Start My Plan",
+  "sessionDurationMin": "{minutes} min",
+  "@sessionDurationMin": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "dayCheckIn": "Day {day} check in",
+  "@dayCheckIn": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "howDoesBodyFeelToday": "How does your body feel today?",
+  "checkInHelpsPickRoutine": "This helps us pick the right routine for you.",
+  "overallPainLevel": "Overall pain level",
+  "troubleAreasToday": "Trouble areas today",
+  "troubleAreaEyes": "Eyes",
+  "continueToTodaysSession": "Continue to today's session",
+  "proLockPremiumProgramFeature": "Premium program",
+  "proLockPremiumProgramBenefit": "This desk program is part of the Pro library. 50+ targeted sessions for neck, back, hips & more.",
+  "defaultSessionTitle": "Desk break",
+  "defaultSessionSubtitle": "Quick mobility reset",
+  "beforeWeStart": "Before we start",
+  "howDoesBodyFeel": "How does your body feel?",
+  "painScaleGreat": "Great",
+  "painScaleSore": "Sore",
+  "startSession": "Start session",
+  "skipCheckIn": "Skip check-in",
+  "smartBreakPromptTitle": "Smart Break",
+  "smartBreakAiMessage": "AI picked this break for your {issue}. You've been sitting 47 min. 90 seconds will help.",
+  "@smartBreakAiMessage": {
+    "placeholders": {
+      "issue": {
+        "type": "String"
+      }
+    }
+  },
+  "smartBreakProMessage": "Pro smart break: your neck needs a reset after 47 min of sitting.",
+  "smartBreakFreeMessage": "You've been sitting 47 min. Your neck could use a 90 second reset.",
+  "start90SecBreak": "Start 90 sec break",
+  "snooze15Min": "Snooze 15 min",
+  "achievementUnlocked": "Achievement unlocked",
+  "milestoneReachedFallback": "Milestone reached!",
+  "daysStrong": "{days} days strong",
+  "@daysStrong": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "unlockProFreeTrial": "Unlock Pro free trial",
+  "continueToHome": "Continue to Home",
+  "keepGoing": "Keep going",
+  "milestoneMessageDay3": "Three days in a row. Small breaks are adding up.",
+  "milestoneMessageDay7": "One full week of showing up for your body.",
+  "milestoneMessageDay14": "Two weeks of consistency — your mobility is improving.",
+  "milestoneMessageDay30": "Thirty days. You built a real desk recovery habit.",
+  "milestoneMessageDefault": "Keep showing up. Your body is changing.",
+  "weekRecapTitle": "Week {week} Recap",
+  "@weekRecapTitle": {
+    "placeholders": {
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "yourWeekInReview": "Your week in review",
+  "weekRecapSubtitle": "Small breaks add up. Here's your progress.",
+  "recapSessions": "Sessions",
+  "recapStreak": "Streak",
+  "recapMinutes": "Minutes",
+  "aiWeeklyInsightTitle": "AI Weekly Insight",
+  "aiInsightEmpty": "Complete sessions to get AI insights.",
+  "unlockAiWeeklyInsights": "Unlock AI weekly insights with Pro",
+  "weMissYou": "We miss you!",
+  "reEngagementBody": "Your neck and back don't take days off. One 90 second break is all it takes to get back on track.",
+  "quickComebackSession": "Quick comeback session",
+  "comebackSessionDetails": "Neck Relief · 3 min · No equipment",
+  "do3MinComeback": "Do a 3 min comeback",
+  "remindMeTomorrow": "Remind me tomorrow",
+  "journeyMapTitle": "30 Day Journey",
+  "dayOf30": "Day {day} of 30",
+  "@dayOf30": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementsTitle": "Achievements",
+  "achievementsUnlockedCount": "{unlocked} / {total} unlocked",
+  "@achievementsUnlockedCount": {
+    "placeholders": {
+      "unlocked": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementUnlockDay": "Day {day}",
+  "@achievementUnlockDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "remindersTitle": "Reminders",
+  "breakFrequency": "Break frequency",
+  "breakFrequencyMin": "{minutes} min",
+  "@breakFrequencyMin": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "activeHours": "Active hours",
+  "smartRemindersSubtitle": "Skip meetings, adapt to activity",
+  "calmCalibratePro": "CalmCalibrate Pro",
+  "fullDeskRecoverySystem": "Full desk recovery system",
+  "unlockFullRecovery": "Unlock Full Recovery",
+  "paywallTagline": "90 sec breaks that actually work at your desk.",
+  "startFreeTrial": "Start Free Trial",
+  "cancelTrial": "Cancel trial",
+  "trialDisclaimer": "7 day free trial · Cancel anytime",
+  "welcomeProTrialStarted": "Welcome to Pro! 7 day free trial started.",
+  "aiDailyPlanComingSoon": "AI daily plan coming soon",
+  "generateAiPlanToday": "Generate AI plan for today",
+  "aiFocus": "AI focus: {focus}",
+  "@aiFocus": {
+    "placeholders": {
+      "focus": {
+        "type": "String"
+      }
+    }
+  },
+  "planSlotMorning": "Morning",
+  "planSlotMidday": "Midday",
+  "planSlotEvening": "Evening",
+  "aiDailyPlanLockedTeaser": "Pro: AI builds your morning, midday & evening plan",
+  "howAreYouFeeling": "How are you feeling?",
+  "moodSoundPremiumHint": "We'll play a matching soundscape during your session",
+  "moodSoundFreeHint": "Pro unlocks mood matched ambient audio",
+  "proLockMoodFeature": "Mood soundscapes",
+  "moodSoundLockedTeaser": "Pro: soundscapes matched to your mood",
+  "featureComingSoon": "{feature} coming soon",
+  "@featureComingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "aiNotConnectedYet": "AI is not connected yet. This will use a serverless LLM when ready. No login required.",
+  "sessionMorningResetTitle": "Morning Reset",
+  "sessionMorningResetSubtitle": "Wake up your spine",
+  "sessionMiddayBreakTitle": "Midday Desk Break",
+  "sessionMiddayBreakSubtitle": "Combat afternoon stiffness",
+  "sessionEveningRecoveryTitle": "Evening Deep Recovery",
+  "sessionEveningRecoverySubtitle": "Release the day's tension",
+  "sessionNeckReliefTitle": "Neck Relief",
+  "sessionNeckReliefSubtitle": "Forward head posture fix",
+  "sessionBackSaverTitle": "Back Saver",
+  "sessionBackSaverSubtitle": "Lower back decompression",
+  "sessionUpperBackReliefTitle": "Upper Back Relief",
+  "sessionUpperBackReliefSubtitle": "Thoracic & trap release",
+  "sessionHipOpenerTitle": "Hip Opener",
+  "sessionHipOpenerSubtitle": "Tight hip flexors",
+  "sessionEyeResetTitle": "Eye Reset",
+  "sessionEyeResetSubtitle": "Screen strain relief",
+  "sessionShoulderMeltTitle": "Shoulder Melt",
+  "sessionShoulderMeltSubtitle": "Upper trap release",
+  "stepNeckRollsName": "Neck Rolls",
+  "stepNeckRollsInstruction": "Slowly roll your neck in a circle. Breathe deeply.",
+  "stepNeckRollsTip": "Move slowly. No jerking.",
+  "stepShoulderShrugsName": "Shoulder Shrugs",
+  "stepShoulderShrugsInstruction": "Lift shoulders to ears, hold 3 sec, release.",
+  "stepShoulderShrugsTip": "Hold at the top for 3 seconds.",
+  "stepSeatedTwistName": "Seated Twist",
+  "stepSeatedTwistInstruction": "Twist gently left and right. Keep hips facing forward.",
+  "stepSeatedTwistTip": "Keep hips still. Twist from the waist.",
+  "stepChestOpenerName": "Chest Opener",
+  "stepChestOpenerInstruction": "Clasp hands behind back. Open chest gently.",
+  "stepChestOpenerTip": "Squeeze shoulder blades together.",
+  "stepNeckSideReleaseName": "Neck Side Release",
+  "stepNeckSideReleaseInstruction": "Tilt ear toward shoulder. Hold each side 20 sec.",
+  "stepNeckSideReleaseTip": "Keep opposite shoulder relaxed.",
+  "stepSeatedCatCowName": "Seated Cat Cow",
+  "stepSeatedCatCowInstruction": "Arch and round your back slowly with breath.",
+  "stepSeatedCatCowTip": "Sync movement with your breath.",
+  "stepHipFlexorStretchName": "Hip Flexor Stretch",
+  "stepHipFlexorStretchInstruction": "Stand, step one foot back. Lean forward gently.",
+  "stepHipFlexorStretchTip": "Keep front knee over ankle.",
+  "stepStandingBackExtensionName": "Standing Back Extension",
+  "stepStandingBackExtensionInstruction": "Hands on lower back. Lean back slightly.",
+  "stepStandingBackExtensionTip": "Small range. No forcing.",
+  "stepThoracicExtensionName": "Thoracic Extension",
+  "stepThoracicExtensionInstruction": "Hands behind head. Arch upper back over chair.",
+  "stepThoracicExtensionTip": "Lead with your chest, not your neck.",
+  "stepFigure4StretchName": "Figure 4 Stretch",
+  "stepFigure4StretchInstruction": "Ankle on opposite knee. Lean forward gently.",
+  "stepFigure4StretchTip": "Flex foot to protect the knee.",
+  "stepChildsPoseChairName": "Child's Pose (Chair)",
+  "stepChildsPoseChairInstruction": "Sit back, fold forward over knees. Breathe.",
+  "stepChildsPoseChairTip": "Let your neck hang heavy.",
+  "stepDeepBreathingName": "Deep Breathing",
+  "stepDeepBreathingInstruction": "4 counts in, 6 counts out. Relax shoulders.",
+  "stepDeepBreathingTip": "Longer exhale calms the nervous system.",
+  "stepDeskStretchName": "Desk Stretch",
+  "stepDeskStretchInstruction": "Gentle stretch at your desk.",
+  "stepDeskStretchTip": "Move within a comfortable range.",
+  "journeyDay1Title": "First session",
+  "journeyDay1Goal": "Complete onboarding + 1 break",
+  "journeyDay1Action": "Finish pain assessment and do Morning Reset",
+  "journeyDay2Title": "Build the habit",
+  "journeyDay2Goal": "2 sessions + daily check in",
+  "journeyDay2Action": "Log how your neck feels, do Midday Desk Break",
+  "journeyDay3Title": "3 day streak",
+  "journeyDay3Goal": "Hit 3 day streak",
+  "journeyDay3Action": "Complete any session before end of day",
+  "journeyDay3Milestone": "3 Day Streak",
+  "journeyDay4Title": "Afternoon slump",
+  "journeyDay4Goal": "Try Smart Break at 3pm",
+  "journeyDay4Action": "Respond to smart break prompt",
+  "journeyDay5Title": "Explore library",
+  "journeyDay5Goal": "Try a new pain area program",
+  "journeyDay5Action": "Open Sessions and pick Neck Relief",
+  "journeyDay6Title": "Weekend prep",
+  "journeyDay6Goal": "Set reminder schedule",
+  "journeyDay6Action": "Review reminder settings",
+  "journeyDay7Title": "Week 1 recap",
+  "journeyDay7Goal": "Review weekly progress",
+  "journeyDay7Action": "Open weekly recap and see mobility score change",
+  "journeyDay7Milestone": "Week 1 Complete",
+  "journeyDay8Title": "Deeper recovery",
+  "journeyDay8Goal": "Complete Evening Deep Recovery",
+  "journeyDay8Action": "12 min evening session before bed",
+  "journeyDay10Title": "Progress check",
+  "journeyDay10Goal": "Review your weekly stats",
+  "journeyDay10Action": "See sessions and pain trends on Progress",
+  "journeyDay14Title": "2 week milestone",
+  "journeyDay14Goal": "14 day streak or 10+ sessions",
+  "journeyDay14Action": "Unlock achievement badge",
+  "journeyDay14Milestone": "2 Week Warrior",
+  "journeyDay15Title": "Halfway point",
+  "journeyDay15Goal": "Review journey map",
+  "journeyDay15Action": "See Day 1 to 30 progress on journey map",
+  "journeyDay21Title": "Week 3 recap",
+  "journeyDay21Goal": "Weekly recap + share progress",
+  "journeyDay21Action": "Review 3 week mobility trend",
+  "journeyDay30Title": "30 day graduate",
+  "journeyDay30Goal": "Complete 30 day program",
+  "journeyDay30Action": "Final assessment + unlock premium trial",
+  "journeyDay30Milestone": "30 Day Graduate",
+  "journeyDayDefaultTitle": "Daily desk break",
+  "journeyDayDefaultGoal": "Complete at least one session",
+  "journeyDayDefaultAction": "Do a 3 to 5 min mobility break at your desk",
+  "achievementFirstBreakTitle": "First Break",
+  "achievementFirstBreakDesc": "Completed your first desk session",
+  "achievementStreak3Title": "3 Day Streak",
+  "achievementStreak3Desc": "Moved 3 days in a row",
+  "achievementWeek1Title": "Week 1 Complete",
+  "achievementWeek1Desc": "Finished your first week",
+  "achievementStreak14Title": "2 Week Warrior",
+  "achievementStreak14Desc": "14 days of desk recovery",
+  "achievementScore60Title": "Mobility 60+",
+  "achievementScore60Desc": "Mobility score reached 60",
+  "achievementGraduate30Title": "30 Day Graduate",
+  "achievementGraduate30Desc": "Completed the full program",
+  "moodStressed": "Stressed",
+  "moodStressedSoundscape": "Deep breath ambient",
+  "moodStressedDesc": "Slow exhale tones to calm your nervous system",
+  "moodTired": "Tired",
+  "moodTiredSoundscape": "Soft rain",
+  "moodTiredDesc": "Gentle rainfall to ease mental fatigue",
+  "moodSore": "Sore",
+  "moodSoreSoundscape": "Warm low tones",
+  "moodSoreDesc": "Soothing frequencies for tight muscles",
+  "moodFocused": "Focused",
+  "moodFocusedSoundscape": "Minimal focus pad",
+  "moodFocusedDesc": "Light rhythm to stay present during stretches",
+  "moodCalm": "Calm",
+  "moodCalmSoundscape": "Desk zen",
+  "moodCalmDesc": "Quiet background for the office",
+  "proLockCtaDefault": "Start 7 day free trial",
+  "upsellDefaultTitle": "Want more from every break?",
+  "upsellDefaultSubtitle": "Unlock AI plans, mood soundscapes, posture scan & 50+ programs.",
+  "proFeature50Programs": "50+ Programs",
+  "proFeature50ProgramsSub": "Full desk library",
+  "proFeatureAiPosture": "AI Posture",
+  "proFeatureAiPostureSub": "Scan & track",
+  "proFeatureAiDailyPlan": "AI Daily Plan",
+  "proFeatureAiDailyPlanSub": "Personalized",
+  "proFeatureSmartBreaks": "Smart Breaks",
+  "proFeatureSmartBreaksSub": "Timed reminders",
+  "proFeatureWeeklyReport": "Weekly Report",
+  "proFeatureWeeklyReportSub": "AI progress",
+  "proFeatureMoodSounds": "Mood Sounds",
+  "proFeatureMoodSoundsSub": "Ambient audio",
+  "proFeatureDesktopApp": "Desktop App",
+  "proFeatureDesktopAppSub": "Coming soon",
+  "comingSoonBadge": "Soon",
+  "desktopCompanionComingSoon": "Desktop companion coming soon!",
+  "aiPlanBelowHint": "Your AI plan is below in Today's Sessions",
+  "cancelProTrialTitle": "Cancel Pro trial?",
+  "cancelProTrialBody": "You'll lose access to AI plans, posture analysis, and the full exercise library. Your progress and streak stay saved.",
+  "keepPro": "Keep Pro",
+  "proTrialCancelled": "Pro trial cancelled. You're on the free plan."
+}
