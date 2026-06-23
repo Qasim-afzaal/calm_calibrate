@@ -40,7 +40,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -59,6 +59,9 @@ class AppDatabase extends _$AppDatabase {
               'SELECT goal FROM user_profile_rows '
               'WHERE id = 1 AND goal IS NOT NULL',
             );
+          }
+          if (from < 4) {
+            await m.addColumn(appSettingsRows, appSettingsRows.localeCode);
           }
         },
       );
