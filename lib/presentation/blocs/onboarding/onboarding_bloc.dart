@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_event.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_state.dart';
@@ -67,6 +68,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       updated.add(event.goal);
     }
     emit(state.copyWith(goals: updated));
+    AppLogger.debug('onboarding', 'goals=${updated.map((g) => g.name).join(', ')}');
   }
 
   void _onReminderMinutesSet(
@@ -99,6 +101,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         reminderMinutes: state.reminderMinutes,
         smartReminders: state.smartReminders,
       ),
+    );
+    AppLogger.debug(
+      'onboarding',
+      'profile saved painAreas=${state.painAreas.length} goals=${state.goals.length}',
     );
   }
 }
