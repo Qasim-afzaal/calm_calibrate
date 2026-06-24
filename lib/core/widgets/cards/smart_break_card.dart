@@ -1,6 +1,7 @@
 import 'package:calm_calibrate/core/animations/breathe_animation.dart';
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/constants/app_radius.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,7 @@ class SmartBreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return ScaleTap(
       onTap: onTap,
       child: Container(
@@ -80,7 +82,7 @@ class SmartBreakCard extends StatelessWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Smart Break',
+                        l10n.smartBreakTitle,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.75),
                           fontWeight: FontWeight.w600,
@@ -93,7 +95,7 @@ class SmartBreakCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  'Next break in ~$minutesUntilBreak min',
+                  l10n.smartBreakNextIn(minutesUntilBreak),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: MediaQuery.sizeOf(context).width < 340 ? 20 : 24,
@@ -104,8 +106,8 @@ class SmartBreakCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   isPremium
-                      ? (aiHint ?? 'Timed from your posture & sitting pattern')
-                      : 'Based on your sitting pattern',
+                      ? (aiHint ?? l10n.smartBreakPremiumHint)
+                      : l10n.smartBreakFreeHint,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -131,6 +133,7 @@ class _ProChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -152,7 +155,7 @@ class _ProChip extends StatelessWidget {
             const SizedBox(width: 3),
           ],
           Text(
-            'PRO',
+            l10n.proBadge,
             style: TextStyle(
               color: isPremium ? c.primary : Colors.white54,
               fontSize: 10,
