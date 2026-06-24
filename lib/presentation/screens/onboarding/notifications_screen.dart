@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/onboarding_step_indicator.dart';
@@ -19,6 +20,7 @@ class NotificationsScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] notifications loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -34,12 +36,12 @@ class NotificationsScreen extends StatelessWidget {
             OnboardingStepIndicator(currentStep: 4),
             SizedBox(height: m.onboardingSectionGap),
             Text(
-              'Stay on track',
+              l10n.stayOnTrackTitle,
               style: m.headlineStyle(Theme.of(context).textTheme),
             ),
             SizedBox(height: m.onboardingTitleGap),
             Text(
-              'Smart reminders nudge you at the right time, never during meetings.',
+              l10n.stayOnTrackSubtitle,
               style: TextStyle(color: c.textSecondary),
             ),
             const Spacer(),
@@ -59,17 +61,17 @@ class NotificationsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: m.blockSpacing),
-            _BenefitRow(text: 'Break reminders during work hours'),
-            _BenefitRow(text: '3pm slump alerts'),
-            _BenefitRow(text: 'Streak protection nudges'),
+            _BenefitRow(text: l10n.notificationBenefitBreaks),
+            _BenefitRow(text: l10n.notificationBenefitSlump),
+            _BenefitRow(text: l10n.notificationBenefitStreak),
             const Spacer(flex: 2),
             PrimaryButton(
-              label: 'Enable Notifications',
+              label: l10n.enableNotifications,
               onPressed: () => _enableAndContinue(context),
             ),
             SizedBox(height: m.sectionGap + 4),
             PrimaryButton(
-              label: 'Maybe later',
+              label: l10n.maybeLater,
               variant: PrimaryButtonVariant.outlined,
               onPressed: () => _skipAndContinue(context),
             ),
