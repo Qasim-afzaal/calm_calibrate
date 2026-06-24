@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
 import 'package:calm_calibrate/data/repositories/session_repository.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
@@ -36,6 +37,10 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
     session ??= _sessionRepository.getSessionById('midday_break');
     if (session == null) return;
 
+    AppLogger.debug(
+      'workout',
+      'session loaded id=${session.id} steps=${session.steps.length}',
+    );
     final firstStep = session.steps.first;
     emit(
       WorkoutState(
@@ -70,6 +75,11 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
     } else {
       final nextIndex = state.currentStepIndex + 1;
       final nextStep = state.session!.steps[nextIndex];
+      AppLogger.debug(
+        'workout',
+        'step ${nextIndex + 1}/${state.session!.steps.length} '
+        'pose=${nextStep.pose.name}',
+      );
       emit(
         state.copyWith(
           currentStepIndex: nextIndex,
@@ -100,6 +110,10 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
     }
     final nextIndex = state.currentStepIndex + 1;
     final nextStep = state.session!.steps[nextIndex];
+    AppLogger.debug(
+      'workout',
+      'manual next step ${nextIndex + 1} pose=${nextStep.pose.name}',
+    );
     emit(
       state.copyWith(
         currentStepIndex: nextIndex,
@@ -132,6 +146,11 @@ class WorkoutBloc extends Bloc<WorkoutEvent, WorkoutState> {
     _timer?.cancel();
     final session = state.session!;
     final points = session.durationMinutes * 5;
+    AppLogger.debug(
+      'workout',
+      'completed id=${session.id} points=$points '
+      'prePain=${state.prePainScore} postPain=${state.postPainScore}',
+    );
     await _userRepository.logSession(
       SessionLog(
         sessionId: session.id,
