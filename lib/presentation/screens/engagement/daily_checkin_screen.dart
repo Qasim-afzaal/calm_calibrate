@@ -1,7 +1,10 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
+import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/presentation/widgets/feature_widgets.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
@@ -17,13 +20,15 @@ class DailyCheckInScreen extends StatefulWidget {
 
 class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
   int _painScore = 3;
-  final Set<String> _areas = {};
+  final Set<PainArea> _areas = {};
+  bool _eyesSelected = false;
 
   @override
   Widget build(BuildContext context) {
 
     debugPrint('[CalmCalibrate] daily_checkin loaded'); // auth-check-debug
     final c = context.appColors;
+    final l10n = context.l10n;
     final repo = EngagementRepository.instance;
     final day = repo.currentDay;
     final sub = SubscriptionRepository.instance;
@@ -46,7 +51,7 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      'Day $day check in',
+                      l10n.dayCheckIn(day),
                       style: TextStyle(
                         color: c.primary,
                         fontWeight: FontWeight.w700,
@@ -58,7 +63,7 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                 FadeSlideIn(
                   delay: Duration(milliseconds: 80),
                   child: Text(
-                    'How does your body feel today?',
+                    l10n.howDoesBodyFeelToday,
                     style: m.headlineStyle(Theme.of(context).textTheme),
                   ),
                 ),
@@ -66,13 +71,13 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                 FadeSlideIn(
                   delay: Duration(milliseconds: 120),
                   child: Text(
-                    'This helps us pick the right routine for you.',
+                    l10n.checkInHelpsPickRoutine,
                     style: TextStyle(color: c.textSecondary),
                   ),
                 ),
                 SizedBox(height: m.blockSpacing),
                 Text(
-                  'Overall pain level',
+                  l10n.overallPainLevel,
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: m.stackSpacing),
@@ -85,32 +90,42 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                 ),
                 SizedBox(height: m.blockSpacing),
                 Text(
-                  'Trouble areas today',
+                  l10n.troubleAreasToday,
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: m.sectionGap + 4),
                 Wrap(
                   spacing: m.sectionGap,
                   runSpacing: m.sectionGap,
-                  children:
-                      ['Neck', 'Back', 'Hips', 'Shoulders', 'Eyes'].map((area) {
-                    final selected = _areas.contains(area);
-                    return FilterChip(
-                      label: Text(area),
-                      selected: selected,
+                  children: [
+                    ...PainArea.values.map((area) {
+                      final selected = _areas.contains(area);
+                      return FilterChip(
+                        label: Text(area.localized(l10n)),
+                        selected: selected,
+                        onSelected: (_) {
+                          setState(() {
+                            if (selected) {
+                              _areas.remove(area);
+                            } else {
+                              _areas.add(area);
+                            }
+                          });
+                        },
+                        selectedColor: c.primaryLight,
+                        checkmarkColor: c.primary,
+                      );
+                    }),
+                    FilterChip(
+                      label: Text(l10n.troubleAreaEyes),
+                      selected: _eyesSelected,
                       onSelected: (_) {
-                        setState(() {
-                          if (selected) {
-                            _areas.remove(area);
-                          } else {
-                            _areas.add(area);
-                          }
-                        });
+                        setState(() => _eyesSelected = !_eyesSelected);
                       },
                       selectedColor: c.primaryLight,
                       checkmarkColor: c.primary,
-                    );
-                  }).toList(),
+                    ),
+                  ],
                 ),
                 SizedBox(height: m.onboardingSectionGap + 4),
                 if (sub.hasProAccess)
@@ -121,7 +136,7 @@ class _DailyCheckInScreenState extends State<DailyCheckInScreen> {
                 FadeSlideIn(
                   delay: Duration(milliseconds: 240),
                   child: AppButton(
-                    label: 'Continue to today\'s session',
+                    label: l10n.continueToTodaysSession,
                     onPressed: () {
                       repo.recordCheckIn(painScore: _painScore);
                       context.go('/home');
