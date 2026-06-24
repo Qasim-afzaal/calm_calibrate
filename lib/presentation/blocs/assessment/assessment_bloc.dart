@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/calculators/mobility_score_calculator.dart';
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
@@ -27,6 +28,11 @@ class AssessmentBloc extends Bloc<AssessmentEvent, AssessmentState> {
   ) async {
     final profile = _userRepository.profile;
     final score = MobilityScoreCalculator.compute(profile.painAreas);
+    AppLogger.debug(
+      'assessment',
+      'scan started camera=${AiFeatures.cameraScanEnabled} '
+      'painAreas=${profile.painAreas.length}',
+    );
 
     if (!AiFeatures.cameraScanEnabled) {
       // No camera / LLM yet — save estimate and continue onboarding.
