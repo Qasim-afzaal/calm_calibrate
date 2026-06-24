@@ -14,10 +14,12 @@ class BodyPainMap extends StatefulWidget {
     super.key,
     required this.selectedAreas,
     required this.onAreaToggled,
+    this.areaLabel,
   });
 
   final Set<PainArea> selectedAreas;
   final ValueChanged<PainArea> onAreaToggled;
+  final String Function(PainArea area)? areaLabel;
 
   @override
   State<BodyPainMap> createState() => _BodyPainMapState();
@@ -135,7 +137,8 @@ class _BodyPainMapState extends State<BodyPainMap> {
                   child: Transform.translate(
                     offset: Offset(compact ? -40 : -46, -17),
                     child: _BodyRegionLabel(
-                      label: layout.area.label,
+                      label: widget.areaLabel?.call(layout.area) ??
+                          layout.area.label,
                       selected: selected,
                       compact: compact,
                       onTap: () => widget.onAreaToggled(layout.area),
