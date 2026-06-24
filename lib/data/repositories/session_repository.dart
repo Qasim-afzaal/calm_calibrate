@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/models/exercise.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
@@ -317,9 +318,16 @@ class CachedSessionRepository implements SessionRepository {
   List<ExerciseSession> getTodaySessions(UserProfile profile) {
     return _sessions
         .map(
-          (s) => _tailorForProfile(s, profile).copyWith(
-            isCompleted: _cache.isSessionCompletedToday(s.id),
-          ),
+          (s) {
+            final tailored = _tailorForProfile(s, profile);
+            AppLogger.debug(
+              'sessions',
+              'today ${tailored.id} lead=${tailored.steps.firstOrNull?.pose.name}',
+            );
+            return tailored.copyWith(
+              isCompleted: _cache.isSessionCompletedToday(s.id),
+            );
+          },
         )
         .toList();
   }
