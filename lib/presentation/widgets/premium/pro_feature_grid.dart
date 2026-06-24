@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/pro_features.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,10 @@ class ProFeatureGrid extends StatelessWidget {
   ProFeatureGrid({super.key});
 
   void _open(BuildContext context, ProFeature feature) {
+    final l10n = context.l10n;
     if (feature.comingSoon) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Desktop companion coming soon!')),
+        SnackBar(content: Text(l10n.desktopCompanionComingSoon)),
       );
       return;
     }
@@ -21,10 +23,9 @@ class ProFeatureGrid extends StatelessWidget {
       case 'posture':
         context.push('/check-in');
       case 'daily_plan':
-        // AI plan is shown below on home — gentle scroll hint
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Your AI plan is below in Today\'s Sessions'),
+            content: Text(l10n.aiPlanBelowHint),
             duration: Duration(seconds: 2),
           ),
         );
@@ -39,7 +40,6 @@ class ProFeatureGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = context.appColors;
     final width = MediaQuery.sizeOf(context).width;
     final columns = width >= 400 ? 3 : 2;
 
@@ -65,6 +65,34 @@ class ProFeatureGrid extends StatelessWidget {
   }
 }
 
+String _proFeatureTitle(BuildContext context, ProFeature feature) {
+  final l10n = context.l10n;
+  return switch (feature.id) {
+    'programs' => l10n.proFeature50Programs,
+    'posture' => l10n.proFeatureAiPosture,
+    'daily_plan' => l10n.proFeatureAiDailyPlan,
+    'smart_break' => l10n.proFeatureSmartBreaks,
+    'weekly_report' => l10n.proFeatureWeeklyReport,
+    'mood_sound' => l10n.proFeatureMoodSounds,
+    'desktop' => l10n.proFeatureDesktopApp,
+    _ => feature.title,
+  };
+}
+
+String _proFeatureSubtitle(BuildContext context, ProFeature feature) {
+  final l10n = context.l10n;
+  return switch (feature.id) {
+    'programs' => l10n.proFeature50ProgramsSub,
+    'posture' => l10n.proFeatureAiPostureSub,
+    'daily_plan' => l10n.proFeatureAiDailyPlanSub,
+    'smart_break' => l10n.proFeatureSmartBreaksSub,
+    'weekly_report' => l10n.proFeatureWeeklyReportSub,
+    'mood_sound' => l10n.proFeatureMoodSoundsSub,
+    'desktop' => l10n.proFeatureDesktopAppSub,
+    _ => feature.subtitle,
+  };
+}
+
 class _ProFeatureTile extends StatelessWidget {
   _ProFeatureTile({required this.feature, required this.onTap});
 
@@ -74,6 +102,7 @@ class _ProFeatureTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     final disabled = feature.comingSoon;
 
     return Material(
@@ -108,7 +137,10 @@ class _ProFeatureTile extends StatelessWidget {
                         color: c.border,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text('Soon', style: TextStyle(fontSize: 9)),
+                      child: Text(
+                        l10n.comingSoonBadge,
+                        style: TextStyle(fontSize: 9),
+                      ),
                     )
                   else
                     Icon(
@@ -120,7 +152,7 @@ class _ProFeatureTile extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                feature.title,
+                _proFeatureTitle(context, feature),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -130,7 +162,7 @@ class _ProFeatureTile extends StatelessWidget {
               ),
               SizedBox(height: 2),
               Text(
-                feature.subtitle,
+                _proFeatureSubtitle(context, feature),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
