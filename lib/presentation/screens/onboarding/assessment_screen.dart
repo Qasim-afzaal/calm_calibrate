@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/calculators/mobility_score_calculator.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/presentation/screens/onboarding/assessment_scan_screen.dart';
@@ -23,6 +24,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   }
 
   Future<void> _redirect() async {
+    AppLogger.debug('assessment', 'camera off — estimating score from pain areas');
     await MobilityScoreCalculator.ensureEstimatedScore(
       MockUserRepository.instance,
     );
