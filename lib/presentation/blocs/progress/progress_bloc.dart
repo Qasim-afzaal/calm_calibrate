@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/repositories/session_repository.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/presentation/blocs/progress/progress_event.dart';
@@ -24,10 +25,15 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     final profile = _userRepository.profile;
+    final weekly = _sessionRepository.getWeeklyProgress(profile);
+    AppLogger.debug(
+      'progress',
+      'loaded sessions=${weekly.totalSessions} min=${weekly.totalMinutes}',
+    );
     emit(
       state.copyWith(
         profile: profile,
-        weeklyProgress: _sessionRepository.getWeeklyProgress(profile),
+        weeklyProgress: weekly,
         sessionLogs: _userRepository.sessionLogs,
         isLoading: false,
       ),
