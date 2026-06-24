@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/buttons/app_button.dart';
 import 'package:calm_calibrate/core/widgets/layout/app_bottom_sheet.dart';
@@ -19,6 +20,7 @@ Future<void> showProLockSheet(
       Builder(
         builder: (ctx) {
           final c = ctx.appColors;
+          final l10n = ctx.l10n;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -55,7 +57,7 @@ Future<void> showProLockSheet(
               ),
               const SizedBox(height: 24),
               AppButton(
-                label: ctaLabel ?? 'Start 7 day free trial',
+                label: ctaLabel ?? l10n.proLockCtaDefault,
                 onPressed: () {
                   Navigator.pop(ctx);
                   context.push('/premium');
@@ -64,7 +66,7 @@ Future<void> showProLockSheet(
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Maybe later'),
+                child: Text(l10n.maybeLater),
               ),
             ],
           );
