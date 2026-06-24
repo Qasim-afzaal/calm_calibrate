@@ -1,4 +1,7 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/models/exercise.dart';
@@ -42,14 +45,14 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
     final sub = SubscriptionRepository.instance;
     if (sub.hasProAccess) return;
 
+    final l10n = context.l10n;
     final sessions = MockSessionRepository.instance;
     if (sessions.isPremiumProgram(widget.sessionId)) {
       if (!mounted) return;
       await showProLockSheet(
         context,
-        feature: 'Premium program',
-        benefit: 'This desk program is part of the Pro library. '
-            '50+ targeted sessions for neck, back, hips & more.',
+        feature: l10n.proLockPremiumProgramFeature,
+        benefit: l10n.proLockPremiumProgramBenefit,
       );
       if (mounted) context.pop();
       return;
@@ -62,15 +65,18 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
       if (!mounted) return;
       await showProLockSheet(
         context,
-        feature: 'Extra daily sessions',
-        benefit: 'Free plan includes 1 session per day. '
-            'Pro unlocks your full AI plan: morning, midday & evening.',
+        feature: l10n.proLockExtraSessionsFeature,
+        benefit: l10n.proLockExtraSessionsBenefit,
       );
       if (mounted) context.pop();
     }
   }
 
   void _startSession({required bool skipCheckIn}) {
+    AppLogger.debug(
+      'pre_workout',
+      'start sessionId=${widget.sessionId} skipCheckIn=$skipCheckIn',
+    );
     if (!skipCheckIn) {
       EngagementRepository.instance.recordCheckIn(painScore: _painScore);
     }
@@ -81,8 +87,11 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
   Widget build(BuildContext context) {
     final c = context.appColors;
     final m = context.metrics;
-    final session =
+    final l10n = context.l10n;
+    final rawSession =
         MockSessionRepository.instance.getSessionById(widget.sessionId);
+    final session =
+        rawSession == null ? null : localizeSession(l10n, rawSession);
     final hPad = m.horizontalPadding;
     final tight = m.isVeryCompact;
 
@@ -105,13 +114,13 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
                           onPressed: () => context.pop(),
                         ),
                         const Spacer(),
-                        _SessionChip(session: session),
+                        _SessionChip(session: session, l10n: l10n),
                       ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(hPad, tight ? 4 : 10, hPad, 0),
-                    child: _ScreenHeader(session: session),
+                    child: _ScreenHeader(session: session, l10n: l10n),
                   ),
                   Expanded(
                     child: Padding(
@@ -123,6 +132,7 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
                             child: _PainSection(
                               painScore: _painScore,
                               compact: tight,
+                              l10n: l10n,
                               onChanged: (v) => setState(() => _painScore = v),
                             ),
                           ),
@@ -144,12 +154,12 @@ class _PreWorkoutCheckInScreenState extends State<PreWorkoutCheckInScreen> {
                     child: Column(
                       children: [
                         AppButton(
-                          label: 'Start session',
+                          label: l10n.startSession,
                           onPressed: () => _startSession(skipCheckIn: false),
                         ),
                         SizedBox(height: tight ? 8 : 10),
                         AppButton(
-                          label: 'Skip check-in',
+                          label: l10n.skipCheckIn,
                           variant: AppButtonVariant.outlined,
                           onPressed: () => _startSession(skipCheckIn: true),
                         ),
@@ -215,9 +225,10 @@ class _GlowOrb extends StatelessWidget {
 }
 
 class _SessionChip extends StatelessWidget {
-  const _SessionChip({required this.session});
+  const _SessionChip({required this.session, required this.l10n});
 
   final ExerciseSession? session;
+  final dynamic l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +249,7 @@ class _SessionChip extends StatelessWidget {
           Icon(icon, size: 15, color: c.primary),
           const SizedBox(width: 6),
           Text(
-            '$minutes min',
+            l10n.sessionDurationMin(minutes),
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
@@ -252,22 +263,23 @@ class _SessionChip extends StatelessWidget {
 }
 
 class _ScreenHeader extends StatelessWidget {
-  const _ScreenHeader({required this.session});
+  const _ScreenHeader({required this.session, required this.l10n});
 
   final ExerciseSession? session;
+  final dynamic l10n;
 
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
     final m = context.metrics;
-    final title = session?.title ?? 'Desk break';
-    final subtitle = session?.subtitle ?? 'Quick mobility reset';
+    final title = session?.title ?? l10n.defaultSessionTitle;
+    final subtitle = session?.subtitle ?? l10n.defaultSessionSubtitle;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Before we start',
+          l10n.beforeWeStart,
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
@@ -339,11 +351,13 @@ class _PainSection extends StatelessWidget {
   const _PainSection({
     required this.painScore,
     required this.compact,
+    required this.l10n,
     required this.onChanged,
   });
 
   final int painScore;
   final bool compact;
+  final dynamic l10n;
   final ValueChanged<int> onChanged;
 
   @override
@@ -358,7 +372,7 @@ class _PainSection extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                'How does your body feel?',
+                l10n.howDoesBodyFeel,
                 style: TextStyle(
                   fontSize: compact ? 15 : 16,
                   fontWeight: FontWeight.w800,
@@ -372,8 +386,8 @@ class _PainSection extends StatelessWidget {
         PainScalePicker(
           value: painScore,
           onChanged: onChanged,
-          lowLabel: 'Great',
-          highLabel: 'Sore',
+          lowLabel: l10n.painScaleGreat,
+          highLabel: l10n.painScaleSore,
           showConnector: true,
         ),
       ],
