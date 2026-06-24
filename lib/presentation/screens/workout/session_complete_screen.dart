@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
@@ -21,6 +22,7 @@ class SessionCompleteScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] session_complete loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     final workoutState = context.watch<WorkoutBloc>().state;
     final repo = MockUserRepository.instance;
     final profile = repo.profile;
@@ -55,7 +57,7 @@ class SessionCompleteScreen extends StatelessWidget {
                 SizedBox(height: m.onboardingSectionGap),
               FadeSlideIn(
                 child: Text(
-                  'Nice work!',
+                  l10n.niceWork,
                   style: m.headlineLargeStyle(Theme.of(context).textTheme),
                 ),
               ),
@@ -63,7 +65,7 @@ class SessionCompleteScreen extends StatelessWidget {
               FadeSlideIn(
                 delay: Duration(milliseconds: 100),
                 child: Text(
-                  'Your body thanks you. Keep the streak going tomorrow.',
+                  l10n.sessionCompleteMessage,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: c.textSecondary),
                 ),
@@ -75,7 +77,7 @@ class SessionCompleteScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: StatCard(
-                        label: 'Minutes',
+                        label: l10n.statMinutes,
                         value:
                             '${lastLog?.durationMinutes ?? workoutState.session?.durationMinutes ?? 0}',
                       ),
@@ -83,7 +85,7 @@ class SessionCompleteScreen extends StatelessWidget {
                     SizedBox(width: 12),
                     Expanded(
                       child: StatCard(
-                        label: 'Mobility pts',
+                        label: l10n.statMobilityPts,
                         value:
                             '${lastLog?.mobilityPointsEarned ?? workoutState.mobilityPointsEarned}',
                       ),
@@ -91,8 +93,8 @@ class SessionCompleteScreen extends StatelessWidget {
                     SizedBox(width: 12),
                     Expanded(
                       child: StatCard(
-                        label: 'Streak',
-                        value: '${profile.streakDays}d',
+                        label: l10n.statStreak,
+                        value: l10n.statStreakValue(profile.streakDays),
                       ),
                     ),
                   ],
@@ -103,10 +105,8 @@ class SessionCompleteScreen extends StatelessWidget {
                 FadeSlideIn(
                   delay: Duration(milliseconds: 220),
                   child: ProUpsellBanner(
-                    title: 'Unlock mood sounds & AI plans',
-                    subtitle:
-                        'Pro matches ambient audio to how you feel and builds '
-                        'your full daily recovery plan.',
+                    title: l10n.upsellMoodSoundsTitle,
+                    subtitle: l10n.upsellMoodSoundsSubtitle,
                   ),
                 ),
               ],
@@ -114,7 +114,7 @@ class SessionCompleteScreen extends StatelessWidget {
               FadeSlideIn(
                 delay: Duration(milliseconds: 260),
                 child: AppButton(
-                  label: 'Back to Home',
+                  label: l10n.backToHome,
                   onPressed: () {
                     context.read<WorkoutBloc>().add(const WorkoutSkipped());
                     context.go('/home');
@@ -123,7 +123,7 @@ class SessionCompleteScreen extends StatelessWidget {
               ),
               SizedBox(height: m.sectionGap + 4),
               AppButton(
-                label: 'How do you feel?',
+                label: l10n.howDoYouFeel,
                 variant: AppButtonVariant.outlined,
                 onPressed: () => _showReliefDialog(context),
               ),
@@ -145,6 +145,7 @@ class SessionCompleteScreen extends StatelessWidget {
       builder: (ctx) {
         final c = ctx.appColors;
         final sheetM = ctx.metrics;
+        final l10n = ctx.l10n;
         return Padding(
           padding: sheetM.screenPaddingAll,
           child: Column(
@@ -152,12 +153,12 @@ class SessionCompleteScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'How\'s your pain now?',
+                l10n.painNowTitle,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 8),
               Text(
-                'This helps us personalize your next session.',
+                l10n.painNowSubtitle,
                 style: TextStyle(color: c.textSecondary),
               ),
               SizedBox(height: 20),
@@ -168,7 +169,7 @@ class SessionCompleteScreen extends StatelessWidget {
                   Navigator.pop(ctx);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Thanks! We\'ll adjust your plan.'),
+                      content: Text(l10n.thanksAdjustPlan),
                     ),
                   );
                 },
