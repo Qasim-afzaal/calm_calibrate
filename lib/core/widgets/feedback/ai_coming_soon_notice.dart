@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class AiComingSoonNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -30,7 +32,7 @@ class AiComingSoonNotice extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '$feature coming soon',
+                  l10n.featureComingSoon(feature),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
@@ -39,8 +41,7 @@ class AiComingSoonNotice extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'AI is not connected yet. This will use a serverless '
-                  'LLM when ready. No login required.',
+                  l10n.aiNotConnectedYet,
                   style: TextStyle(
                     fontSize: 12,
                     color: c.textMuted,
