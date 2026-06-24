@@ -1,3 +1,5 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_bloc.dart';
@@ -14,15 +16,16 @@ class PainSelectorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('[CalmCalibrate] pain_selector loaded'); // auth-check-debug
     final m = context.metrics;
+    final l10n = context.l10n;
     return BlocBuilder<OnboardingBloc, OnboardingState>(
       builder: (context, state) {
         final bloc = context.read<OnboardingBloc>();
 
         return OnboardingPage(
           step: 1,
-          title: 'Where does sitting hurt?',
+          title: l10n.painSelectorTitle,
           bottom: AppButton(
-            label: 'Continue',
+            label: l10n.continueButton,
             onPressed: state.canContinuePain
                 ? () {
                     bloc.add(const OnboardingPartialProfileSaveRequested());
@@ -43,6 +46,7 @@ class PainSelectorScreen extends StatelessWidget {
                     selectedAreas: state.painAreas,
                     onAreaToggled: (area) =>
                         bloc.add(OnboardingPainAreaToggled(area)),
+                    areaLabel: (area) => area.localized(l10n),
                   ),
                 ),
               );
