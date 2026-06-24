@@ -1,8 +1,11 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/score_gauge.dart';
+import 'package:calm_calibrate/l10n/app_localizations.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_state.dart';
@@ -18,6 +21,7 @@ class ScoreResultScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] score_result loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       body: BlocBuilder<AssessmentBloc, AssessmentState>(
         builder: (context, state) {
@@ -32,12 +36,12 @@ class ScoreResultScreen extends StatelessWidget {
               children: [
                 SizedBox(height: m.onboardingSectionGap),
                 Text(
-                  'Your Mobility Score',
+                  l10n.yourMobilityScore,
                   style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
                 SizedBox(height: m.onboardingTitleGap),
                 Text(
-                  'Based on your posture scan and pain areas',
+                  l10n.scoreBasedOnScan,
                   style: TextStyle(color: c.textSecondary),
                 ),
                 SizedBox(height: m.blockSpacing),
@@ -47,15 +51,16 @@ class ScoreResultScreen extends StatelessWidget {
                   (areaScore) => Padding(
                     padding: EdgeInsets.only(bottom: m.sectionGap + 4),
                     child: _AreaScoreRow(
-                      label: areaScore.area.label,
+                      label: areaScore.area.localized(l10n),
                       score: areaScore.score,
                       gain: areaScore.potentialGain,
+                      l10n: l10n,
                     ),
                   ),
                 ),
                 SizedBox(height: m.onboardingSectionGap),
                 PrimaryButton(
-                  label: 'See My Plan',
+                  label: l10n.seeMyPlan,
                   onPressed: () => context.push('/onboarding/plan'),
                 ),
               ],
@@ -72,11 +77,13 @@ class _AreaScoreRow extends StatelessWidget {
     required this.label,
     required this.score,
     required this.gain,
+    required this.l10n,
   });
 
   final String label;
   final int score;
   final int gain;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +126,7 @@ class _AreaScoreRow extends StatelessWidget {
               children: [
                 Icon(Icons.arrow_upward, size: 14, color: c.success),
                 Text(
-                  '+$gain',
+                  l10n.potentialGain(gain),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
