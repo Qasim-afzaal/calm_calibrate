@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/models/workout_mood.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
@@ -20,6 +21,7 @@ class MoodSoundService {
   }
 
   Future<void> selectMood(WorkoutMood mood) async {
+    AppLogger.debug('mood', 'selected ${mood.name} → ${mood.soundscape}');
     await _cache.saveWorkoutMood(mood.name);
   }
 
