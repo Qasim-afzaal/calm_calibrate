@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
@@ -36,15 +38,16 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
   Widget build(BuildContext context) {
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text('Reminders')),
+      appBar: AppBar(title: Text(l10n.remindersTitle)),
       body: ResponsiveScrollBody(
         fillViewport: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Break frequency',
+              l10n.breakFrequency,
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             SizedBox(height: m.sectionGap + 4),
@@ -54,7 +57,7 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(right: m.sectionGap),
                     child: SelectableChip(
-                      label: '$mins min',
+                      label: l10n.breakFrequencyMin(mins),
                       selected: _minutes == mins,
                       onTap: () => setState(() => _minutes = mins),
                     ),
@@ -64,7 +67,7 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
             ),
             SizedBox(height: m.onboardingSectionGap),
             Text(
-              'Active hours',
+              l10n.activeHours,
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             SizedBox(height: m.sectionGap + 4),
@@ -73,7 +76,7 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
               runSpacing: m.sectionGap,
               children: BreakTime.values.map((t) {
                 return SelectableChip(
-                  label: t.label,
+                  label: t.localized(l10n),
                   selected: _breakTimes.contains(t),
                   onTap: () {
                     setState(() {
@@ -102,11 +105,11 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Smart Reminders',
+                          l10n.smartReminders,
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          'Skip meetings, adapt to activity',
+                          l10n.smartRemindersSubtitle,
                           style: TextStyle(
                             fontSize: 13,
                             color: c.textMuted,
@@ -124,7 +127,7 @@ class _RemindersSettingsScreenState extends State<RemindersSettingsScreen> {
             ),
             Spacer(),
             PrimaryButton(
-              label: 'Save',
+              label: l10n.save,
               onPressed: () async {
                 final repo = MockUserRepository.instance;
                 await repo.saveProfile(
