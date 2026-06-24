@@ -1,9 +1,12 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/core/widgets/selectable_chip.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
+import 'package:calm_calibrate/l10n/app_localizations.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_bloc.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_event.dart';
 import 'package:calm_calibrate/presentation/blocs/onboarding/onboarding_state.dart';
@@ -50,6 +53,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
   Widget build(BuildContext context) {
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     final gap = m.sectionGap + 2;
 
     return Scaffold(
@@ -69,12 +73,12 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your work pattern',
+                  l10n.workPatternTitle,
                   style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
                 SizedBox(height: m.onboardingTitleGap),
                 Text(
-                  'This helps us schedule breaks when you need them most.',
+                  l10n.workPatternSubtitle,
                   style: TextStyle(
                     color: c.textSecondary,
                     height: 1.45,
@@ -82,7 +86,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                 ),
                 SizedBox(height: m.blockSpacing),
                 Text(
-                  'What should we call you?',
+                  l10n.whatShouldWeCallYou,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -98,7 +102,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                   onChanged: (value) => bloc.add(OnboardingNameSet(value)),
                   onSubmitted: (_) => _nameFocus.unfocus(),
                   decoration: InputDecoration(
-                    hintText: 'First name',
+                    hintText: l10n.firstNameHint,
                     filled: true,
                     fillColor: c.surface,
                     border: OutlineInputBorder(
@@ -121,7 +125,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                 ),
                 SizedBox(height: m.blockSpacing),
                 Text(
-                  'Hours sitting per day',
+                  l10n.hoursSittingPerDay,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -135,7 +139,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                       Expanded(
                         child: SelectableChip(
                           label: SittingHours.values[i].chipTitle,
-                          subtitle: SittingHours.values[i].chipSubtitle,
+                          subtitle: l10n.hours,
                           centered: true,
                           minHeight: _chipMinHeight,
                           selected: state.sittingHours == SittingHours.values[i],
@@ -149,7 +153,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                 ),
                 SizedBox(height: m.blockSpacing),
                 Text(
-                  'Best break times?',
+                  l10n.bestBreakTimes,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -161,6 +165,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                   minHeight: _chipMinHeight,
                   selected: state.preferredBreakTimes,
                   onToggle: (time) => bloc.add(OnboardingBreakTimeToggled(time)),
+                  l10n: l10n,
                 ),
                 SizedBox(height: m.largeSpacing),
                 if (!canContinue)
@@ -169,8 +174,8 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                     child: Center(
                       child: Text(
                         state.name.trim().isEmpty
-                            ? 'Add your name, sitting hours, and a break time'
-                            : 'Select sitting hours and at least one break time',
+                            ? l10n.workPatternValidationAll
+                            : l10n.workPatternValidationHours,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 13,
@@ -181,7 +186,7 @@ class _WorkPatternScreenState extends State<WorkPatternScreen> {
                     ),
                   ),
                 PrimaryButton(
-                  label: 'Continue',
+                  label: l10n.continueButton,
                   onPressed: canContinue
                       ? () {
                           bloc.add(const OnboardingPartialProfileSaveRequested());
@@ -204,12 +209,14 @@ class _BreakTimeGrid extends StatelessWidget {
     required this.minHeight,
     required this.selected,
     required this.onToggle,
+    required this.l10n,
   });
 
   final double gap;
   final double minHeight;
   final Set<BreakTime> selected;
   final ValueChanged<BreakTime> onToggle;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +245,7 @@ class _BreakTimeGrid extends StatelessWidget {
 
   Widget _breakChip(BreakTime time) {
     return SelectableChip(
-      label: time.label,
+      label: time.localized(l10n),
       centered: true,
       minHeight: minHeight,
       selected: selected.contains(time),
