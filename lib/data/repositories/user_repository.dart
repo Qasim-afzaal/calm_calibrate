@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
@@ -31,15 +32,20 @@ class CachedUserRepository implements UserRepository {
   List<SessionLog> get sessionLogs => _cache.sessionLogs;
 
   @override
-  Future<void> saveProfile(UserProfile profile) => _cache.saveProfile(profile);
+  Future<void> saveProfile(UserProfile profile) {
+    AppLogger.debug('user', 'saveProfile streak=${profile.streakDays}');
+    return _cache.saveProfile(profile);
+  }
 
   @override
   Future<void> saveMobilityScore(MobilityScore score) =>
       _cache.saveMobilityScore(score);
 
   @override
-  Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas}) =>
-      _cache.logSession(log, focusAreas: focusAreas);
+  Future<void> logSession(SessionLog log, {List<PainArea>? focusAreas}) {
+    AppLogger.debug('user', 'logSession id=${log.sessionId} min=${log.durationMinutes}');
+    return _cache.logSession(log, focusAreas: focusAreas);
+  }
 
   @override
   Future<void> incrementStreak() async {
