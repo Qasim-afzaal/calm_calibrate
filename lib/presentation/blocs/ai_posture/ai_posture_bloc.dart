@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/data/services/ai_service.dart';
@@ -49,7 +50,10 @@ class AiPostureBloc extends Bloc<AiPostureEvent, AiPostureState> {
     AiPostureAnalyzeRequested event,
     Emitter<AiPostureState> emit,
   ) async {
-    if (!AiFeatures.llmEnabled) return;
+    if (!AiFeatures.llmEnabled) {
+      AppLogger.debug('ai_posture', 'analyze skipped — llm disabled');
+      return;
+    }
     if (state.selectedIssues.isEmpty) return;
     emit(state.copyWith(status: AiPostureStatus.analyzing, result: null));
 
