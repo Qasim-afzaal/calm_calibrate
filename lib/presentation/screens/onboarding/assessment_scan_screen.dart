@@ -1,4 +1,6 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
 import 'package:calm_calibrate/presentation/blocs/assessment/assessment_bloc.dart';
@@ -14,14 +16,16 @@ class AssessmentScanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLogger.debug('assessment_scan', 'loaded');
     final c = context.appColors;
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new, size: 20),
           onPressed: () => context.pop(),
         ),
-        title: Text('Mobility Assessment'),
+        title: Text(l10n.mobilityAssessmentTitle),
       ),
       body: BlocConsumer<AssessmentBloc, AssessmentState>(
         listenWhen: (prev, curr) => prev.status != curr.status,
@@ -40,7 +44,7 @@ class AssessmentScanScreen extends StatelessWidget {
               children: [
                 SizedBox(height: m.isCompact ? 8 : 16),
                 Text(
-                  isScanning ? 'Analyzing posture...' : 'Mobility Score',
+                  isScanning ? l10n.analyzingPosture : l10n.mobilityScoreTitle,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontSize: m.isCompact ? 22 : null,
                       ),
@@ -48,9 +52,8 @@ class AssessmentScanScreen extends StatelessWidget {
                 SizedBox(height: m.isCompact ? 4 : 8),
                 Text(
                   isScanning
-                      ? 'Stand in profile view. Keep your whole body in frame.'
-                      : 'We\'ll use your camera to measure posture alignment. '
-                          'Processing happens on your device for privacy.',
+                      ? l10n.scanningInstructions
+                      : l10n.scanPrivacyNote,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: c.textSecondary,
@@ -76,7 +79,7 @@ class AssessmentScanScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    '${(state.scanProgress * 100).round()}% complete',
+                    l10n.scanProgress((state.scanProgress * 100).round()),
                     style: TextStyle(
                       color: c.textMuted,
                       fontWeight: FontWeight.w500,
@@ -85,7 +88,7 @@ class AssessmentScanScreen extends StatelessWidget {
                 ],
                 SizedBox(height: 24),
                 PrimaryButton(
-                  label: isScanning ? 'Scanning...' : 'Start Scan',
+                  label: isScanning ? l10n.scanningEllipsis : l10n.startScan,
                   isLoading: isScanning,
                   onPressed: isScanning
                       ? null
@@ -96,7 +99,7 @@ class AssessmentScanScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 if (!isScanning)
                   PrimaryButton(
-                    label: 'Skip for now',
+                    label: l10n.skipForNow,
                     variant: PrimaryButtonVariant.outlined,
                     onPressed: () => context.push('/onboarding/plan'),
                   ),
@@ -119,6 +122,7 @@ class _CameraFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return AspectRatio(
       aspectRatio: 3 / 4,
       child: Container(
@@ -166,7 +170,7 @@ class _CameraFrame extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    'Align shoulders with guide',
+                    l10n.alignShouldersGuide,
                     style: TextStyle(color: Colors.white, fontSize: 13),
                   ),
                 ),
