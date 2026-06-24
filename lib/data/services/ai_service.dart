@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/models/pain_area.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/data/models/session_log.dart';
@@ -26,6 +27,7 @@ class AiService {
     required List<SessionLog> recentSessions,
   }) async {
     if (!AiFeatures.llmEnabled) {
+      AppLogger.debug('ai', 'posture mock — llm disabled');
       return _mockPostureAnalysis(
         profile: profile,
         mobilityScore: mobilityScore,
