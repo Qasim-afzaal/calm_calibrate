@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/constants/app_radius.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class JourneyDayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     final progressDots = day.clamp(1, 7);
 
     return ScaleTap(
@@ -62,7 +64,7 @@ class JourneyDayCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Today\'s goal',
+                        l10n.journeyCardTodaysGoal,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -125,7 +127,7 @@ class JourneyDayCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '$streakDays day streak',
+                    l10n.journeyCardStreak(streakDays),
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -150,6 +152,7 @@ class _DayBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       width: 48,
       height: 48,
@@ -170,7 +173,7 @@ class _DayBadge extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'DAY',
+            l10n.journeyCardDayLabel,
             style: TextStyle(
               fontSize: 8,
               fontWeight: FontWeight.w800,
