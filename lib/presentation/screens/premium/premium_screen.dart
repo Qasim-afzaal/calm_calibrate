@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:calm_calibrate/core/animations/loop_animation.dart';
 import 'package:calm_calibrate/core/animations/pulse_ring.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/cancel_premium_flow.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/paywall_cta_button.dart';
@@ -95,9 +96,10 @@ class _PremiumScreenState extends State<PremiumScreen>
     await SubscriptionRepository.instance.startFreeTrial(_plan);
     if (!mounted) return;
     setState(() => _loading = false);
+    final l10n = context.l10n;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Welcome to Pro! 7 day free trial started.'),
+        content: Text(l10n.welcomeProTrialStarted),
         backgroundColor: context.appColors.success,
       ),
     );
@@ -115,6 +117,7 @@ class _PremiumScreenState extends State<PremiumScreen>
     final c = context.appColors;
     final isPremium = SubscriptionRepository.instance.isPremium;
     final m = context.metrics;
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: c.navy,
@@ -147,7 +150,7 @@ class _PremiumScreenState extends State<PremiumScreen>
                           poseSize: m.paywallPoseSize,
                         ),
                         SizedBox(height: m.sectionGap),
-                        _ProHeaderRow(compact: m.isCompact),
+                        _ProHeaderRow(compact: m.isCompact, l10n: l10n),
                         if (isPremium) ...[
                           SizedBox(height: m.sectionGap),
                           PaywallTrialStatus(
@@ -157,7 +160,7 @@ class _PremiumScreenState extends State<PremiumScreen>
                         ],
                         SizedBox(height: m.sectionGap),
                         Text(
-                          'Unlock Full Recovery',
+                          l10n.unlockFullRecovery,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
@@ -167,7 +170,7 @@ class _PremiumScreenState extends State<PremiumScreen>
                         ),
                         SizedBox(height: 4),
                         Text(
-                          '90 sec breaks that actually work at your desk.',
+                          l10n.paywallTagline,
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: m.isCompact ? 12 : 13,
@@ -194,6 +197,7 @@ class _PremiumScreenState extends State<PremiumScreen>
                   horizontalPadding: m.horizontalPadding,
                   plan: _plan,
                   loading: _loading,
+                  l10n: l10n,
                   onPlanSelected: (p) => setState(() => _plan = p),
                   onStartTrial: _startTrial,
                   onContinueHome: () => context.go('/home'),
@@ -209,9 +213,10 @@ class _PremiumScreenState extends State<PremiumScreen>
 }
 
 class _ProHeaderRow extends StatelessWidget {
-  _ProHeaderRow({required this.compact});
+  _ProHeaderRow({required this.compact, required this.l10n});
 
   final bool compact;
+  final dynamic l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +249,7 @@ class _ProHeaderRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'CalmCalibrate Pro',
+                l10n.calmCalibratePro,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -252,7 +257,7 @@ class _ProHeaderRow extends StatelessWidget {
                 ),
               ),
               Text(
-                'Full desk recovery system',
+                l10n.fullDeskRecoverySystem,
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: compact ? 11 : 12,
@@ -278,6 +283,7 @@ class _PaywallFooter extends StatelessWidget {
     required this.onStartTrial,
     required this.onContinueHome,
     required this.onCancelTrial,
+    required this.l10n,
   });
 
   final bool isPremium;
@@ -286,6 +292,7 @@ class _PaywallFooter extends StatelessWidget {
   final double horizontalPadding;
   final PremiumPlan plan;
   final bool loading;
+  final dynamic l10n;
   final ValueChanged<PremiumPlan> onPlanSelected;
   final VoidCallback onStartTrial;
   final VoidCallback onContinueHome;
@@ -302,7 +309,7 @@ class _PaywallFooter extends StatelessWidget {
         children: [
           if (isPremium) ...[
             PaywallCtaButton(
-              label: 'Continue to Home',
+              label: l10n.continueToHome,
               height: ctaHeight,
               onPressed: onContinueHome,
             ),
@@ -314,7 +321,7 @@ class _PaywallFooter extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(
-                'Cancel trial',
+                l10n.cancelTrial,
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: compact ? 12 : 13,
@@ -349,7 +356,7 @@ class _PaywallFooter extends StatelessWidget {
             ),
             SizedBox(height: compact ? 10 : 12),
             PaywallCtaButton(
-              label: 'Start Free Trial',
+              label: l10n.startFreeTrial,
               height: ctaHeight,
               isLoading: loading,
               onPressed: loading ? null : onStartTrial,
@@ -358,7 +365,7 @@ class _PaywallFooter extends StatelessWidget {
           SizedBox(height: compact ? 4 : 6),
           Center(
             child: Text(
-              '7 day free trial · Cancel anytime',
+              l10n.trialDisclaimer,
               style: TextStyle(
                 color: Colors.white54,
                 fontSize: compact ? 11 : 12,
