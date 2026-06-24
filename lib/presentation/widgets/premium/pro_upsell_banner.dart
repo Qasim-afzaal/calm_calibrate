@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,18 +8,18 @@ import 'package:go_router/go_router.dart';
 class ProUpsellBanner extends StatelessWidget {
   ProUpsellBanner({
     super.key,
-    this.title = 'Want more from every break?',
-    this.subtitle =
-        'Unlock AI plans, mood soundscapes, posture scan & 50+ programs.',
+    this.title,
+    this.subtitle,
   });
 
-  final String title;
-  final String subtitle;
+  final String? title;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
+    final l10n = context.l10n;
     return GestureDetector(
       onTap: () => context.push('/premium'),
       child: Container(
@@ -52,7 +53,7 @@ class ProUpsellBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    title ?? l10n.upsellDefaultTitle,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
@@ -61,7 +62,7 @@ class ProUpsellBanner extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    subtitle,
+                    subtitle ?? l10n.upsellDefaultSubtitle,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 12,
