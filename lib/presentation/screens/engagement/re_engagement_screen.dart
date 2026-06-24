@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
@@ -13,6 +14,7 @@ class ReEngagementScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] re_engagement loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       body: ResponsiveScrollBody(
         fillViewport: true,
@@ -33,13 +35,12 @@ class ReEngagementScreen extends StatelessWidget {
             ),
             SizedBox(height: m.onboardingSectionGap),
             Text(
-              'We miss you!',
+              l10n.weMissYou,
               style: m.headlineLargeStyle(Theme.of(context).textTheme),
             ),
             SizedBox(height: m.sectionGap + 4),
             Text(
-              'Your neck and back don\'t take days off. '
-              'One 90 second break is all it takes to get back on track.',
+              l10n.reEngagementBody,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: c.textSecondary,
@@ -58,12 +59,12 @@ class ReEngagementScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Quick comeback session',
+                    l10n.quickComebackSession,
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Neck Relief · 3 min · No equipment',
+                    l10n.comebackSessionDetails,
                     style: TextStyle(color: c.textSecondary),
                   ),
                 ],
@@ -71,12 +72,12 @@ class ReEngagementScreen extends StatelessWidget {
             ),
             const Spacer(flex: 2),
             PrimaryButton(
-              label: 'Do a 3 min comeback',
+              label: l10n.do3MinComeback,
               onPressed: () => context.push('/pre-workout/morning_reset'),
             ),
             SizedBox(height: m.sectionGap + 4),
             PrimaryButton(
-              label: 'Remind me tomorrow',
+              label: l10n.remindMeTomorrow,
               variant: PrimaryButtonVariant.outlined,
               onPressed: () => context.go('/home'),
             ),
