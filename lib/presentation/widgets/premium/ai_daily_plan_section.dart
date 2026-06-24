@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
@@ -23,8 +24,9 @@ class AiDailyPlanSection extends StatefulWidget {
 class _AiDailyPlanSectionState extends State<AiDailyPlanSection> {
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (!AiFeatures.llmEnabled) {
-      return const AiComingSoonNotice(feature: 'AI daily plan');
+      return AiComingSoonNotice(feature: l10n.todaysAiPlan);
     }
     return BlocProvider(
       create: (_) => AiPlanBloc()
@@ -42,6 +44,7 @@ class _AiDailyPlanBody extends StatelessWidget {
     return BlocBuilder<AiPlanBloc, AiPlanState>(
       builder: (context, state) {
         final bloc = context.read<AiPlanBloc>();
+        final l10n = context.l10n;
 
         if (state.status == AiPlanStatus.generating && state.plan == null) {
           return Padding(
@@ -52,22 +55,23 @@ class _AiDailyPlanBody extends StatelessWidget {
 
         if (state.plan == null) {
           return AppButton(
-            label: 'Generate AI plan for today',
+            label: l10n.generateAiPlanToday,
             icon: Icons.auto_awesome,
             onPressed: () => bloc.add(const AiPlanGenerateRequested()),
           );
         }
 
-        return _PlanContent(plan: state.plan!);
+        return _PlanContent(plan: state.plan!, l10n: l10n);
       },
     );
   }
 }
 
 class _PlanContent extends StatelessWidget {
-  const _PlanContent({required this.plan});
+  const _PlanContent({required this.plan, required this.l10n});
 
   final AiDailyPlan plan;
+  final dynamic l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class _PlanContent extends StatelessWidget {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'AI focus: ${plan.focus}',
+                  l10n.aiFocus(plan.focus),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: c.primary,
@@ -101,21 +105,21 @@ class _PlanContent extends StatelessWidget {
         SizedBox(height: 10),
         _Slot(
           icon: Icons.wb_twilight_rounded,
-          label: 'Morning',
+          label: l10n.planSlotMorning,
           text: plan.morning,
           sessionId: 'morning_reset',
         ),
         SizedBox(height: 8),
         _Slot(
           icon: Icons.wb_sunny_rounded,
-          label: 'Midday',
+          label: l10n.planSlotMidday,
           text: plan.midday,
           sessionId: 'midday_break',
         ),
         SizedBox(height: 8),
         _Slot(
           icon: Icons.nightlight_round,
-          label: 'Evening',
+          label: l10n.planSlotEvening,
           text: plan.evening,
           sessionId: 'evening_recovery',
         ),
@@ -212,6 +216,7 @@ class AiDailyPlanLockedTeaser extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
+    final l10n = context.l10n;
     return GestureDetector(
       onTap: () => context.push('/premium'),
       child: Container(
@@ -226,7 +231,7 @@ class AiDailyPlanLockedTeaser extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Pro: AI builds your morning, midday & evening plan',
+                l10n.aiDailyPlanLockedTeaser,
                 style: TextStyle(fontSize: 12, color: c.textSecondary),
               ),
             ),
