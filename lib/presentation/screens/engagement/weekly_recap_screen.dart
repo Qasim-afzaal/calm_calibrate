@@ -1,5 +1,6 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
@@ -58,6 +59,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     final repo = EngagementRepository.instance;
     final weekNum = (repo.currentDay / 7).ceil();
     final sub = SubscriptionRepository.instance;
@@ -75,20 +77,20 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
           icon: Icon(Icons.close),
           onPressed: () => context.pop(),
         ),
-        title: Text('Week $weekNum Recap'),
+        title: Text(l10n.weekRecapTitle(weekNum)),
       ),
       body: ListView(
         padding: responsiveScreenPaddingAll(context),
         children: [
           Text(
-            'Your week in review',
+            l10n.yourWeekInReview,
             style: m.headlineStyle(Theme.of(context).textTheme)?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
           ),
           SizedBox(height: m.onboardingTitleGap),
           Text(
-            'Small breaks add up. Here\'s your progress.',
+            l10n.weekRecapSubtitle,
             style: TextStyle(color: c.textSecondary),
           ),
           SizedBox(height: 24),
@@ -96,12 +98,15 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _RecapStat(
-                label: 'Sessions',
+                label: l10n.recapSessions,
                 value: '${weekly.totalSessions}',
               ),
-              _RecapStat(label: 'Streak', value: '${repo.streakDays}d'),
               _RecapStat(
-                label: 'Minutes',
+                label: l10n.recapStreak,
+                value: l10n.statStreakValue(repo.streakDays),
+              ),
+              _RecapStat(
+                label: l10n.recapMinutes,
                 value: '${weekly.totalMinutes}',
               ),
             ],
@@ -166,7 +171,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
                       Icon(Icons.auto_awesome, color: c.primary),
                       SizedBox(width: 8),
                       Text(
-                        'AI Weekly Insight',
+                        l10n.aiWeeklyInsightTitle,
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: c.primary,
@@ -179,7 +184,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
                     Center(child: CircularProgressIndicator())
                   else
                     Text(
-                      _aiInsight ?? 'Complete sessions to get AI insights.',
+                      _aiInsight ?? l10n.aiInsightEmpty,
                       style: TextStyle(height: 1.5),
                     ),
                 ],
@@ -201,7 +206,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Unlock AI weekly insights with Pro',
+                        l10n.unlockAiWeeklyInsights,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -213,7 +218,7 @@ class _WeeklyRecapScreenState extends State<WeeklyRecapScreen> {
           ],
           SizedBox(height: 32),
           PrimaryButton(
-            label: 'Back to Home',
+            label: l10n.backToHome,
             onPressed: () => context.go('/home'),
           ),
           SizedBox(height: 24),
