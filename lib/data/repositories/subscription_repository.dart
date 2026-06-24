@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/models/premium.dart';
 import 'package:calm_calibrate/data/repositories/session_repository.dart';
@@ -28,6 +29,10 @@ class SubscriptionRepository {
   }
 
   Future<void> startFreeTrial(PremiumPlan plan) {
+    AppLogger.debug(
+      'subscription',
+      'startFreeTrial plan=${plan.label} ${SubscriptionFeatures.debugStatus}',
+    );
     if (!SubscriptionFeatures.enabled) return Future.value();
     return _cache.activatePremium(plan: plan);
   }
