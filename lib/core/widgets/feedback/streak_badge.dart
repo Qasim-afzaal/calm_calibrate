@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/animations/celebration_pop.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,11 @@ class StreakBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     if (days == 0) return const SizedBox.shrink();
 
-    final label = compact ? '${days}d' : '$days day streak';
+    final label =
+        compact ? l10n.statStreakValue(days) : l10n.streakBadgeFull(days);
 
     return CelebrationPop(
       child: Container(
