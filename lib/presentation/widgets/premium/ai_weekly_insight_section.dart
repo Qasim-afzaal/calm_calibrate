@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/config/ai_features.dart';
 import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
@@ -61,8 +62,9 @@ class _AiWeeklyInsightSectionState extends State<AiWeeklyInsightSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     if (!AiFeatures.llmEnabled) {
-      return const AiComingSoonNotice(feature: 'AI weekly insight');
+      return AiComingSoonNotice(feature: l10n.aiWeeklyInsightTitle);
     }
     final c = context.appColors;
     return Container(
@@ -80,7 +82,7 @@ class _AiWeeklyInsightSectionState extends State<AiWeeklyInsightSection> {
               Icon(Icons.auto_awesome, color: c.primary, size: 20),
               SizedBox(width: 8),
               Text(
-                'AI Coach Insight',
+                l10n.aiWeeklyInsightTitle,
                 style: TextStyle(
                   fontWeight: FontWeight.w800,
                   color: c.primary,
@@ -113,6 +115,7 @@ class AiWeeklyInsightLockedTeaser extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
+    final l10n = context.l10n;
     return ScaleTap(
       onTap: () => context.push('/premium'),
       child: Container(
@@ -130,7 +133,7 @@ class AiWeeklyInsightLockedTeaser extends StatelessWidget {
             SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Pro: Get AI weekly coaching on your progress',
+                l10n.unlockAiWeeklyInsights,
                 style: TextStyle(color: c.textSecondary, height: 1.35),
               ),
             ),
@@ -148,6 +151,7 @@ class _ProBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
@@ -155,7 +159,7 @@ class _ProBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        'PRO',
+        l10n.proBadge,
         style: TextStyle(
           color: Colors.white,
           fontSize: 9,
