@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/repositories/session_repository.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/presentation/blocs/home/home_event.dart';
@@ -22,6 +23,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(isLoading: true));
     final profile = _userRepository.profile;
     final sessions = _sessionRepository.getTodaySessions(profile);
+    AppLogger.debug(
+      'home',
+      'loaded ${sessions.length} sessions streak=${profile.streakDays}',
+    );
     emit(
       state.copyWith(
         profile: profile,
