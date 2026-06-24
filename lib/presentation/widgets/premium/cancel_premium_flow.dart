@@ -1,32 +1,32 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/data/repositories/subscription_repository.dart';
 import 'package:flutter/material.dart';
 
 /// Confirms and cancels Pro / free trial — user returns to free tier.
 Future<bool> cancelPremiumSubscription(BuildContext context) async {
+  final l10n = context.l10n;
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) {
       final c = ctx.appColors;
+      final dialogL10n = ctx.l10n;
       return AlertDialog(
-      backgroundColor: c.surface,
-      title: Text('Cancel Pro trial?'),
-      content: Text(
-        'You\'ll lose access to AI plans, posture analysis, '
-        'and the full exercise library. Your progress and streak stay saved.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(ctx, false),
-          child: Text('Keep Pro'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(ctx, true),
-          style: TextButton.styleFrom(foregroundColor: c.primary),
-          child: Text('Cancel trial'),
-        ),
-      ],
-    );
+        backgroundColor: c.surface,
+        title: Text(dialogL10n.cancelProTrialTitle),
+        content: Text(dialogL10n.cancelProTrialBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(dialogL10n.keepPro),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: c.primary),
+            child: Text(dialogL10n.cancelTrial),
+          ),
+        ],
+      );
     },
   );
 
@@ -36,9 +36,7 @@ Future<bool> cancelPremiumSubscription(BuildContext context) async {
 
   if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Pro trial cancelled. You\'re on the free plan.'),
-      ),
+      SnackBar(content: Text(l10n.proTrialCancelled)),
     );
   }
 
