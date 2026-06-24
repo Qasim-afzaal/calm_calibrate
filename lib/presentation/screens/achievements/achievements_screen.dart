@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
@@ -12,17 +14,18 @@ class AchievementsScreen extends StatelessWidget {
 
     debugPrint('[CalmCalibrate] achievements loaded'); // auth-check-debug
     final c = context.appColors;
+    final l10n = context.l10n;
     final achievements = EngagementRepository.instance.achievements;
     final unlocked = achievements.where((a) => a.isUnlocked).length;
 
     final m = context.metrics;
     return Scaffold(
-      appBar: AppBar(title: Text('Achievements')),
+      appBar: AppBar(title: Text(l10n.achievementsTitle)),
       body: ListView(
         padding: responsiveScreenPaddingAll(context),
         children: [
           Text(
-            '$unlocked / ${achievements.length} unlocked',
+            l10n.achievementsUnlockedCount(unlocked, achievements.length),
             style: TextStyle(
               fontSize: 16,
               color: c.textSecondary,
@@ -58,7 +61,7 @@ class AchievementsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            a.title,
+                            localizedAchievementTitle(l10n, a.id),
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: a.isUnlocked
@@ -67,7 +70,7 @@ class AchievementsScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            a.description,
+                            localizedAchievementDesc(l10n, a.id),
                             style: TextStyle(
                               fontSize: 13,
                               color: c.textMuted,
@@ -80,7 +83,7 @@ class AchievementsScreen extends StatelessWidget {
                       Icon(Icons.check_circle, color: c.success)
                     else
                       Text(
-                        'Day ${a.unlockedDay}',
+                        l10n.achievementUnlockDay(a.unlockedDay),
                         style: TextStyle(
                           fontSize: 12,
                           color: c.textMuted,
