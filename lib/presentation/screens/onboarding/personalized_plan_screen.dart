@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/primary_button.dart';
@@ -6,6 +8,7 @@ import 'package:calm_calibrate/data/models/exercise.dart';
 import 'package:calm_calibrate/data/models/user_profile.dart';
 import 'package:calm_calibrate/data/repositories/session_repository.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
+import 'package:calm_calibrate/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,13 +20,14 @@ class PersonalizedPlanScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] personalized_plan loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     final profile = MockUserRepository.instance.profile;
     final sessions =
         MockSessionRepository.instance.getTodaySessions(profile);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Plan'),
+        title: Text(l10n.yourPlanAppBar),
       ),
       body: SafeArea(
         child: ResponsiveContent(
@@ -33,12 +37,12 @@ class PersonalizedPlanScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Personalized for you',
+                  l10n.personalizedForYou,
                   style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
                 SizedBox(height: m.onboardingTitleGap),
                 Text(
-                  _planSubtitle(profile),
+                  _planSubtitle(l10n, profile),
                   style: TextStyle(color: c.textSecondary),
                 ),
                 SizedBox(height: m.onboardingSectionGap),
@@ -47,12 +51,15 @@ class PersonalizedPlanScreen extends StatelessWidget {
                     itemCount: sessions.length,
                     separatorBuilder: (_, _) => SizedBox(height: m.sectionGap + 4),
                     itemBuilder: (context, index) {
-                      return _SessionPlanCard(session: sessions[index]);
+                      return _SessionPlanCard(
+                        session: localizeSession(l10n, sessions[index]),
+                        l10n: l10n,
+                      );
                     },
                   ),
                 ),
                 PrimaryButton(
-                  label: 'Start My Plan',
+                  label: l10n.startMyPlan,
                   onPressed: () async {
                     await MockUserRepository.instance.saveProfile(
                       profile.copyWith(onboardingComplete: true),
@@ -69,17 +76,18 @@ class PersonalizedPlanScreen extends StatelessWidget {
     );
   }
 
-  String _planSubtitle(UserProfile profile) {
-    final areas = profile.painAreas.map((a) => a.label.toLowerCase()).join(', ');
-    if (areas.isEmpty) return '3 daily sessions tailored to desk workers.';
-    return 'Focused on $areas with smart break timing.';
+  String _planSubtitle(AppLocalizations l10n, UserProfile profile) {
+    final areas = localizedPainAreaList(l10n, profile.painAreas);
+    if (areas.isEmpty) return l10n.planSubtitleDefault;
+    return l10n.planSubtitleFocused(areas);
   }
 }
 
 class _SessionPlanCard extends StatelessWidget {
-  const _SessionPlanCard({required this.session});
+  const _SessionPlanCard({required this.session, required this.l10n});
 
   final ExerciseSession session;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +144,7 @@ class _SessionPlanCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              '${session.durationMinutes} min',
+              l10n.sessionDurationMin(session.durationMinutes),
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
