@@ -1,4 +1,6 @@
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/presentation/widgets/premium/pro_lock_sheet.dart';
@@ -45,13 +47,13 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
   }
 
   Future<void> _onMoodTap(WorkoutMood mood) async {
+    final l10n = context.l10n;
     if (!SubscriptionRepository.instance.hasProAccess) {
       await showProLockSheet(
         context,
-        feature: 'Mood soundscapes',
+        feature: l10n.proLockMoodFeature,
         benefit:
-            'Pro picks ambient audio for how you feel: stressed, tired, sore, '
-            'or focused. ${mood.label} → "${mood.soundscape}".',
+            '${localizedMoodLabel(l10n, mood)} → "${localizedMoodSoundscape(l10n, mood)}".',
       );
       return;
     }
@@ -62,6 +64,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     final sub = SubscriptionRepository.instance;
     final isPremium = sub.isPremium;
     final showProUi = sub.showSubscriptionUi;
@@ -77,7 +80,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
             SizedBox(width: 8),
             Expanded(
               child: Text(
-                'How are you feeling?',
+                l10n.howAreYouFeeling,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: widget.compact ? 14 : 15,
@@ -99,7 +102,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                       Icon(Icons.lock, size: 11, color: c.primary),
                       SizedBox(width: 3),
                       Text(
-                        'PRO',
+                        l10n.proBadge,
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
@@ -116,8 +119,8 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
           SizedBox(height: 4),
           Text(
             hasProAccess
-                ? 'We\'ll play a matching soundscape during your session'
-                : 'Pro unlocks mood matched ambient audio',
+                ? l10n.moodSoundPremiumHint
+                : l10n.moodSoundFreeHint,
             style: TextStyle(fontSize: 13, color: c.textSecondary),
           ),
         ],
@@ -127,6 +130,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
             selected: selected,
             isPremium: hasProAccess,
             compact: widget.compact,
+            l10n: l10n,
             onTap: _onMoodTap,
           )
         else
@@ -164,7 +168,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
                     ),
                     SizedBox(width: widget.compact ? 4 : 6),
                     Text(
-                      mood.label,
+                      localizedMoodLabel(l10n, mood),
                       style: TextStyle(
                         fontSize: widget.compact ? 12 : 13,
                         fontWeight: FontWeight.w600,
@@ -181,7 +185,7 @@ class _MoodSoundPickerState extends State<MoodSoundPicker> {
         ),
         if (hasProAccess && selected != null && !widget.iconRow) ...[
           SizedBox(height: widget.compact ? 8 : 12),
-          _SoundscapePreview(mood: selected),
+          _SoundscapePreview(mood: selected, l10n: l10n),
         ] else if (showProUi && !isPremium && !widget.hideTeaser) ...[
           SizedBox(height: widget.compact ? 8 : 12),
           MoodSoundLockedTeaser(),
@@ -196,12 +200,14 @@ class _MoodIconRow extends StatelessWidget {
     required this.selected,
     required this.isPremium,
     required this.compact,
+    required this.l10n,
     required this.onTap,
   });
 
   final WorkoutMood? selected;
   final bool isPremium;
   final bool compact;
+  final dynamic l10n;
   final Future<void> Function(WorkoutMood mood) onTap;
 
   @override
@@ -253,7 +259,7 @@ class _MoodIconRow extends StatelessWidget {
                   ),
                   SizedBox(height: compact ? 5 : 6),
                   Text(
-                    mood.label,
+                    localizedMoodLabel(l10n, mood),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -274,9 +280,10 @@ class _MoodIconRow extends StatelessWidget {
 }
 
 class _SoundscapePreview extends StatelessWidget {
-  _SoundscapePreview({required this.mood});
+  _SoundscapePreview({required this.mood, required this.l10n});
 
   final WorkoutMood mood;
+  final dynamic l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -298,14 +305,14 @@ class _SoundscapePreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  mood.soundscape,
+                  localizedMoodSoundscape(l10n, mood),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 13,
                   ),
                 ),
                 Text(
-                  mood.description,
+                  localizedMoodDesc(l10n, mood),
                   style: TextStyle(
                     fontSize: 12,
                     color: c.textMuted,
@@ -327,13 +334,12 @@ class MoodSoundLockedTeaser extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!SubscriptionFeatures.enabled) return const SizedBox.shrink();
     final c = context.appColors;
+    final l10n = context.l10n;
     return GestureDetector(
       onTap: () => showProLockSheet(
         context,
-        feature: 'Mood soundscapes',
-        benefit:
-            'Pick how you feel and Pro plays the right ambient audio: '
-            'rain for tired days, breath work when stressed, zen when calm.',
+        feature: l10n.proLockMoodFeature,
+        benefit: l10n.moodSoundLockedTeaser,
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
@@ -348,7 +354,7 @@ class MoodSoundLockedTeaser extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Pro: soundscapes matched to your mood',
+                l10n.moodSoundLockedTeaser,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
