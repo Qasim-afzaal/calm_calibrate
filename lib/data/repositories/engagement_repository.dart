@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/models/engagement_journey.dart';
 
@@ -32,8 +33,10 @@ class EngagementRepository {
 
   void simulateDay(int day) => _cache.simulateDay(day);
 
-  void recordCheckIn({required int painScore}) =>
-      _cache.recordCheckIn(painScore: painScore);
+  void recordCheckIn({required int painScore}) {
+    AppLogger.debug('engagement', 'checkIn painScore=$painScore');
+    _cache.recordCheckIn(painScore: painScore);
+  }
 
   void completeSession() {
     // Handled inside AppCache.logSession — kept for API compatibility.
