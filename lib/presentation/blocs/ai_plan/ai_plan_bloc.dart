@@ -1,4 +1,5 @@
 import 'package:calm_calibrate/core/config/ai_features.dart';
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/data/local/app_cache.dart';
 import 'package:calm_calibrate/data/repositories/user_repository.dart';
 import 'package:calm_calibrate/data/services/ai_service.dart';
@@ -18,7 +19,10 @@ class AiPlanBloc extends Bloc<AiPlanEvent, AiPlanState> {
   final UserRepository _userRepository;
 
   void _onStarted(AiPlanStarted event, Emitter<AiPlanState> emit) {
-    if (!AiFeatures.llmEnabled) return;
+    if (!AiFeatures.llmEnabled) {
+      AppLogger.debug('ai_plan', 'skipped — llm disabled');
+      return;
+    }
 
     final cached = AppCache.instance.aiDailyPlan;
     emit(state.copyWith(plan: cached));
