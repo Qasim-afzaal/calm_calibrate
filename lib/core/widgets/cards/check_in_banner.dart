@@ -1,6 +1,7 @@
 import 'package:calm_calibrate/core/animations/breathe_animation.dart';
 import 'package:calm_calibrate/core/animations/scale_tap.dart';
 import 'package:calm_calibrate/core/constants/app_radius.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class CheckInBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.appColors;
+    final l10n = context.l10n;
     return ScaleTap(
       onTap: onTap,
       child: Container(
@@ -50,7 +52,7 @@ class CheckInBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Daily check-in',
+                    l10n.checkInBannerTitle,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
@@ -59,7 +61,7 @@ class CheckInBanner extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'How\'s your body today?',
+                    l10n.checkInBannerSubtitle,
                     style: TextStyle(fontSize: 13, color: c.textSecondary),
                   ),
                 ],
