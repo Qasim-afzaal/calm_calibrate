@@ -1,3 +1,4 @@
+import 'package:calm_calibrate/core/debug/app_logger.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/exercise/exercise_animation_catalog.dart';
 import 'package:calm_calibrate/data/models/exercise.dart';
@@ -32,6 +33,7 @@ class ExercisePoseAnimation extends StatelessWidget {
     }
 
     final asset = ExerciseAnimationCatalog.assetFor(pose);
+    AppLogger.debug('exercise', 'pose=${pose.name} asset=${asset ?? 'none'}');
     if (asset == null) {
       return _MissingAnimationView(
         pose: pose,
