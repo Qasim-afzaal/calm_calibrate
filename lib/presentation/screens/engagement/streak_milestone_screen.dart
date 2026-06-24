@@ -1,9 +1,12 @@
 import 'package:calm_calibrate/core/config/subscription_features.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/widgets.dart';
 import 'package:calm_calibrate/data/models/engagement_journey.dart';
 import 'package:calm_calibrate/data/repositories/engagement_repository.dart';
+import 'package:calm_calibrate/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,14 +19,18 @@ class StreakMilestoneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('[CalmCalibrate] streak_milestone loaded'); // auth-check-debug
     final c = context.appColors;
+    final l10n = context.l10n;
     final plan = JourneyPlan.forDay(day);
-    final milestone = plan?.milestone ?? 'Milestone reached!';
+    final localizedPlan =
+        plan == null ? null : localizeJourneyDay(l10n, plan);
+    final milestone =
+        localizedPlan?.milestone ?? l10n.milestoneReachedFallback;
     final repo = EngagementRepository.instance;
     repo.markMilestoneSeen(day);
     final m = context.metrics;
     final achievement = _achievementForDay(day);
     final icon = achievement?.icon ?? _iconForDay(day);
-    final message = _messageForDay(day, plan?.goal);
+    final message = _messageForDay(l10n, day, localizedPlan?.goal);
 
     return Scaffold(
       backgroundColor: c.navy,
@@ -41,12 +48,12 @@ class StreakMilestoneScreen extends StatelessWidget {
                       child: IconButton(
                         onPressed: () => context.go('/home'),
                         icon: Icon(Icons.close_rounded, color: c.onNavy),
-                        tooltip: 'Close',
+                        tooltip: l10n.close,
                       ),
                     ),
                     const Spacer(),
                     FadeSlideIn(
-                      child: _AchievementPill(label: 'Achievement unlocked'),
+                      child: _AchievementPill(label: l10n.achievementUnlocked),
                     ),
                     SizedBox(height: m.sectionGap + 4),
                     FadeSlideIn(
@@ -113,7 +120,7 @@ class StreakMilestoneScreen extends StatelessWidget {
                     SizedBox(height: m.onboardingTitleGap),
                     FadeSlideIn(
                       delay: const Duration(milliseconds: 220),
-                      child: _StreakProgress(day: day),
+                      child: _StreakProgress(day: day, l10n: l10n),
                     ),
                     SizedBox(height: m.onboardingSectionGap),
                     FadeSlideIn(
@@ -124,7 +131,10 @@ class StreakMilestoneScreen extends StatelessWidget {
                       SizedBox(height: m.sectionGap + 4),
                       FadeSlideIn(
                         delay: const Duration(milliseconds: 300),
-                        child: _AchievementCard(achievement: achievement),
+                        child: _AchievementCard(
+                          achievement: achievement,
+                          l10n: l10n,
+                        ),
                       ),
                     ],
                     const Spacer(flex: 2),
@@ -134,12 +144,12 @@ class StreakMilestoneScreen extends StatelessWidget {
                         children: [
                           if (day == 30 && SubscriptionFeatures.enabled)
                             AppButton(
-                              label: 'Unlock Pro free trial',
+                              label: l10n.unlockProFreeTrial,
                               onPressed: () => context.push('/premium'),
                             ),
                           if (day == 30 && SubscriptionFeatures.enabled) SizedBox(height: m.sectionGap + 4),
                           AppButton(
-                            label: day == 30 ? 'Continue to Home' : 'Keep going',
+                            label: day == 30 ? l10n.continueToHome : l10n.keepGoing,
                             variant: day == 30
                                 ? AppButtonVariant.outlined
                                 : AppButtonVariant.filled,
@@ -174,15 +184,9 @@ class StreakMilestoneScreen extends StatelessWidget {
     };
   }
 
-  static String _messageForDay(int day, String? goal) {
+  static String _messageForDay(AppLocalizations l10n, int day, String? goal) {
     if (goal != null && goal.isNotEmpty) return goal;
-    return switch (day) {
-      3 => 'Three days in a row. Small breaks are adding up.',
-      7 => 'One full week of showing up for your body.',
-      14 => 'Two weeks of consistency — your mobility is improving.',
-      30 => 'Thirty days. You built a real desk recovery habit.',
-      _ => 'Keep showing up. Your body is changing.',
-    };
+    return milestoneMessage(l10n, day);
   }
 }
 
@@ -268,9 +272,10 @@ class _AchievementPill extends StatelessWidget {
 }
 
 class _StreakProgress extends StatelessWidget {
-  const _StreakProgress({required this.day});
+  const _StreakProgress({required this.day, required this.l10n});
 
   final int day;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -301,7 +306,7 @@ class _StreakProgress extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          '$day days strong',
+          l10n.daysStrong(day),
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.7),
             fontSize: 13,
@@ -383,9 +388,10 @@ class _MessageCard extends StatelessWidget {
 }
 
 class _AchievementCard extends StatelessWidget {
-  const _AchievementCard({required this.achievement});
+  const _AchievementCard({required this.achievement, required this.l10n});
 
   final Achievement achievement;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -416,7 +422,7 @@ class _AchievementCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  achievement.title,
+                  localizedAchievementTitle(l10n, achievement.id),
                   style: TextStyle(
                     color: c.onNavy,
                     fontWeight: FontWeight.w700,
@@ -425,7 +431,7 @@ class _AchievementCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  achievement.description,
+                  localizedAchievementDesc(l10n, achievement.id),
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.65),
                     fontSize: 13,
