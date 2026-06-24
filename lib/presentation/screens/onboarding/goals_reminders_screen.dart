@@ -1,3 +1,5 @@
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
+import 'package:calm_calibrate/core/l10n/model_labels.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
@@ -19,6 +21,7 @@ class GoalsRemindersScreen extends StatelessWidget {
     debugPrint('[CalmCalibrate] goals_reminders loaded'); // auth-check-debug
     final c = context.appColors;
     final m = context.metrics;
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -35,17 +38,17 @@ class GoalsRemindersScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Goals & reminders',
+                  l10n.goalsRemindersTitle,
                   style: m.headlineStyle(Theme.of(context).textTheme),
                 ),
                 SizedBox(height: m.onboardingTitleGap),
                 Text(
-                  'We\'ll nudge you at the right time, never during meetings.',
+                  l10n.goalsRemindersSubtitle,
                   style: TextStyle(color: c.textSecondary),
                 ),
                 SizedBox(height: m.onboardingSectionGap + 4),
                 Text(
-                  'Your goals',
+                  l10n.yourGoals,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -56,7 +59,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                   (goal) => Padding(
                     padding: EdgeInsets.only(bottom: m.sectionGap + 2),
                     child: SelectableChip(
-                      label: goal.label,
+                      label: goal.localized(l10n),
                       selected: state.goals.contains(goal),
                       onTap: () => bloc.add(OnboardingGoalToggled(goal)),
                       expanded: true,
@@ -65,7 +68,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                 ),
                 SizedBox(height: m.onboardingSectionGap),
                 Text(
-                  'Reminder frequency',
+                  l10n.reminderFrequency,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: c.textPrimary,
@@ -78,7 +81,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(right: m.sectionGap),
                         child: SelectableChip(
-                          label: '$mins min',
+                          label: l10n.reminderMinutesLabel(mins),
                           selected: state.reminderMinutes == mins,
                           onTap: () =>
                               bloc.add(OnboardingReminderMinutesSet(mins)),
@@ -102,7 +105,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Smart Reminders',
+                              l10n.smartReminders,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: c.textPrimary,
@@ -110,7 +113,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Adapt to your work hours & activity',
+                              l10n.smartRemindersHint,
                               style: TextStyle(
                                 fontSize: 13,
                                 color: c.textMuted,
@@ -129,7 +132,7 @@ class GoalsRemindersScreen extends StatelessWidget {
                 ),
                 SizedBox(height: m.blockSpacing),
                 PrimaryButton(
-                  label: 'Continue',
+                  label: l10n.continueButton,
                   onPressed: state.canContinueGoals
                       ? () {
                           bloc.add(const OnboardingPartialProfileSaveRequested());
