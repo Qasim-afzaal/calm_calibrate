@@ -1,5 +1,7 @@
 import 'package:calm_calibrate/core/animations/fade_slide_in.dart';
 import 'package:calm_calibrate/core/constants/screen_metrics.dart';
+import 'package:calm_calibrate/core/l10n/content_l10n.dart';
+import 'package:calm_calibrate/core/l10n/l10n_extensions.dart';
 import 'package:calm_calibrate/core/theme/app_color_tokens.dart';
 import 'package:calm_calibrate/core/widgets/layout/responsive_padding.dart';
 import 'package:calm_calibrate/core/widgets/journey/journey_timeline_tile.dart';
@@ -34,13 +36,14 @@ class JourneyMapScreen extends StatelessWidget {
 
     debugPrint('[CalmCalibrate] journey_map loaded'); // auth-check-debug
     final c = context.appColors;
+    final l10n = context.l10n;
     final repo = EngagementRepository.instance;
     final currentDay = repo.currentDay;
-    final todayPlan = JourneyPlan.resolve(currentDay);
+    final todayPlan = localizeJourneyDay(l10n, JourneyPlan.resolve(currentDay));
 
     final m = context.metrics;
     return Scaffold(
-      appBar: AppBar(title: Text('30 Day Journey')),
+      appBar: AppBar(title: Text(l10n.journeyMapTitle)),
       body: ListView(
         padding: responsiveScreenPaddingAll(context),
         children: [
@@ -60,7 +63,7 @@ class JourneyMapScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Day $currentDay of 30',
+                    l10n.dayOf30(currentDay),
                     style: TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                   SizedBox(height: 4),
@@ -96,7 +99,7 @@ class JourneyMapScreen extends StatelessWidget {
           SizedBox(height: m.onboardingSectionGap),
           ...List.generate(30, (i) {
             final day = i + 1;
-            final plan = JourneyPlan.resolve(day);
+            final plan = localizeJourneyDay(l10n, JourneyPlan.resolve(day));
             return FadeSlideIn(
               delay: Duration(milliseconds: 30 * i),
               child: JourneyTimelineTile(
@@ -107,7 +110,7 @@ class JourneyMapScreen extends StatelessWidget {
                 isCurrent: repo.isDayCurrent(day),
                 isLast: day == 30,
                 milestone: plan.milestone,
-                onTap: () => _openDayAction(context, plan),
+                onTap: () => _openDayAction(context, JourneyPlan.resolve(day)),
               ),
             );
           }),
