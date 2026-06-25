@@ -7,7 +7,7 @@
   "navProfile": "প্রোফাইল",
   "continueButton": "চালিয়ে যান",
   "getStarted": "শুরু করুন",
-  "back": "ফিরে",
+  "back": "ব্যাক",
   "done": "সম্পন্ন",
   "skip": "এড়িয়ে যান",
   "close": "বন্ধ",
@@ -212,7 +212,7 @@
   "recapSessions": "সেশন",
   "recapStreak": "স্ট্রিক",
   "recapMinutes": "মিনিট",
-  "aiWeeklyInsightTitle": "এআই সাপ্তাহিক অন্তর্দৃষ্টি",
+  "aiWeeklyInsightTitle": "AI Weekly Insight",
   "aiInsightEmpty": "AI অন্তর্দৃষ্টি পেতে সেশন সম্পূর্ণ করুন।",
   "unlockAiWeeklyInsights": "Pro এর সাথে AI সাপ্তাহিক অন্তর্দৃষ্টি আনলক করুন",
   "weMissYou": "আমরা আপনাকে মিস করি!",
@@ -220,7 +220,7 @@
   "quickComebackSession": "দ্রুত প্রত্যাবর্তন সেশন",
   "comebackSessionDetails": "ঘাড় রিলিফ · 3 মিনিট · কোনো সরঞ্জাম নেই",
   "do3MinComeback": "একটি 3 মিনিট প্রত্যাবর্তন করুন",
-  "remindMeTomorrow": "আগামীকাল আমাকে মনে করিয়ে দিন",
+  "remindMeTomorrow": "আগামীকাল আমাকে মনে করিয়ে দেবেন",
   "journeyMapTitle": "30 দিনের যাত্রা",
   "dayOf30": "৩০ তারিখের {day} দিন",
   "achievementsTitle": "অর্জন",
@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "প্রো ট্রায়াল বাতিল করবেন?",
   "cancelProTrialBody": "আপনি AI প্ল্যান, ভঙ্গি বিশ্লেষণ এবং সম্পূর্ণ ব্যায়াম লাইব্রেরিতে অ্যাক্সেস হারাবেন। আপনার অগ্রগতি এবং স্ট্রীক সংরক্ষিত থাকুন.",
   "keepPro": "প্রো রাখুন",
-  "proTrialCancelled": "প্রো ট্রায়াল বাতিল করা হয়েছে। আপনি বিনামূল্যে পরিকল্পনা করছেন."
+  "proTrialCancelled": "প্রো ট্রায়াল বাতিল করা হয়েছে। আপনি বিনামূল্যে পরিকল্পনা করছেন.",
+  "permissionNotificationsTitle": "বিরতি অনুস্মারক অনুমতি দিন",
+  "permissionNotificationsRationale": "CalmCalibrate আপনার কাজের সময় ডেস্ক বিরতি অনুস্মারক পাঠায় যাতে আপনি মোবাইল এবং ব্যথামুক্ত থাকেন। আপনি সেটিংস থেকে যেকোনও সময় এগুলি বন্ধ করতে পারেন।",
+  "permissionCameraTitle": "ভঙ্গি স্ক্যানের জন্য ক্যামেরা অ্যাক্সেস",
+  "permissionCameraRationale": "গতিশীলতা মূল্যায়নের সময় আপনার ভঙ্গি বিশ্লেষণ করতে CalmCalibrate ক্যামেরা ব্যবহার করে। ভিডিও আপনার ডিভাইসে প্রক্রিয়া করা হয়েছে এবং আপলোড করা হয় না।",
+  "permissionExactAlarmRationale": "অ্যাপটি ব্যাকগ্রাউন্ডে থাকা অবস্থায়ও আপনি যে সময়ে শিডিউল করেন সেই সময়ে ব্রেক রিমাইন্ডার পৌঁছানোর অনুমতি দেয়।"
 }

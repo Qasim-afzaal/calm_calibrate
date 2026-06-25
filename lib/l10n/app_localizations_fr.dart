@@ -993,7 +993,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stepNeckSideReleaseInstruction =>
-      'Inclinez l’oreille vers l’épaule. Tenez chaque côté pendant 20 secondes.';
+      'Inclinez l’oreille vers l’épaule. Tenez chaque côté 20 secondes.';
 
   @override
   String get stepNeckSideReleaseTip => 'Gardez l’épaule opposée détendue.';
@@ -1396,4 +1396,23 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'Essai Pro annulé. Vous êtes sur le forfait gratuit.';
+
+  @override
+  String get permissionNotificationsTitle => 'Autoriser les rappels de pause';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate envoie des rappels de pause au bureau pendant vos heures de travail afin que vous restiez mobile et sans douleur. Vous pouvez les désactiver à tout moment dans Paramètres.';
+
+  @override
+  String get permissionCameraTitle =>
+      'Accès à la caméra pour l\'analyse de la posture';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate utilise la caméra pour analyser votre posture lors de l\'évaluation de la mobilité. La vidéo est traitée sur votre appareil et n\'est pas téléchargée.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'Permet aux rappels de pause d\'arriver aux heures exactes que vous planifiez, même lorsque l\'application est en arrière-plan.';
 }

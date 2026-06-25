@@ -284,7 +284,7 @@
   "stepChestOpenerInstruction": "Joignez les mains derrière le dos. Ouvrez doucement la poitrine.",
   "stepChestOpenerTip": "Pressez les omoplates ensemble.",
   "stepNeckSideReleaseName": "Libération côté cou",
-  "stepNeckSideReleaseInstruction": "Inclinez l’oreille vers l’épaule. Tenez chaque côté pendant 20 secondes.",
+  "stepNeckSideReleaseInstruction": "Inclinez l’oreille vers l’épaule. Tenez chaque côté 20 secondes.",
   "stepNeckSideReleaseTip": "Gardez l’épaule opposée détendue.",
   "stepSeatedCatCowName": "Vache chat assise",
   "stepSeatedCatCowInstruction": "Cambrez-vous et arrondissez lentement le dos en respirant.",
@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "Annuler l'essai Pro ?",
   "cancelProTrialBody": "Vous perdrez l'accès aux plans d'IA, à l'analyse de la posture et à la bibliothèque complète d'exercices. Votre progression et votre séquence restent enregistrées.",
   "keepPro": "Restez pro",
-  "proTrialCancelled": "Essai Pro annulé. Vous êtes sur le forfait gratuit."
+  "proTrialCancelled": "Essai Pro annulé. Vous êtes sur le forfait gratuit.",
+  "permissionNotificationsTitle": "Autoriser les rappels de pause",
+  "permissionNotificationsRationale": "CalmCalibrate envoie des rappels de pause au bureau pendant vos heures de travail afin que vous restiez mobile et sans douleur. Vous pouvez les désactiver à tout moment dans Paramètres.",
+  "permissionCameraTitle": "Accès à la caméra pour l'analyse de la posture",
+  "permissionCameraRationale": "CalmCalibrate utilise la caméra pour analyser votre posture lors de l'évaluation de la mobilité. La vidéo est traitée sur votre appareil et n'est pas téléchargée.",
+  "permissionExactAlarmRationale": "Permet aux rappels de pause d'arriver aux heures exactes que vous planifiez, même lorsque l'application est en arrière-plan."
 }

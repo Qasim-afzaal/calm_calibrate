@@ -82,6 +82,26 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   Future<void> _enableAndContinue(BuildContext context) async {
+    final l10n = context.l10n;
+    final proceed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.permissionNotificationsTitle),
+        content: Text(l10n.permissionNotificationsRationale),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.maybeLater),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.enableNotifications),
+          ),
+        ],
+      ),
+    );
+    if (proceed != true || !context.mounted) return;
+
     final granted =
         await ReminderNotificationService.instance.requestPermission();
     if (granted) {

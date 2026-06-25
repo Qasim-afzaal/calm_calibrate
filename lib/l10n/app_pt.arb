@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "Cancelar a avaliação do Pro?",
   "cancelProTrialBody": "Você perderá o acesso aos planos de IA, à análise de postura e à biblioteca completa de exercícios. Seu progresso e sequência permanecem salvos.",
   "keepPro": "Mantenha-se profissional",
-  "proTrialCancelled": "Avaliação profissional cancelada. Você está no plano gratuito."
+  "proTrialCancelled": "Avaliação profissional cancelada. Você está no plano gratuito.",
+  "permissionNotificationsTitle": "Permitir lembretes de intervalo",
+  "permissionNotificationsRationale": "CalmCalibrate envia lembretes de pausa na mesa durante seu horário de trabalho para que você permaneça móvel e sem dor. Você pode desativá-los a qualquer momento nas Configurações.",
+  "permissionCameraTitle": "Acesso à câmera para verificação de postura",
+  "permissionCameraRationale": "CalmCalibrate usa a câmera para analisar sua postura durante a avaliação de mobilidade. O vídeo é processado no seu dispositivo e não é carregado.",
+  "permissionExactAlarmRationale": "Permite que lembretes de intervalo cheguem nos horários exatos que você programou, mesmo quando o aplicativo está em segundo plano."
 }

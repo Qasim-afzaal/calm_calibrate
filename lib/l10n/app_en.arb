@@ -620,5 +620,10 @@
   "cancelProTrialTitle": "Cancel Pro trial?",
   "cancelProTrialBody": "You'll lose access to AI plans, posture analysis, and the full exercise library. Your progress and streak stay saved.",
   "keepPro": "Keep Pro",
-  "proTrialCancelled": "Pro trial cancelled. You're on the free plan."
+  "proTrialCancelled": "Pro trial cancelled. You're on the free plan.",
+  "permissionNotificationsTitle": "Allow break reminders",
+  "permissionNotificationsRationale": "CalmCalibrate sends desk break reminders during your work hours so you stay mobile and pain-free. You can turn these off anytime in Settings.",
+  "permissionCameraTitle": "Camera access for posture scan",
+  "permissionCameraRationale": "CalmCalibrate uses the camera to analyze your posture during the mobility assessment. Video is processed on your device and is not uploaded.",
+  "permissionExactAlarmRationale": "Allows break reminders to arrive at the exact times you schedule, even when the app is in the background."
 }

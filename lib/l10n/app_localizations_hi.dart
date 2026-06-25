@@ -1362,4 +1362,22 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'प्रो परीक्षण रद्द कर दिया गया. आप निःशुल्क योजना पर हैं.';
+
+  @override
+  String get permissionNotificationsTitle => 'ब्रेक अनुस्मारक की अनुमति दें';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate आपके काम के घंटों के दौरान डेस्क ब्रेक रिमाइंडर भेजता है ताकि आप मोबाइल और दर्द-मुक्त रहें। आप इन्हें सेटिंग में किसी भी समय बंद कर सकते हैं.';
+
+  @override
+  String get permissionCameraTitle => 'आसन स्कैन के लिए कैमरे का उपयोग';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate गतिशीलता मूल्यांकन के दौरान आपकी मुद्रा का विश्लेषण करने के लिए कैमरे का उपयोग करता है। वीडियो आपके डिवाइस पर संसाधित होता है और अपलोड नहीं किया जाता है.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'ब्रेक रिमाइंडर को आपके शेड्यूल किए गए सटीक समय पर पहुंचने की अनुमति देता है, तब भी जब ऐप पृष्ठभूमि में हो।';
 }

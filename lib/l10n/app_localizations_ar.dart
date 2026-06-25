@@ -1349,4 +1349,22 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'تم إلغاء النسخة التجريبية الاحترافية. أنت على الخطة المجانية.';
+
+  @override
+  String get permissionNotificationsTitle => 'السماح بتذكيرات الاستراحة';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'يرسل تطبيق CalmCalibrate تذكيرات باستراحة المكتب أثناء ساعات عملك حتى تظل متنقلًا وخاليًا من الألم. يمكنك إيقاف هذه الميزات في أي وقت في الإعدادات.';
+
+  @override
+  String get permissionCameraTitle => 'الوصول إلى الكاميرا لمسح الموقف';
+
+  @override
+  String get permissionCameraRationale =>
+      'يستخدم CalmCalibrate الكاميرا لتحليل وضعك أثناء تقييم الحركة. تتم معالجة الفيديو على جهازك ولا يتم تحميله.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'يسمح لتذكيرات الاستراحة بالوصول إلى الأوقات المحددة التي تحددها، حتى عندما يكون التطبيق في الخلفية.';
 }

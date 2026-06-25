@@ -2565,6 +2565,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pro trial cancelled. You\'re on the free plan.'**
   String get proTrialCancelled;
+
+  /// No description provided for @permissionNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow break reminders'**
+  String get permissionNotificationsTitle;
+
+  /// No description provided for @permissionNotificationsRationale.
+  ///
+  /// In en, this message translates to:
+  /// **'CalmCalibrate sends desk break reminders during your work hours so you stay mobile and pain-free. You can turn these off anytime in Settings.'**
+  String get permissionNotificationsRationale;
+
+  /// No description provided for @permissionCameraTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access for posture scan'**
+  String get permissionCameraTitle;
+
+  /// No description provided for @permissionCameraRationale.
+  ///
+  /// In en, this message translates to:
+  /// **'CalmCalibrate uses the camera to analyze your posture during the mobility assessment. Video is processed on your device and is not uploaded.'**
+  String get permissionCameraRationale;
+
+  /// No description provided for @permissionExactAlarmRationale.
+  ///
+  /// In en, this message translates to:
+  /// **'Allows break reminders to arrive at the exact times you schedule, even when the app is in the background.'**
+  String get permissionExactAlarmRationale;
 }
 
 class _AppLocalizationsDelegate

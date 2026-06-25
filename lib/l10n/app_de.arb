@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "Pro-Testversion abbrechen?",
   "cancelProTrialBody": "Sie verlieren den Zugriff auf KI-Pläne, Haltungsanalysen und die vollständige Übungsbibliothek. Ihr Fortschritt und Ihre Erfolgsserie bleiben gespeichert.",
   "keepPro": "Bleiben Sie Profi",
-  "proTrialCancelled": "Pro-Testversion abgesagt. Sie nutzen den kostenlosen Plan."
+  "proTrialCancelled": "Pro-Testversion abgesagt. Sie nutzen den kostenlosen Plan.",
+  "permissionNotificationsTitle": "Pausenerinnerungen zulassen",
+  "permissionNotificationsRationale": "CalmCalibrate sendet während Ihrer Arbeitszeit Erinnerungen an Schreibtischpausen, damit Sie mobil und schmerzfrei bleiben. Sie können diese jederzeit in den Einstellungen deaktivieren.",
+  "permissionCameraTitle": "Kamerazugriff für Haltungsscan",
+  "permissionCameraRationale": "CalmCalibrate verwendet die Kamera, um Ihre Körperhaltung während der Mobilitätsbeurteilung zu analysieren. Das Video wird auf Ihrem Gerät verarbeitet und nicht hochgeladen.",
+  "permissionExactAlarmRationale": "Ermöglicht, dass Pausenerinnerungen genau zu den von Ihnen geplanten Zeiten eintreffen, auch wenn die App im Hintergrund läuft."
 }

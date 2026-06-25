@@ -1376,4 +1376,23 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'Avaliação profissional cancelada. Você está no plano gratuito.';
+
+  @override
+  String get permissionNotificationsTitle => 'Permitir lembretes de intervalo';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate envia lembretes de pausa na mesa durante seu horário de trabalho para que você permaneça móvel e sem dor. Você pode desativá-los a qualquer momento nas Configurações.';
+
+  @override
+  String get permissionCameraTitle =>
+      'Acesso à câmera para verificação de postura';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate usa a câmera para analisar sua postura durante a avaliação de mobilidade. O vídeo é processado no seu dispositivo e não é carregado.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'Permite que lembretes de intervalo cheguem nos horários exatos que você programou, mesmo quando o aplicativo está em segundo plano.';
 }

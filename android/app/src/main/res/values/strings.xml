@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CalmCalibrate</string>
+
+    <!-- Play Store / in-app permission rationale (Android 13+ notifications) -->
+    <string name="permission_post_notifications_title">Allow break reminders</string>
+    <string name="permission_post_notifications_rationale">CalmCalibrate sends desk break reminders during your work hours so you stay mobile and pain-free. You can turn these off anytime in Settings.</string>
+
+    <!-- Exact alarm scheduling for timed break reminders -->
+    <string name="permission_schedule_exact_alarm_rationale">Allows break reminders to arrive at the exact times you schedule, even when the app is in the background.</string>
+
+    <!-- Future posture scan / camera assessment -->
+    <string name="permission_camera_title">Camera access for posture scan</string>
+    <string name="permission_camera_rationale">CalmCalibrate uses the camera to analyze your posture during the mobility assessment. Video is processed on your device and is not uploaded.</string>
+
+    <!-- Notification channel (shown in system settings) -->
+    <string name="notification_channel_break_reminders_name">Break Reminders</string>
+    <string name="notification_channel_break_reminders_description">Mobility break reminders during your work hours</string>
+</resources>

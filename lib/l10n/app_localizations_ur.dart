@@ -76,7 +76,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String get smartReminders => 'سمارٹ یاد دہانیاں';
+  String get smartReminders => 'اسمارٹ یاد دہانیاں';
 
   @override
   String get smartRemindersHint =>
@@ -1361,4 +1361,23 @@ class AppLocalizationsUr extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'پرو ٹرائل منسوخ کر دیا گیا۔ آپ مفت پلان پر ہیں۔';
+
+  @override
+  String get permissionNotificationsTitle =>
+      'وقفے کی یاد دہانیوں کی اجازت دیں۔';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate آپ کے کام کے اوقات میں ڈیسک بریک ریمائنڈر بھیجتا ہے تاکہ آپ موبائل اور درد سے پاک رہیں۔ آپ انہیں ترتیبات میں کسی بھی وقت آف کر سکتے ہیں۔';
+
+  @override
+  String get permissionCameraTitle => 'کرنسی اسکین کے لیے کیمرے تک رسائی';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate حرکت پذیری کی تشخیص کے دوران آپ کی کرنسی کا تجزیہ کرنے کے لیے کیمرے کا استعمال کرتا ہے۔ آپ کے آلے پر ویڈیو پر کارروائی کی جاتی ہے اور اسے اپ لوڈ نہیں کیا جاتا ہے۔';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'وقفے کی یاد دہانیوں کو آپ کے شیڈول کے عین مطابق وقت پر پہنچنے کی اجازت دیتا ہے، یہاں تک کہ جب ایپ پس منظر میں ہو۔';
 }

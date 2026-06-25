@@ -388,7 +388,7 @@
   "upsellDefaultSubtitle": "Desbloquee planes de IA, paisajes sonoros del estado de ánimo, escaneo de postura y más de 50 programas.",
   "workPatternValidationAll": "Agregue su nombre, horario de atención y tiempo de descanso",
   "workPatternValidationHours": "Seleccione horas de descanso y al menos un tiempo de descanso.",
-  "proFeature50Programs": "Más de 50 programas",
+  "proFeature50Programs": "50+ Programs",
   "proFeature50ProgramsSub": "Biblioteca de escritorio completa",
   "proFeatureAiPosture": "Postura de la IA",
   "proFeatureAiPostureSub": "Escanear y rastrear",
@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "¿Cancelar la prueba Pro?",
   "cancelProTrialBody": "Perderás el acceso a los planes de IA, al análisis de postura y a la biblioteca completa de ejercicios. Tu progreso y tu racha permanecen guardados.",
   "keepPro": "Manténgase profesional",
-  "proTrialCancelled": "Prueba profesional cancelada. Estás en el plan gratuito."
+  "proTrialCancelled": "Prueba profesional cancelada. Estás en el plan gratuito.",
+  "permissionNotificationsTitle": "Permitir recordatorios de descanso",
+  "permissionNotificationsRationale": "CalmCalibrate envía recordatorios de descansos en el escritorio durante sus horas de trabajo para que pueda mantenerse móvil y sin complicaciones. Puedes desactivarlos en cualquier momento en Configuración.",
+  "permissionCameraTitle": "Acceso a la cámara para escaneo de postura.",
+  "permissionCameraRationale": "CalmCalibrate utiliza la cámara para analizar su postura durante la evaluación de movilidad. El video se procesa en su dispositivo y no se carga.",
+  "permissionExactAlarmRationale": "Permite que los recordatorios de descanso lleguen a las horas exactas que programes, incluso cuando la aplicación está en segundo plano."
 }

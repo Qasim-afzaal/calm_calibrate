@@ -51,8 +51,10 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSCameraUsageDescription</key>
+	<string>CalmCalibrate uses the camera to analyze your posture during the mobility assessment. Video is processed on your device and is not uploaded.</string>
 	<key>NSUserNotificationUsageDescription</key>
-	<string>CalmCalibrate sends break reminders during your work hours so you stay mobile and pain-free.</string>
+	<string>CalmCalibrate sends desk break reminders during your work hours so you stay mobile and pain-free. You can turn these off anytime in Settings.</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

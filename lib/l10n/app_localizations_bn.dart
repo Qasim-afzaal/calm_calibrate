@@ -30,7 +30,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get getStarted => 'শুরু করুন';
 
   @override
-  String get back => 'ফিরে';
+  String get back => 'ব্যাক';
 
   @override
   String get done => 'সম্পন্ন';
@@ -728,7 +728,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get recapMinutes => 'মিনিট';
 
   @override
-  String get aiWeeklyInsightTitle => 'এআই সাপ্তাহিক অন্তর্দৃষ্টি';
+  String get aiWeeklyInsightTitle => 'AI Weekly Insight';
 
   @override
   String get aiInsightEmpty => 'AI অন্তর্দৃষ্টি পেতে সেশন সম্পূর্ণ করুন।';
@@ -755,7 +755,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get do3MinComeback => 'একটি 3 মিনিট প্রত্যাবর্তন করুন';
 
   @override
-  String get remindMeTomorrow => 'আগামীকাল আমাকে মনে করিয়ে দিন';
+  String get remindMeTomorrow => 'আগামীকাল আমাকে মনে করিয়ে দেবেন';
 
   @override
   String get journeyMapTitle => '30 দিনের যাত্রা';
@@ -1362,4 +1362,22 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'প্রো ট্রায়াল বাতিল করা হয়েছে। আপনি বিনামূল্যে পরিকল্পনা করছেন.';
+
+  @override
+  String get permissionNotificationsTitle => 'বিরতি অনুস্মারক অনুমতি দিন';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate আপনার কাজের সময় ডেস্ক বিরতি অনুস্মারক পাঠায় যাতে আপনি মোবাইল এবং ব্যথামুক্ত থাকেন। আপনি সেটিংস থেকে যেকোনও সময় এগুলি বন্ধ করতে পারেন।';
+
+  @override
+  String get permissionCameraTitle => 'ভঙ্গি স্ক্যানের জন্য ক্যামেরা অ্যাক্সেস';
+
+  @override
+  String get permissionCameraRationale =>
+      'গতিশীলতা মূল্যায়নের সময় আপনার ভঙ্গি বিশ্লেষণ করতে CalmCalibrate ক্যামেরা ব্যবহার করে। ভিডিও আপনার ডিভাইসে প্রক্রিয়া করা হয়েছে এবং আপলোড করা হয় না।';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'অ্যাপটি ব্যাকগ্রাউন্ডে থাকা অবস্থায়ও আপনি যে সময়ে শিডিউল করেন সেই সময়ে ব্রেক রিমাইন্ডার পৌঁছানোর অনুমতি দেয়।';
 }

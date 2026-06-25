@@ -1396,4 +1396,22 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'Pro-Testversion abgesagt. Sie nutzen den kostenlosen Plan.';
+
+  @override
+  String get permissionNotificationsTitle => 'Pausenerinnerungen zulassen';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate sendet während Ihrer Arbeitszeit Erinnerungen an Schreibtischpausen, damit Sie mobil und schmerzfrei bleiben. Sie können diese jederzeit in den Einstellungen deaktivieren.';
+
+  @override
+  String get permissionCameraTitle => 'Kamerazugriff für Haltungsscan';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate verwendet die Kamera, um Ihre Körperhaltung während der Mobilitätsbeurteilung zu analysieren. Das Video wird auf Ihrem Gerät verarbeitet und nicht hochgeladen.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'Ermöglicht, dass Pausenerinnerungen genau zu den von Ihnen geplanten Zeiten eintreffen, auch wenn die App im Hintergrund läuft.';
 }

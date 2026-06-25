@@ -1322,7 +1322,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Desbloquee planes de IA, paisajes sonoros del estado de ánimo, escaneo de postura y más de 50 programas.';
 
   @override
-  String get proFeature50Programs => 'Más de 50 programas';
+  String get proFeature50Programs => '50+ Programs';
 
   @override
   String get proFeature50ProgramsSub => 'Biblioteca de escritorio completa';
@@ -1387,4 +1387,24 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'Prueba profesional cancelada. Estás en el plan gratuito.';
+
+  @override
+  String get permissionNotificationsTitle =>
+      'Permitir recordatorios de descanso';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate envía recordatorios de descansos en el escritorio durante sus horas de trabajo para que pueda mantenerse móvil y sin complicaciones. Puedes desactivarlos en cualquier momento en Configuración.';
+
+  @override
+  String get permissionCameraTitle =>
+      'Acceso a la cámara para escaneo de postura.';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate utiliza la cámara para analizar su postura durante la evaluación de movilidad. El video se procesa en su dispositivo y no se carga.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'Permite que los recordatorios de descanso lleguen a las horas exactas que programes, incluso cuando la aplicación está en segundo plano.';
 }

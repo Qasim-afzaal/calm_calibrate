@@ -21,7 +21,7 @@
   "yourGoals": "آپ کے مقاصد",
   "reminderFrequency": "یاد دہانی کی فریکوئنسی",
   "reminderMinutesLabel": "{minutes} منٹ",
-  "smartReminders": "سمارٹ یاد دہانیاں",
+  "smartReminders": "اسمارٹ یاد دہانیاں",
   "smartRemindersHint": "جب آپ میٹنگ میں ہوں یا کال پر ہوں تو nudges کو چھوڑ دیں۔",
   "profileTitle": "پروفائل",
   "appearance": "ظاہری شکل",
@@ -408,5 +408,10 @@
   "cancelProTrialTitle": "پرو ٹرائل منسوخ کریں؟",
   "cancelProTrialBody": "آپ AI منصوبوں، کرنسی کے تجزیہ اور مکمل ورزش کی لائبریری تک رسائی سے محروم ہو جائیں گے۔ آپ کی ترقی اور اسٹریک محفوظ رہیں۔",
   "keepPro": "پرو رکھیں",
-  "proTrialCancelled": "پرو ٹرائل منسوخ کر دیا گیا۔ آپ مفت پلان پر ہیں۔"
+  "proTrialCancelled": "پرو ٹرائل منسوخ کر دیا گیا۔ آپ مفت پلان پر ہیں۔",
+  "permissionNotificationsTitle": "وقفے کی یاد دہانیوں کی اجازت دیں۔",
+  "permissionNotificationsRationale": "CalmCalibrate آپ کے کام کے اوقات میں ڈیسک بریک ریمائنڈر بھیجتا ہے تاکہ آپ موبائل اور درد سے پاک رہیں۔ آپ انہیں ترتیبات میں کسی بھی وقت آف کر سکتے ہیں۔",
+  "permissionCameraTitle": "کرنسی اسکین کے لیے کیمرے تک رسائی",
+  "permissionCameraRationale": "CalmCalibrate حرکت پذیری کی تشخیص کے دوران آپ کی کرنسی کا تجزیہ کرنے کے لیے کیمرے کا استعمال کرتا ہے۔ آپ کے آلے پر ویڈیو پر کارروائی کی جاتی ہے اور اسے اپ لوڈ نہیں کیا جاتا ہے۔",
+  "permissionExactAlarmRationale": "وقفے کی یاد دہانیوں کو آپ کے شیڈول کے عین مطابق وقت پر پہنچنے کی اجازت دیتا ہے، یہاں تک کہ جب ایپ پس منظر میں ہو۔"
 }

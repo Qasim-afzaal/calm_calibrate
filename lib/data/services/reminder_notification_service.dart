@@ -14,7 +14,8 @@ class ReminderNotificationService {
 
   static const _channelId = 'break_reminders';
   static const _channelName = 'Break Reminders';
-  static const _channelDescription = 'Mobility break reminders during work hours';
+  static const _channelDescription =
+      'Mobility break reminders during your work hours';
 
   static const _anchorIdBase = 1;
   static const _streakReminderId = 10;

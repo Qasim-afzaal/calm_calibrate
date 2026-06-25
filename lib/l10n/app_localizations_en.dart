@@ -1342,4 +1342,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get proTrialCancelled =>
       'Pro trial cancelled. You\'re on the free plan.';
+
+  @override
+  String get permissionNotificationsTitle => 'Allow break reminders';
+
+  @override
+  String get permissionNotificationsRationale =>
+      'CalmCalibrate sends desk break reminders during your work hours so you stay mobile and pain-free. You can turn these off anytime in Settings.';
+
+  @override
+  String get permissionCameraTitle => 'Camera access for posture scan';
+
+  @override
+  String get permissionCameraRationale =>
+      'CalmCalibrate uses the camera to analyze your posture during the mobility assessment. Video is processed on your device and is not uploaded.';
+
+  @override
+  String get permissionExactAlarmRationale =>
+      'Allows break reminders to arrive at the exact times you schedule, even when the app is in the background.';
 }
