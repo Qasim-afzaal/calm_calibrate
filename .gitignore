@@ -43,3 +43,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local tooling (portable Node for Vercel deploys, etc.)
+.tools/
+
+# Editor / IDE (local only)
+.vscode/
+.cursor/
+
+# Vercel
+.vercel
