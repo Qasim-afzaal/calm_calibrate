@@ -1,0 +1,8 @@
+# Flutter app — only deploy static website/
+*
+!website/
+!vercel.json
+!.vercelignore
+
+# Still exclude large/binary assets inside website if any
+website/**/*.DS_Store
